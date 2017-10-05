@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.effecia.modules.chat.dao.ChatRecordDao">
+
+	<!-- 可根据自己的需求，是否要使用 -->
+    <resultMap type="com.effecia.modules.chat.entity.ChatRecordEntity" id="chatRecordMap">
+        <result property="id" column="id"/>
+        <result property="groupId" column="group_id"/>
+        <result property="userId" column="user_id"/>
+        <result property="cTime" column="c_time"/>
+        <result property="nick" column="nick"/>
+        <result property="content" column="content"/>
+    </resultMap>
+
+	<select id="queryObject" resultType="com.effecia.modules.chat.entity.ChatRecordEntity">
+		select * from chat_record where id = #{value}
+	</select>
+
+	<select id="queryList" resultType="com.effecia.modules.chat.entity.ChatRecordEntity">
+		select * from chat_record
+        <choose>
+            <when test="sidx != null and sidx.trim() != ''">
+                order by ${sidx} ${order}
+            </when>
+			<otherwise>
+                order by id desc
+			</otherwise>
+        </choose>
+		<if test="offset != null and limit != null">
+			limit #{offset}, #{limit}
+		</if>
+	</select>
+	
+ 	<select id="queryTotal" resultType="int">
+		select count(*) from chat_record 
+	</select>
+	 
+	<insert id="save" parameterType="com.effecia.modules.chat.entity.ChatRecordEntity" useGeneratedKeys="true" keyProperty="id">
+		insert into chat_record
+		(
+			`group_id`, 
+			`user_id`, 
+			`c_time`, 
+			`nick`, 
+			`content`
+		)
+		values
+		(
+			#{groupId}, 
+			#{userId}, 
+			#{cTime}, 
+			#{nick}, 
+			#{content}
+		)
+	</insert>
+	 
+	<update id="update" parameterType="com.effecia.modules.chat.entity.ChatRecordEntity">
+		update chat_record 
+		<set>
+			<if test="groupId != null">`group_id` = #{groupId}, </if>
+			<if test="userId != null">`user_id` = #{userId}, </if>
+			<if test="cTime != null">`c_time` = #{cTime}, </if>
+			<if test="nick != null">`nick` = #{nick}, </if>
+			<if test="content != null">`content` = #{content}</if>
+		</set>
+		where id = #{id}
+	</update>
+	
+	<delete id="delete">
+		delete from chat_record where id = #{value}
+	</delete>
+	
+	<delete id="deleteBatch">
+		delete from chat_record where id in 
+		<foreach item="id" collection="array" open="(" separator="," close=")">
+			#{id}
+		</foreach>
+	</delete>
+
+</mapper>

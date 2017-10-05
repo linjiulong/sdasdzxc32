@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.effecia.modules.chat.dao.ChatGroupDao">
+
+	<!-- 可根据自己的需求，是否要使用 -->
+    <resultMap type="com.effecia.modules.chat.entity.ChatGroupEntity" id="chatGroupMap">
+        <result property="id" column="id"/>
+        <result property="title" column="title"/>
+        <result property="dataId" column="data_id"/>
+        <result property="userId" column="user_id"/>
+    </resultMap>
+
+	<select id="queryObject" resultType="com.effecia.modules.chat.entity.ChatGroupEntity">
+		select * from chat_group where id = #{value}
+	</select>
+
+	<select id="queryList" resultType="com.effecia.modules.chat.entity.ChatGroupEntity">
+		select * from chat_group
+        <choose>
+            <when test="sidx != null and sidx.trim() != ''">
+                order by ${sidx} ${order}
+            </when>
+			<otherwise>
+                order by id desc
+			</otherwise>
+        </choose>
+		<if test="offset != null and limit != null">
+			limit #{offset}, #{limit}
+		</if>
+	</select>
+	
+ 	<select id="queryTotal" resultType="int">
+		select count(*) from chat_group 
+	</select>
+	 
+	<insert id="save" parameterType="com.effecia.modules.chat.entity.ChatGroupEntity" useGeneratedKeys="true" keyProperty="id">
+		insert into chat_group
+		(
+			`title`, 
+			`data_id`, 
+			`user_id`
+		)
+		values
+		(
+			#{title}, 
+			#{dataId}, 
+			#{userId}
+		)
+	</insert>
+	 
+	<update id="update" parameterType="com.effecia.modules.chat.entity.ChatGroupEntity">
+		update chat_group 
+		<set>
+			<if test="title != null">`title` = #{title}, </if>
+			<if test="dataId != null">`data_id` = #{dataId}, </if>
+			<if test="userId != null">`user_id` = #{userId}</if>
+		</set>
+		where id = #{id}
+	</update>
+	
+	<delete id="delete">
+		delete from chat_group where id = #{value}
+	</delete>
+	
+	<delete id="deleteBatch">
+		delete from chat_group where id in 
+		<foreach item="id" collection="array" open="(" separator="," close=")">
+			#{id}
+		</foreach>
+	</delete>
+
+</mapper>
