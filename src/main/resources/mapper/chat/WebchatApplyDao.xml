@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.effecia.modules.chat.dao.WebchatApplyDao">
+
+	<!-- 可根据自己的需求，是否要使用 -->
+    <resultMap type="com.effecia.modules.chat.entity.WebchatApplyEntity" id="webchatApplyMap">
+        <result property="fromuser" column="fromuser"/>
+        <result property="uid" column="uid"/>
+        <result property="fromuserFid" column="fromuser_fid"/>
+        <result property="addtime" column="addtime"/>
+        <result property="msg" column="msg"/>
+    </resultMap>
+
+	<select id="queryObject" resultType="com.effecia.modules.chat.entity.WebchatApplyEntity">
+		select * from webchat_apply where fromuser = #{value}
+	</select>
+
+	<select id="queryList" resultType="com.effecia.modules.chat.entity.WebchatApplyEntity">
+		select * from webchat_apply
+        <choose>
+            <when test="sidx != null and sidx.trim() != ''">
+                order by ${sidx} ${order}
+            </when>
+			<otherwise>
+                order by fromuser desc
+			</otherwise>
+        </choose>
+		<if test="offset != null and limit != null">
+			limit #{offset}, #{limit}
+		</if>
+	</select>
+	
+ 	<select id="queryTotal" resultType="int">
+		select count(*) from webchat_apply 
+	</select>
+	 
+	<insert id="save" parameterType="com.effecia.modules.chat.entity.WebchatApplyEntity">
+		insert into webchat_apply
+		(
+			`fromuser`, 
+			`uid`, 
+			`fromuser_fid`, 
+			`addtime`, 
+			`msg`
+		)
+		values
+		(
+			#{fromuser}, 
+			#{uid}, 
+			#{fromuserFid}, 
+			#{addtime}, 
+			#{msg}
+		)
+	</insert>
+	 
+	<update id="update" parameterType="com.effecia.modules.chat.entity.WebchatApplyEntity">
+		update webchat_apply 
+		<set>
+			<if test="uid != null">`uid` = #{uid}, </if>
+			<if test="fromuserFid != null">`fromuser_fid` = #{fromuserFid}, </if>
+			<if test="addtime != null">`addtime` = #{addtime}, </if>
+			<if test="msg != null">`msg` = #{msg}</if>
+		</set>
+		where fromuser = #{fromuser}
+	</update>
+	
+	<delete id="delete">
+		delete from webchat_apply where fromuser = #{value}
+	</delete>
+	
+	<delete id="deleteBatch">
+		delete from webchat_apply where fromuser in 
+		<foreach item="fromuser" collection="array" open="(" separator="," close=")">
+			#{fromuser}
+		</foreach>
+	</delete>
+
+</mapper>

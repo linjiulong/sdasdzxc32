@@ -36,7 +36,7 @@
         <property name="applicationContextSchedulerContextKey" value="applicationContextKey" />
 
         <!--可选，QuartzScheduler 启动时更新己存在的Job，这样就不用每次修改targetObject后删除qrtz_job_details表对应记录了 -->
-        <property name="overwriteExistingJobs" value="true" />
+        <property name="overwriteExistingJobs" value="false" />
 
         <!-- 设置自动启动   默认为true -->
         <property name="autoStartup" value="false" />

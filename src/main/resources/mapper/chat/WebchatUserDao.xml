@@ -1,0 +1,92 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.effecia.modules.chat.dao.WebchatUserDao">
+
+	<!-- 可根据自己的需求，是否要使用 -->
+    <resultMap type="com.effecia.modules.chat.entity.WebchatUserEntity" id="webchatUserMap">
+        <result property="id" column="id"/>
+        <result property="uid" column="uid"/>
+        <result property="name" column="name"/>
+        <result property="password" column="password"/>
+        <result property="sign" column="sign"/>
+        <result property="headphoto" column="headphoto"/>
+        <result property="addtime" column="addtime"/>
+        <result property="online" column="online"/>
+    </resultMap>
+
+	<select id="queryObject" resultType="com.effecia.modules.chat.entity.WebchatUserEntity">
+		select * from webchat_user where id = #{value}
+	</select>
+
+	<select id="queryList" resultType="com.effecia.modules.chat.entity.WebchatUserEntity">
+		select * from webchat_user
+        <choose>
+            <when test="sidx != null and sidx.trim() != ''">
+                order by ${sidx} ${order}
+            </when>
+			<otherwise>
+                order by id desc
+			</otherwise>
+        </choose>
+		<if test="offset != null and limit != null">
+			limit #{offset}, #{limit}
+		</if>
+	</select>
+	
+	<select id="querySelect" resultType="com.effecia.modules.chat.entity.WebchatUserEntity">
+		SELECT a.id,a.uid,a.name,a.password,a.sign,a.headphoto,a.addtime,a.online FROM `webchat_user` a LEFT JOIN  `webchat_group_detail`  b  ON a.`uid`=b.`uid` WHERE b.`uid` IS NULL 	
+	</select>
+ 	<select id="queryTotal" resultType="int">
+		select count(*) from webchat_user 
+	</select>
+	 
+	<insert id="save" parameterType="com.effecia.modules.chat.entity.WebchatUserEntity" useGeneratedKeys="true" keyProperty="id">
+		insert into webchat_user
+		(
+			`uid`, 
+			`name`, 
+			`password`, 
+			`sign`, 
+			`headphoto`, 
+			`addtime`, 
+			`online`
+		)
+		values
+		(
+			#{uid}, 
+			#{name}, 
+			#{password}, 
+			#{sign}, 
+			#{headphoto}, 
+			#{addtime}, 
+			#{online}
+		)
+	</insert>
+	 
+	<update id="update" parameterType="com.effecia.modules.chat.entity.WebchatUserEntity">
+		update webchat_user 
+		<set>
+			<if test="uid != null">`uid` = #{uid}, </if>
+			<if test="name != null">`name` = #{name}, </if>
+			<if test="password != null">`password` = #{password}, </if>
+			<if test="sign != null">`sign` = #{sign}, </if>
+			<if test="headphoto != null">`headphoto` = #{headphoto}, </if>
+			<if test="addtime != null">`addtime` = #{addtime}, </if>
+			<if test="online != null">`online` = #{online}</if>
+		</set>
+		where id = #{id}
+	</update>
+	
+	<delete id="delete">
+		delete from webchat_user where id = #{value}
+	</delete>
+	
+	<delete id="deleteBatch">
+		delete from webchat_user where id in 
+		<foreach item="id" collection="array" open="(" separator="," close=")">
+			#{id}
+		</foreach>
+	</delete>
+
+</mapper>

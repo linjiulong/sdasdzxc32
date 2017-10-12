@@ -16,19 +16,22 @@ import com.effecia.modules.sys.service.SysUserRoleService;
 import com.effecia.modules.sys.service.SysUserService;
 import org.apache.commons.lang.ArrayUtils;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 /**
  * 系统用户
  * 
- * @author chenshun
- * @email sunlightcs@gmail.com
- * @date 2016年10月31日 上午10:40:10
+ * @author lin
+ * @email lin.lin@support888.net
+ * @date 2017年10月31日 上午10:40:10
  */
 @RestController
 @RequestMapping("/sys/user")
@@ -37,8 +40,9 @@ public class SysUserController extends AbstractController {
 	private SysUserService sysUserService;
 	@Autowired
 	private SysUserRoleService sysUserRoleService;
-	@Autowired
-	private SysRoleDeptService sysRoleDeptService;
+	
+	private Logger logger = LoggerFactory.getLogger(getClass());
+
 	
 	/**
 	 * 所有用户列表
@@ -55,12 +59,14 @@ public class SysUserController extends AbstractController {
 		
 		return R.ok().put("page", pageUtil);
 	}
+
 	
 	/**
 	 * 获取登录的用户信息
 	 */
 	@RequestMapping("/info")
 	public R info(){
+		logger.info(getUser().toString());
 		return R.ok().put("user", getUser());
 	}
 	
@@ -99,9 +105,7 @@ public class SysUserController extends AbstractController {
 		
 		
 		//deptId
-		System.out.println("roleIdList："+roleIdList);
 		user.setRoleIdList(roleIdList);
-		System.out.println("user:"+user);
 		return R.ok().put("user", user);
 	}
 	

@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.effecia.modules.chat.dao.WebchatMsgDao">
+
+	<!-- 可根据自己的需求，是否要使用 -->
+    <resultMap type="com.effecia.modules.chat.entity.WebchatMsgEntity" id="webchatMsgMap">
+        <result property="id" column="id"/>
+        <result property="uid" column="uid"/>
+        <result property="fromuser" column="fromuser"/>
+        <result property="gid" column="gid"/>
+        <result property="msg" column="msg"/>
+        <result property="addtime" column="addtime"/>
+    </resultMap>
+
+	<select id="queryObject" resultType="com.effecia.modules.chat.entity.WebchatMsgEntity">
+		select * from webchat_msg where id = #{value}
+	</select>
+
+	<select id="queryList" resultType="com.effecia.modules.chat.entity.WebchatMsgEntity">
+		select * from webchat_msg
+        <choose>
+            <when test="sidx != null and sidx.trim() != ''">
+                order by ${sidx} ${order}
+            </when>
+			<otherwise>
+                order by id desc
+			</otherwise>
+        </choose>
+		<if test="offset != null and limit != null">
+			limit #{offset}, #{limit}
+		</if>
+	</select>
+	
+ 	<select id="queryTotal" resultType="int">
+		select count(*) from webchat_msg 
+	</select>
+	 
+	<insert id="save" parameterType="com.effecia.modules.chat.entity.WebchatMsgEntity" useGeneratedKeys="true" keyProperty="id">
+		insert into webchat_msg
+		(
+			`uid`, 
+			`fromuser`, 
+			`gid`, 
+			`msg`, 
+			`addtime`
+		)
+		values
+		(
+			#{uid}, 
+			#{fromuser}, 
+			#{gid}, 
+			#{msg}, 
+			#{addtime}
+		)
+	</insert>
+	 
+	<update id="update" parameterType="com.effecia.modules.chat.entity.WebchatMsgEntity">
+		update webchat_msg 
+		<set>
+			<if test="uid != null">`uid` = #{uid}, </if>
+			<if test="fromuser != null">`fromuser` = #{fromuser}, </if>
+			<if test="gid != null">`gid` = #{gid}, </if>
+			<if test="msg != null">`msg` = #{msg}, </if>
+			<if test="addtime != null">`addtime` = #{addtime}</if>
+		</set>
+		where id = #{id}
+	</update>
+	
+	<delete id="delete">
+		delete from webchat_msg where id = #{value}
+	</delete>
+	
+	<delete id="deleteBatch">
+		delete from webchat_msg where id in 
+		<foreach item="id" collection="array" open="(" separator="," close=")">
+			#{id}
+		</foreach>
+	</delete>
+
+</mapper>

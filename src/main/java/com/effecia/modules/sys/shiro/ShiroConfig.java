@@ -18,8 +18,8 @@ import java.util.Map;
 /**
  * Shiro的配置文件
  *
- * @author chenshun
- * @email sunlightcs@gmail.com
+ * @author lin
+ * @email lin.lin@support888.net
  * @date 2017/9/27 22:02
  */
 @Configuration
@@ -62,6 +62,7 @@ public class ShiroConfig {
         Map<String, String> filterMap = new LinkedHashMap<>();
         filterMap.put("/statics/**", "anon");
         filterMap.put("/swagger/**", "anon");
+        filterMap.put("/api/**", "anon");
         filterMap.put("/login.html", "anon");
         filterMap.put("/sys/login", "anon");
         filterMap.put("/favicon.ico", "anon");
@@ -91,4 +92,5 @@ public class ShiroConfig {
         advisor.setSecurityManager(securityManager);
         return advisor;
     }
+    
 }

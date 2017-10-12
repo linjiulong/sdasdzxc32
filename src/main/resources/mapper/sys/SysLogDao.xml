@@ -13,6 +13,9 @@
 			<if test="key != null and key.trim() != ''">
 				`username` like concat('%',#{key},'%') or `operation` like concat('%',#{key},'%')
 			</if>
+			<if test="DeptId != null">
+				and `username` in ( SELECT username FROM sys_user WHERE dept_id=#{DeptId} )
+			</if>
 		</where>
 		order by id desc 
 		<if test="offset != null and limit != null">

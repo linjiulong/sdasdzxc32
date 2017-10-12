@@ -14,15 +14,16 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
 /**
  * 系统菜单
  * 
- * @author chenshun
- * @email sunlightcs@gmail.com
- * @date 2016年10月27日 下午9:58:15
+ * @author lin
+ * @email lin.lin@support888.net
+ * @date 2017年10月27日 下午9:58:15
  */
 @RestController
 @RequestMapping("/sys/menu")
@@ -39,6 +40,28 @@ public class SysMenuController extends AbstractController {
 		return R.ok().put("menuList", menuList);
 	}
 	
+
+	/**
+	 * 顶部导航菜单
+	 */
+	@RequestMapping("/top")
+	public R top(){
+		List<SysMenuEntity> menuList = sysMenuService.getUserMenuList(getUserId());
+		List<SysMenuEntity> topmenuList = new ArrayList<>();
+	
+		for (SysMenuEntity sysMenuEntity : menuList) {
+			
+			if(sysMenuEntity.getParentId()==Long.parseLong("0")){
+				sysMenuEntity.setList(null);
+				topmenuList.add(sysMenuEntity);
+			}
+		}
+		
+		
+		
+		return R.ok().put("topmenuList", topmenuList);
+	}
+	
 	/**
 	 * 所有菜单列表
 	 */
@@ -46,7 +69,6 @@ public class SysMenuController extends AbstractController {
 	@RequiresPermissions("sys:menu:list")
 	public List<SysMenuEntity> list(){
 		List<SysMenuEntity> menuList = sysMenuService.queryList(new HashMap<String, Object>());
-
 		return menuList;
 	}
 	
@@ -59,7 +81,16 @@ public class SysMenuController extends AbstractController {
 		//查询列表数据
 		List<SysMenuEntity> menuList = sysMenuService.queryNotButtonList();
 		
+
 		//添加顶级菜单
+		SysMenuEntity roots = new SysMenuEntity();
+		roots.setMenuId(0L);
+		roots.setName("顶部菜单");
+		roots.setParentId(-2L);
+		roots.setOpen(true);
+		menuList.add(roots);
+	
+		//左侧菜单
 		SysMenuEntity root = new SysMenuEntity();
 		root.setMenuId(0L);
 		root.setName("一级菜单");

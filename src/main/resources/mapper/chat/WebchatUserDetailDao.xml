@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.effecia.modules.chat.dao.WebchatUserDetailDao">
+
+	<!-- 可根据自己的需求，是否要使用 -->
+    <resultMap type="com.effecia.modules.chat.entity.WebchatUserDetailEntity" id="webchatUserDetailMap">
+        <result property="id" column="id"/>
+        <result property="webchatUid" column="webchat_uid"/>
+        <result property="count" column="count"/>
+        <result property="roleId" column="role_id"/>
+        <result property="wStatus" column="w_status"/>
+    </resultMap>
+
+	<select id="queryObject" resultType="com.effecia.modules.chat.entity.WebchatUserDetailEntity">
+		select * from webchat_user_detail where id = #{value}
+	</select>
+
+	<select id="queryList" resultType="com.effecia.modules.chat.entity.WebchatUserDetailEntity">
+		select * from webchat_user_detail
+        <choose>
+            <when test="sidx != null and sidx.trim() != ''">
+                order by ${sidx} ${order}
+            </when>
+			<otherwise>
+                order by id desc
+			</otherwise>
+        </choose>
+		<if test="offset != null and limit != null">
+			limit #{offset}, #{limit}
+		</if>
+	</select>
+	
+ 	<select id="queryTotal" resultType="int">
+		select count(*) from webchat_user_detail 
+	</select>
+	 
+	<insert id="save" parameterType="com.effecia.modules.chat.entity.WebchatUserDetailEntity">
+		insert into webchat_user_detail
+		(
+			`id`, 
+			`webchat_uid`, 
+			`count`, 
+			`role_id`, 
+			`w_status`
+		)
+		values
+		(
+			#{id}, 
+			#{webchatUid}, 
+			#{count}, 
+			#{roleId}, 
+			#{wStatus}
+		)
+	</insert>
+	 
+	<update id="update" parameterType="com.effecia.modules.chat.entity.WebchatUserDetailEntity">
+		update webchat_user_detail 
+		<set>
+			<if test="webchatUid != null">`webchat_uid` = #{webchatUid}, </if>
+			<if test="count != null">`count` = #{count}, </if>
+			<if test="roleId != null">`role_id` = #{roleId}, </if>
+			<if test="wStatus != null">`w_status` = #{wStatus}</if>
+		</set>
+		where id = #{id}
+	</update>
+	
+	<delete id="delete">
+		delete from webchat_user_detail where id = #{value}
+	</delete>
+	
+	<delete id="deleteBatch">
+		delete from webchat_user_detail where id in 
+		<foreach item="id" collection="array" open="(" separator="," close=")">
+			#{id}
+		</foreach>
+	</delete>
+
+</mapper>

@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title></title>
+<#include "/header.html">
+<link href="https://cdn.bootcss.com/bootstrap-select/2.0.0-beta1/css/bootstrap-select.css" rel="stylesheet">
+ <script src="https://cdn.bootcss.com/bootstrap-select/2.0.0-beta1/js/bootstrap-select.js"></script>
+</head>
+<body>
+<div id="rrapp" v-cloak>
+	<div v-show="showList">
+		<div class="grid-btn">
+			
+					
+			<div class="form-group col-sm-2" >
+					 <select id="bs3Select" class="selectpicker show-tick form-control" onclick="open()"  onchange="selectOnchang(this)"  data-live-search="true"  >  
+                      	<option  disabled selected value>选择聊天群</option>
+                      	<option  v-for="Groups in webchatGroups" :value='Groups.id'  >{{Groups.name}}</option>
+                    </select>  
+			</div>
+			<div class="form-group col-sm-2">
+				<input type="text" class="form-control" v-model="q.msg" @keyup.enter="query" placeholder="搜索关键字">
+			</div>
+			<a class="btn btn-default" @click="query">查询</a>
+			
+			<#if shiro.hasPermission("webchatgroupdetail:save")>
+			
+            	<a class="btn btn-primary" @click="add"   ><i class="fa fa-plus"></i>&nbsp;添加成员  {{user.count}}</a>
+			</#if>
+			<#if shiro.hasPermission("webchatgroupdetail:delete")>
+            <a class="btn btn-danger" @click="del"><i class="fa fa-trash-o"></i>&nbsp;删除成员</a>
+			</#if>
+			 
+		</div>
+	    <table id="jqGrid"></table>
+	    <div id="jqGridPager"></div>
+    </div>
+    
+     
+</div>
+
+<script src="${request.contextPath}/statics/js/modules/webchat/webchatmsg.js?_${.now?long}"></script>
+</body>
+</html>

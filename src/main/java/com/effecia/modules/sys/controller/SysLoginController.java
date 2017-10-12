@@ -3,14 +3,19 @@ package com.effecia.modules.sys.controller;
 
 import java.awt.image.BufferedImage;
 import java.io.IOException;
-
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import javax.imageio.ImageIO;
 import javax.servlet.ServletException;
 import javax.servlet.ServletOutputStream;
 import javax.servlet.http.HttpServletResponse;
 
+import com.effecia.common.annotation.SysLog;
 import com.effecia.common.utils.R;
+import com.effecia.modules.sys.entity.SysUserEntity;
 import com.effecia.modules.sys.shiro.ShiroUtils;
+
+import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.authc.AuthenticationException;
 import org.apache.shiro.authc.IncorrectCredentialsException;
 import org.apache.shiro.authc.LockedAccountException;
@@ -31,14 +36,16 @@ import com.google.code.kaptcha.Producer;
 /**
  * 登录相关
  * 
- * @author chenshun
- * @email sunlightcs@gmail.com
- * @date 2016年11月10日 下午1:15:31
+ * @author lin
+ * @email lin.lin@support888.net
+ * @date 2017年110月10日 下午1:15:31
  */
 @Controller
 public class SysLoginController {
 	@Autowired
 	private Producer producer;
+	
+	private Logger logger = LoggerFactory.getLogger(getClass());
 	
 	@RequestMapping("captcha.jpg")
 	public void captcha(HttpServletResponse response)throws ServletException, IOException {
@@ -59,6 +66,7 @@ public class SysLoginController {
 	/**
 	 * 登录
 	 */
+	@SysLog("登陆")
 	@ResponseBody
 	@RequestMapping(value = "/sys/login", method = RequestMethod.POST)
 	public R login(String username, String password, String captcha)throws IOException {
@@ -77,6 +85,10 @@ public class SysLoginController {
 			
 			UsernamePasswordToken token = new UsernamePasswordToken(username, password);
 			subject.login(token);
+			logger.info("token:"+token+"");
+			SysUserEntity user = (SysUserEntity) SecurityUtils.getSubject().getPrincipal();
+			logger.info("user:"+user);
+			logger.info(subject.isAuthenticated()+"");
 		}catch (UnknownAccountException e) {
 			return R.error(e.getMessage());
 		}catch (IncorrectCredentialsException e) {

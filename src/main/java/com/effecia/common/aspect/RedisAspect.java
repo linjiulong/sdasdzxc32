@@ -12,8 +12,8 @@ import org.springframework.stereotype.Component;
 /**
  * Redis切面处理类
  *
- * @author chenshun
- * @email sunlightcs@gmail.com
+ * @author lin
+ * @email lin.lin@support888.net
  * @date 2017-07-17 23:30
  */
 @Aspect

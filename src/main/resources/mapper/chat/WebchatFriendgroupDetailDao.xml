@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.effecia.modules.chat.dao.WebchatFriendgroupDetailDao">
+
+	<!-- 可根据自己的需求，是否要使用 -->
+    <resultMap type="com.effecia.modules.chat.entity.WebchatFriendgroupDetailEntity" id="webchatFriendgroupDetailMap">
+        <result property="id" column="id"/>
+        <result property="fidOwner" column="fid_owner"/>
+        <result property="fid" column="fid"/>
+        <result property="uid" column="uid"/>
+    </resultMap>
+
+	<select id="queryObject" resultType="com.effecia.modules.chat.entity.WebchatFriendgroupDetailEntity">
+		select * from webchat_friendgroup_detail where id = #{value}
+	</select>
+
+	<select id="queryList" resultType="com.effecia.modules.chat.entity.WebchatFriendgroupDetailEntity">
+		select * from webchat_friendgroup_detail
+        <choose>
+            <when test="sidx != null and sidx.trim() != ''">
+                order by ${sidx} ${order}
+            </when>
+			<otherwise>
+                order by id desc
+			</otherwise>
+        </choose>
+		<if test="offset != null and limit != null">
+			limit #{offset}, #{limit}
+		</if>
+	</select>
+	
+ 	<select id="queryTotal" resultType="int">
+		select count(*) from webchat_friendgroup_detail 
+	</select>
+	 
+	<insert id="save" parameterType="com.effecia.modules.chat.entity.WebchatFriendgroupDetailEntity" useGeneratedKeys="true" keyProperty="id">
+		insert into webchat_friendgroup_detail
+		(
+			`fid_owner`, 
+			`fid`, 
+			`uid`
+		)
+		values
+		(
+			#{fidOwner}, 
+			#{fid}, 
+			#{uid}
+		)
+	</insert>
+	 
+	<update id="update" parameterType="com.effecia.modules.chat.entity.WebchatFriendgroupDetailEntity">
+		update webchat_friendgroup_detail 
+		<set>
+			<if test="fidOwner != null">`fid_owner` = #{fidOwner}, </if>
+			<if test="fid != null">`fid` = #{fid}, </if>
+			<if test="uid != null">`uid` = #{uid}</if>
+		</set>
+		where id = #{id}
+	</update>
+	
+	<delete id="delete">
+		delete from webchat_friendgroup_detail where id = #{value}
+	</delete>
+	
+	<delete id="deleteBatch">
+		delete from webchat_friendgroup_detail where id in 
+		<foreach item="id" collection="array" open="(" separator="," close=")">
+			#{id}
+		</foreach>
+	</delete>
+
+</mapper>

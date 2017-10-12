@@ -3,8 +3,8 @@ package com.effecia.common.utils;
 /**
  * Redis所有Keys
  *
- * @author chenshun
- * @email sunlightcs@gmail.com
+ * @author lin
+ * @email lin.lin@support888.net
  * @date 2017-07-18 19:51
  */
 public class RedisKeys {

@@ -1,0 +1,18 @@
+package com.effecia.modules.chat.dao;
+
+import com.effecia.modules.chat.entity.WebchatGroupDetailEntity;
+import com.effecia.modules.sys.dao.BaseDao;
+
+/**
+ * 
+ * 
+ * @author lin
+ * @email lin.lin@support888.net
+ * @date 2017-10-07 16:02:13
+ */
+public interface WebchatGroupDetailDao extends BaseDao<WebchatGroupDetailEntity> {
+	
+	//群人数
+	int group_quantity(int gid);
+	
+}

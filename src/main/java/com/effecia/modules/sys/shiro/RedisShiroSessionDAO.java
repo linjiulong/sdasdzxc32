@@ -12,8 +12,8 @@ import java.io.*;
 /**
  * shiro session dao
  *
- * @author chenshun
- * @email sunlightcs@gmail.com
+ * @author lin
+ * @email lin.lin@support888.net
  * @date 2017/9/27 21:35
  */
 @Component

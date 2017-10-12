@@ -6,9 +6,9 @@ import org.hibernate.validator.constraints.NotBlank;
 /**
  * 系统配置信息
  * 
- * @author chenshun
- * @email sunlightcs@gmail.com
- * @date 2016年12月4日 下午6:43:36
+ * @author lin
+ * @email lin.lin@support888.net
+ * @date 2017年110月4日 下午6:43:36
  */
 public class SysConfigEntity {
 	private Long id;

@@ -1,0 +1,101 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.effecia.modules.chat.dao.WebchatGroupDetailDao">
+
+	<!-- 可根据自己的需求，是否要使用 -->
+    <resultMap type="com.effecia.modules.chat.entity.WebchatGroupDetailEntity" id="webchatGroupDetailMap">
+        <result property="gid" column="gid"/>
+        <result property="uid" column="uid"/>
+        <result property="addtime" column="addtime"/>
+        <result property="gStatus" column="g_status"/>
+        <result property="bannedTime" column="banned_time"/>
+        <result property="speakTime" column="speak_time"/>
+        <result property="level" column="level"/>
+    </resultMap>
+
+	<select id="queryObject" resultType="com.effecia.modules.chat.entity.WebchatGroupDetailEntity">
+		select * from webchat_group_detail where gid = #{value}
+	</select>
+
+	<select id="group_quantity" resultType="int">
+		SELECT COUNT(uid) FROM webchat_group_detail where gid = #{value}
+	</select>
+
+	<select id="queryList" resultType="com.effecia.modules.chat.entity.WebchatGroupDetailEntity">
+		select * from webchat_group_detail
+		<where>
+			<if test="gid != null ">
+				and gid = #{gid}
+			</if>
+			<if test="uid != null  ">
+				and uid like concat('%',#{uid},'%')
+			</if> 
+			<!--  数据过滤  -->
+			${filterSql}
+		</where>
+        <choose>
+            <when test="sidx != null and sidx.trim() != ''">
+                order by ${sidx} ${order}
+            </when>
+			<otherwise>
+                order by gid desc
+			</otherwise>
+        </choose>
+		<if test="offset != null and limit != null">
+			limit #{offset}, #{limit}
+		</if>
+	</select>
+	
+ 	<select id="queryTotal" resultType="int">
+		select count(*) from webchat_group_detail 
+	</select>
+	 
+	<insert id="save" parameterType="com.effecia.modules.chat.entity.WebchatGroupDetailEntity">
+		insert into webchat_group_detail
+		(
+			`gid`, 
+			`uid`, 
+			`addtime`, 
+			`g_status`, 
+			`banned_time`, 
+			`speak_time`, 
+			`level`
+		)
+		values
+		(
+			#{gid}, 
+			#{uid}, 
+			#{addtime}, 
+			#{gStatus}, 
+			#{bannedTime}, 
+			#{speakTime}, 
+			#{level}
+		)
+	</insert>
+	 
+	<update id="update" parameterType="com.effecia.modules.chat.entity.WebchatGroupDetailEntity">
+		update webchat_group_detail 
+		<set>
+			<if test="uid != null">`uid` = #{uid}, </if>
+			<if test="addtime != null">`addtime` = #{addtime}, </if>
+			<if test="gStatus != null">`g_status` = #{gStatus}, </if>
+			<if test="bannedTime != null">`banned_time` = #{bannedTime}, </if>
+			<if test="speakTime != null">`speak_time` = #{speakTime}, </if>
+			<if test="level != null">`level` = #{level}</if>
+		</set>
+		where gid = #{gid}
+	</update>
+	
+	<delete id="delete">
+		delete from webchat_group_detail where gid = #{value}
+	</delete>
+	
+	<delete id="deleteBatch">
+		delete from webchat_group_detail where uid in 
+		<foreach item="uid" collection="array" open="(" separator="," close=")">
+			#{gid}
+		</foreach>
+	</delete>
+
+</mapper>

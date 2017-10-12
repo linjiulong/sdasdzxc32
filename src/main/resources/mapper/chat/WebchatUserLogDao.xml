@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.effecia.modules.chat.dao.WebchatUserLogDao">
+
+	<!-- 可根据自己的需求，是否要使用 -->
+    <resultMap type="com.effecia.modules.chat.entity.WebchatUserLogEntity" id="webchatUserLogMap">
+        <result property="id" column="id"/>
+        <result property="uid" column="uid"/>
+        <result property="ip" column="ip"/>
+        <result property="addtime" column="addtime"/>
+        <result property="log" column="log"/>
+    </resultMap>
+
+	<select id="queryObject" resultType="com.effecia.modules.chat.entity.WebchatUserLogEntity">
+		select * from webchat_user_log where id = #{value}
+	</select>
+
+	<select id="queryList" resultType="com.effecia.modules.chat.entity.WebchatUserLogEntity">
+		select * from webchat_user_log
+        <choose>
+            <when test="sidx != null and sidx.trim() != ''">
+                order by ${sidx} ${order}
+            </when>
+			<otherwise>
+                order by id desc
+			</otherwise>
+        </choose>
+		<if test="offset != null and limit != null">
+			limit #{offset}, #{limit}
+		</if>
+	</select>
+	
+ 	<select id="queryTotal" resultType="int">
+		select count(*) from webchat_user_log 
+	</select>
+	 
+	<insert id="save" parameterType="com.effecia.modules.chat.entity.WebchatUserLogEntity" useGeneratedKeys="true" keyProperty="id">
+		insert into webchat_user_log
+		(
+			`uid`, 
+			`ip`, 
+			`addtime`, 
+			`log`
+		)
+		values
+		(
+			#{uid}, 
+			#{ip}, 
+			#{addtime}, 
+			#{log}
+		)
+	</insert>
+	 
+	<update id="update" parameterType="com.effecia.modules.chat.entity.WebchatUserLogEntity">
+		update webchat_user_log 
+		<set>
+			<if test="uid != null">`uid` = #{uid}, </if>
+			<if test="ip != null">`ip` = #{ip}, </if>
+			<if test="addtime != null">`addtime` = #{addtime}, </if>
+			<if test="log != null">`log` = #{log}</if>
+		</set>
+		where id = #{id}
+	</update>
+	
+	<delete id="delete">
+		delete from webchat_user_log where id = #{value}
+	</delete>
+	
+	<delete id="deleteBatch">
+		delete from webchat_user_log where id in 
+		<foreach item="id" collection="array" open="(" separator="," close=")">
+			#{id}
+		</foreach>
+	</delete>
+
+</mapper>

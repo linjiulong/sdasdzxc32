@@ -2,8 +2,8 @@ package com.effecia.common.validator.group;
 
 /**
  * 更新数据 Group
- * @author chenshun
- * @email sunlightcs@gmail.com
+ * @author lin
+ * @email lin.lin@support888.net
  * @date 2017-03-15 21:21
  */
 

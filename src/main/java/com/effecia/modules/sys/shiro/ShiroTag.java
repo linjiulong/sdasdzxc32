@@ -7,9 +7,9 @@ import org.springframework.stereotype.Component;
 /**
  * Shiro权限标签
  * 
- * @author chenshun
- * @email sunlightcs@gmail.com
- * @date 2016年12月3日 下午11:32:47
+ * @author lin
+ * @email lin.lin@support888.net
+ * @date 2017年110月3日 下午11:32:47
  */
 @Component
 public class ShiroTag {

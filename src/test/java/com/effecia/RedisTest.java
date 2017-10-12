@@ -1,8 +1,12 @@
 package com.effecia;
 
+import com.alibaba.fastjson.JSON;
 import com.effecia.common.utils.RedisUtils;
 import com.effecia.modules.sys.entity.SysUserEntity;
 import com.effecia.modules.sys.service.SysUserService;
+
+import java.util.List;
+
 import org.apache.commons.lang.builder.ToStringBuilder;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -29,4 +33,15 @@ public class RedisTest {
         user = redisUtils.get("user", SysUserEntity.class);
         System.out.println(ToStringBuilder.reflectionToString(user));
     }
+    
+    @Test
+    public void asdasd(){
+    	String webchatGroups="[\"123\",\"2\",\"1\"]";
+		List<Object> users= JSON.parseArray(webchatGroups);
+		for (Object object : users) {
+			System.out.println(object);
+		}
+    	
+    }
+    
 }

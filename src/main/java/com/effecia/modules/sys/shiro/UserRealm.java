@@ -27,9 +27,9 @@ import org.springframework.stereotype.Component;
 /**
  * 认证
  * 
- * @author chenshun
- * @email sunlightcs@gmail.com
- * @date 2016年11月10日 上午11:55:49
+ * @author lin
+ * @email lin.lin@support888.net
+ * @date 2017年110月10日 上午11:55:49
  */
 @Component
 public class UserRealm extends AuthorizingRealm {
@@ -67,7 +67,6 @@ public class UserRealm extends AuthorizingRealm {
 			}
 			permsSet.addAll(Arrays.asList(perms.trim().split(",")));
 		}
-		
 		SimpleAuthorizationInfo info = new SimpleAuthorizationInfo();
 		info.setStringPermissions(permsSet);
 		return info;

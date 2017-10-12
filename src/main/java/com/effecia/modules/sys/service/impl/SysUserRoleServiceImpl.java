@@ -14,9 +14,9 @@ import java.util.Map;
 /**
  * 用户与角色对应关系
  * 
- * @author chenshun
- * @email sunlightcs@gmail.com
- * @date 2016年9月18日 上午9:45:48
+ * @author lin
+ * @email lin.lin@support888.net
+ * @date 2017年10月18日 上午9:45:48
  */
 @Service("sysUserRoleService")
 public class SysUserRoleServiceImpl implements SysUserRoleService {

@@ -9,9 +9,9 @@ import javax.servlet.http.HttpServletRequest;
 /**
  * IP地址
  * 
- * @author chenshun
- * @email sunlightcs@gmail.com
- * @date 2017年3月8日 下午12:57:02
+ * @author lin
+ * @email lin.lin@support888.net
+ * @date 2017年10月8日 下午12:57:02
  */
 public class IPUtils {
 	private static Logger logger = LoggerFactory.getLogger(IPUtils.class);

@@ -3,9 +3,9 @@ package com.effecia.modules.gen.entity;
 /**
  * 列的属性
  * 
- * @author chenshun
- * @email sunlightcs@gmail.com
- * @date 2016年12月20日 上午12:01:45
+ * @author lin
+ * @email lin.lin@support888.net
+ * @date 2017年110月20日 上午12:01:45
  */
 public class ColumnEntity {
 	//列名

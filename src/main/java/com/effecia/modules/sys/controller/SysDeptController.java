@@ -18,8 +18,8 @@ import java.util.List;
 /**
  * 部门管理
  * 
- * @author chenshun
- * @email sunlightcs@gmail.com
+ * @author lin
+ * @email lin.lin@support888.net
  * @date 2017-06-20 15:23:47
  */
 @RestController

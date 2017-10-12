@@ -6,9 +6,9 @@ import java.io.Serializable;
 /**
  * 用户与角色对应关系
  * 
- * @author chenshun
- * @email sunlightcs@gmail.com
- * @date 2016年9月18日 上午9:28:39
+ * @author lin
+ * @email lin.lin@support888.net
+ * @date 2017年10月18日 上午9:28:39
  */
 public class SysUserRoleEntity implements Serializable {
 	private static final long serialVersionUID = 1L;

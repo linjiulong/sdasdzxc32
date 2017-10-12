@@ -1,0 +1,102 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.effecia.modules.chat.dao.WebchatGroupsDao">
+
+	<!-- 可根据自己的需求，是否要使用 -->
+    <resultMap type="com.effecia.modules.chat.entity.WebchatGroupsEntity" id="webchatGroupsMap">
+        <result property="id" column="id"/>
+        <result property="name" column="name"/>
+        <result property="headphoto" column="headphoto"/>
+        <result property="desc" column="_desc"/>
+        <result property="ownerUid" column="owner_uid"/>
+        <result property="addtime" column="addtime"/>
+        <result property="level" column="level"/>
+    </resultMap>
+
+	<select id="queryObject" resultType="com.effecia.modules.chat.entity.WebchatGroupsEntity">
+		select * from webchat_groups where id = #{value}
+	</select>
+
+	<select id="querySelect" resultType="com.effecia.modules.chat.entity.WebchatGroupsEntity">
+			select * from webchat_groups
+					<where>
+						<if test="DeptId != null">
+							and `id` in ( SELECT groups_id FROM webchat_group_dept WHERE dept_id=#{DeptId} )
+						</if>
+					</where>
+	</select>
+
+	<select id="queryList" resultType="com.effecia.modules.chat.entity.WebchatGroupsEntity">
+		select * from webchat_groups
+		<where>
+			<if test="name != null and name.trim() != ''">
+				`name` like concat('%',#{name},'%') or `id` like concat('%',#{name},'%')
+			</if>
+			<if test="DeptId != null">
+				and `id` in ( SELECT groups_id FROM webchat_group_dept WHERE dept_id=#{DeptId} )
+			</if>
+		</where>
+        <choose>
+            <when test="sidx != null and sidx.trim() != ''">
+                order by ${sidx} ${order}
+            </when>
+			<otherwise>
+                order by id desc
+			</otherwise>
+        </choose>
+		<if test="offset != null and limit != null">
+			limit #{offset}, #{limit}
+		</if>
+	</select>
+	
+ 	<select id="queryTotal" resultType="int">
+		select count(*) from webchat_groups 
+	</select>
+	 
+	<insert id="save" parameterType="com.effecia.modules.chat.entity.WebchatGroupsEntity" useGeneratedKeys="true" keyProperty="id">
+		insert into webchat_groups
+		(
+			`name`, 
+			`headphoto`, 
+			`_desc`, 
+			`owner_uid`, 
+			`addtime`, 
+			`level`
+		)
+		values
+		(
+			#{name}, 
+			#{headphoto}, 
+			#{desc}, 
+			#{ownerUid}, 
+			#{addtime}, 
+			#{level}
+		)
+	</insert>
+	 
+	<update id="update" parameterType="com.effecia.modules.chat.entity.WebchatGroupsEntity">
+		update webchat_groups 
+		<set>
+			<if test="name != null">`name` = #{name}, </if>
+			<if test="headphoto != null">`headphoto` = #{headphoto}, </if>
+			<if test="desc != null">`_desc` = #{desc}, </if>
+			<if test="ownerUid != null">`owner_uid` = #{ownerUid}, </if>
+			<if test="addtime != null">`addtime` = #{addtime}, </if>
+			<if test="level != null">`level` = #{level}</if>
+		</set>
+		where id = #{id}
+	</update>
+	
+	<delete id="delete">
+		delete from webchat_groups where id = #{value}
+	</delete>
+	
+	<delete id="deleteBatch">
+		delete from webchat_groups where id in 
+		<foreach item="id" collection="array" open="(" separator="," close=")">
+			#{id}
+		</foreach>
+	</delete>
+
+</mapper>

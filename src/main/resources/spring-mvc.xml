@@ -90,7 +90,5 @@
 	    </property>
 	</bean>
 	
-	<import resource="common_config.xml" />
-	
 	
 </beans>

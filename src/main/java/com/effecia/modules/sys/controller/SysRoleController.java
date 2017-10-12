@@ -21,9 +21,9 @@ import java.util.Map;
 /**
  * 角色管理
  * 
- * @author chenshun
- * @email sunlightcs@gmail.com
- * @date 2016年11月8日 下午2:18:33
+ * @author lin
+ * @email lin.lin@support888.net
+ * @date 2017年110月8日 下午2:18:33
  */
 @RestController
 @RequestMapping("/sys/role")
