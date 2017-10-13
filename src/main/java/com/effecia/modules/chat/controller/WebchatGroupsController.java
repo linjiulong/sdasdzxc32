@@ -23,8 +23,6 @@ import com.effecia.modules.chat.service.WebchatGroupDetailService;
 import com.effecia.modules.chat.service.WebchatGroupsService;
 import com.effecia.modules.sys.entity.SysUserEntity;
 import com.effecia.modules.sys.service.SysUserService;
-import com.fasterxml.jackson.core.type.TypeReference;
-import com.qiniu.util.Json;
 import com.alibaba.fastjson.JSON;
 import com.effecia.common.utils.PageUtils;
 import com.effecia.common.utils.Query;

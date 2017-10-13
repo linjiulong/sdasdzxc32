@@ -53,8 +53,9 @@ public class SysOssController {
 
 		//上传文件
 
-        String serverPath = request.getSession().getServletContext().getRealPath("");  
-        serverPath=serverPath+"statics/upload/image/";
+        String serverPath = request.getSession().getServletContext().getRealPath(""); 
+        System.out.println("serverPath:"+serverPath);
+        serverPath=serverPath+"/statics/upload/image/";
         
         Date date=new Date();
         String fileName = date.getTime()+file.getOriginalFilename();  

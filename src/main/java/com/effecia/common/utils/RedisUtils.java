@@ -71,16 +71,9 @@ public class RedisUtils {
         return get(key, NOT_EXPIRE);
     }
 
-    public Session getShiroSession(String key) {
-        return (Session)redisTemplate.opsForValue().get(key);
-    }
+    
 
-    public void setShiroSession(String key, Session session){
-        redisTemplate.opsForValue().set(key, session);
-        //60分钟过期
-        redisTemplate.expire(key, 60, TimeUnit.MINUTES);
-    }
-
+  
     public void delete(String key) {
         redisTemplate.delete(key);
     }

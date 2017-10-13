@@ -54,6 +54,7 @@ public class SysLoginController {
 
         //生成文字验证码
         String text = producer.createText();
+        logger.info("验证码:"+text);
         //生成图片验证码
         BufferedImage image = producer.createImage(text);
         //保存到shiro session
@@ -71,6 +72,7 @@ public class SysLoginController {
 	@RequestMapping(value = "/sys/login", method = RequestMethod.POST)
 	public R login(String username, String password, String captcha)throws IOException {
 		String kaptcha = ShiroUtils.getKaptcha(Constants.KAPTCHA_SESSION_KEY);
+		
 		if(!captcha.equalsIgnoreCase(kaptcha)){
 			return R.error("验证码不正确");
 		}
@@ -89,6 +91,8 @@ public class SysLoginController {
 			SysUserEntity user = (SysUserEntity) SecurityUtils.getSubject().getPrincipal();
 			logger.info("user:"+user);
 			logger.info(subject.isAuthenticated()+"");
+			
+			
 		}catch (UnknownAccountException e) {
 			return R.error(e.getMessage());
 		}catch (IncorrectCredentialsException e) {

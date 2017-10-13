@@ -1,10 +1,11 @@
 package com.effecia.modules.sys.service.impl;
 
-import com.qiniu.util.StringUtils;
 import com.effecia.common.annotation.DataFilter;
 import com.effecia.modules.sys.dao.SysDeptDao;
 import com.effecia.modules.sys.entity.SysDeptEntity;
 import com.effecia.modules.sys.service.SysDeptService;
+
+import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
