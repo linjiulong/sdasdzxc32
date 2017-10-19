@@ -87,7 +87,6 @@ var vm = new Vue({
 		                });
 			            $select.append($opt).multipleSelect("refresh");
 			            $select.multipleSelect('uncheckAll');
-		                console.log("------- groups uid:"+value.id+" name:"+value.name)
 			            
 				 });
 			 })

@@ -56,12 +56,8 @@ $(function () {
           }
         }
     });
-	
-	$.get(baseURL + "webchatgroups/select", function(r){
-		vm.webchatGroups=r.list;
-    });
-	
-	vm.getGroups();
+	 
+	 
     
 	
 });
@@ -75,11 +71,7 @@ $(function () {
 //})
 
 
-function selectOnchang(obj){ 
-	var value = obj.options[obj.selectedIndex].value;
-	vm.getdate(value);
-	vm.svalue=value;
-}
+ 
 
 var vm = new Vue({
 	el:'#rrapp',
@@ -90,6 +82,7 @@ var vm = new Vue({
 	    showList: true,
 		title: null,
 		svalue:null,
+		groupname:null,
 		webchatGroups: {},
 		webchatGroupDetail: {},
 		adminsname:"设置管理员",
@@ -235,18 +228,16 @@ var vm = new Vue({
              
 		},
 		getGroups: function(){
-//			 $("#bs3Select").empty();
-//	         var $select = $("#bs3Select");
-	         var objSelect = document.getElementById("bs3Select");
+			 $("#Group").empty();
+	         var $select = $("#Group")
 			 $.get(baseURL + "webchatgroups/select", function(r){
 				 $.each(r.list,function(n,value) {
 		                $opt = $("<option />", {
 		                    value: value.id,
 		                    text: value.name
 		                });
-		                console.log("------- groups uid:"+value.id+" name:"+value.name)
-		                objSelect.options.add(new Option(value.name,value.id));
-//			            $select.append($opt);
+			            $select.append($opt).multipleSelect("refresh");
+			            $select.multipleSelect('uncheckAll');
 			            
 				 });
 			 })
@@ -278,6 +269,30 @@ var vm = new Vue({
 				 });
 			 })
        }, 
+       GroupTree: function(){
+			vm.getGroups();
+           layer.open({
+               type: 1,
+               offset: '50px',
+               skin: 'layui-layer-molv',
+               title: "选择聊天群",
+               area: ['300px', '450px'],
+               shade: 0,
+               shadeClose: false,
+               content: jQuery("#GroupLayer"),
+               btn: ['确定', '取消'],
+               btn1: function (index) {
+               	 var $select = $("#Group")
+               	 var id=$('#Group').multipleSelect('getSelects', 'value');
+               	 var name=$('#Group').multipleSelect('getSelects', 'text');
+               	 vm.groupname="当前群名:"+name;
+               	   console.log("id:"+id)
+       	           console.log("name:"+name)
+               	 vm.getdate(id);
+               	 layer.close(index);
+               }
+           });
+       },
 		reload: function (event) {
 			vm.showList = true;
 			var page = $("#jqGrid").jqGrid('getGridParam','page');

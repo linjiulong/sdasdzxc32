@@ -19,14 +19,7 @@
 				 
 			 
 			<div class="form-group col-sm-2" >
-					 <select id="bs3Select" class="selectpicker show-tick form-control"     onchange="selectOnchang(this)"  data-live-search="true"  >  
-                      	<option  disabled selected value>选择聊天群</option>
-					    	<!-- 
-					    		   <template v-for="site in webchatGroups">
-					     	  	<option  disabled selected value>{{site.name}}</option>
-						 		</template>
-					    	 -->
-                    </select>  
+									<input type="text" class="form-control" style="cursor:pointer;" v-model="groupname" @click="GroupTree" readonly="readonly" placeholder="选择聊天群"/>
 			</div>
 			
 			
@@ -64,6 +57,12 @@
 		
 </div>
 
+
+<!-- 选择聊天群 -->
+<div id="GroupLayer" style="display: none;padding:10px;">
+	  <select id="Group"   ></select>
+</div>
+
 <!-- 禁言时间 -->
 <div id=bannedLayer style="display: none;padding:10px;">
 		
@@ -76,6 +75,11 @@
 		
 </div>
 
+
+
+ 
+
+
 			 <script>
 		   	 //给下拉框添加样式 
 			   	 $("#tableInfoId0").multipleSelect({
@@ -83,9 +87,15 @@
 				        width:200
 			   	 	}
 			   	 );
-		 	</script>
+		   	 
+				 //给下拉框添加样式 
+			   	 $("#Group").multipleSelect({
+				        filter: true , 
+				        single: true,
+				        width:200
+			   	 	}
+			   	 );
 	 
-	 <script>
 		
 	 	laydate.render(
 		 	{
