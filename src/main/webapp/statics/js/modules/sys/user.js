@@ -5,7 +5,7 @@ $(function () {
         colModel: [			
 			{ label: '用户ID', name: 'userId', index: "user_id", width: 45, key: true },
 			{ label: '用户名', name: 'username', width: 75 },
-            { label: '所属部门', name: 'deptName', width: 75 },
+            { label: '所属', name: 'deptName', width: 75 },
 			{ label: '邮箱', name: 'email', width: 90 },
 			{ label: '手机号', name: 'mobile', width: 100 },
 			{ label: '状态', name: 'status', width: 60, formatter: function(value, options, row){
@@ -87,7 +87,7 @@ var vm = new Vue({
             vm.getDept();
         },
         getDept: function(){
-            //加载部门树
+            //加载树
             $.get(baseURL + "sys/dept/list", function(r){
                 ztree = $.fn.zTree.init($("#deptTree"), setting, r);
                 var node = ztree.getNodeByParam("deptId", vm.user.deptId);
@@ -171,7 +171,7 @@ var vm = new Vue({
                 type: 1,
                 offset: '50px',
                 skin: 'layui-layer-molv',
-                title: "选择部门",
+                title: "选择",
                 area: ['300px', '450px'],
                 shade: 0,
                 shadeClose: false,
@@ -179,7 +179,7 @@ var vm = new Vue({
                 btn: ['确定', '取消'],
                 btn1: function (index) {
                     var node = ztree.getSelectedNodes();
-                    //选择上级部门
+                    //选择上级
                     vm.user.deptId = node[0].deptId;
                     vm.user.deptName = node[0].name;
                     vm.user.roleIdList = [];

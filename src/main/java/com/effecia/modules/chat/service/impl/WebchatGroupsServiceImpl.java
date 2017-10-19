@@ -60,6 +60,11 @@ public class WebchatGroupsServiceImpl implements WebchatGroupsService {
 		return webchatGroupsDao.querySelect(map);
 	}
 
+	@Override
+	public List<WebchatGroupsEntity> queryFindGorup(Integer id) {
+		return webchatGroupsDao.queryFindGorup(id);
+	}
+
 
 	
 }

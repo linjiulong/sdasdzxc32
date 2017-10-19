@@ -1,5 +1,7 @@
 package com.effecia.modules.chat.dao;
 
+import java.util.Map;
+
 import com.effecia.modules.chat.entity.WebchatGroupDetailEntity;
 import com.effecia.modules.sys.dao.BaseDao;
 
@@ -15,4 +17,9 @@ public interface WebchatGroupDetailDao extends BaseDao<WebchatGroupDetailEntity>
 	//群人数
 	int group_quantity(int gid);
 	
+	//批量删除
+	void deleteBatch(Map<String,Object> map);
+	
+	WebchatGroupDetailEntity queryFindObject(Map<String,Object> map);
+
 }

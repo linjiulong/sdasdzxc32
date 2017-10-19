@@ -3,10 +3,12 @@ package com.effecia.modules.chat.service.impl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 import com.effecia.modules.chat.dao.WebchatMsgDao;
+import com.effecia.modules.chat.entity.WebchatGroupDeptEntity;
 import com.effecia.modules.chat.entity.WebchatMsgEntity;
 import com.effecia.modules.chat.service.WebchatMsgService;
 
@@ -50,6 +52,14 @@ public class WebchatMsgServiceImpl implements WebchatMsgService {
 	@Override
 	public void deleteBatch(Integer[] ids){
 		webchatMsgDao.deleteBatch(ids);
+	}
+
+	@Override
+	public WebchatGroupDeptEntity queryFind(Integer id, Long deptId) {
+		Map<String, Object> map=new HashMap<>();
+		map.put("deptid", deptId);
+		map.put("groupsid", id);
+		return webchatMsgDao.queryFind(map);
 	}
 	
 }

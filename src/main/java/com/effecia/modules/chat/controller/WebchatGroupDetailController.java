@@ -1,5 +1,10 @@
 package com.effecia.modules.chat.controller;
 
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -17,6 +22,7 @@ import com.effecia.modules.chat.entity.WebchatGroupDetailEntity;
 import com.effecia.modules.chat.service.WebchatGroupDeptService;
 import com.effecia.modules.chat.service.WebchatGroupDetailService;
 import com.effecia.modules.sys.entity.SysUserEntity;
+import com.alibaba.fastjson.JSON;
 import com.effecia.common.utils.PageUtils;
 import com.effecia.common.utils.Query;
 import com.effecia.common.utils.R;
@@ -107,7 +113,20 @@ public class WebchatGroupDetailController {
 	@RequestMapping("/save")
 	@RequiresPermissions("webchatgroupdetail:save")
 	public R save(@RequestBody WebchatGroupDetailEntity webchatGroupDetail){
-		webchatGroupDetailService.save(webchatGroupDetail);
+		
+		System.out.println("webchatGroupDetail:"+webchatGroupDetail);
+		List<Object> users= JSON.parseArray(webchatGroupDetail.getUsers());
+		if(users!=null){
+			for (Object userid : users) {
+				Date addtime=new Date();
+				webchatGroupDetail.setAddtime(addtime);
+				webchatGroupDetail.setLevel(1);
+				webchatGroupDetail.setGStatus(0);
+				webchatGroupDetail.setUid(Integer.parseInt(userid+""));
+				webchatGroupDetailService.save(webchatGroupDetail);
+			}
+		}
+//		webchatGroupDetailService.save(webchatGroupDetail);
 		
 		return R.ok();
 	}
@@ -129,8 +148,67 @@ public class WebchatGroupDetailController {
 	@RequestMapping("/delete")
 	@RequiresPermissions("webchatgroupdetail:delete")
 	public R delete(@RequestBody Integer[] gids){
-		webchatGroupDetailService.deleteBatch(gids);
+	  
+		Map<String,Object> map=new HashMap<>();
+		Integer[] uids=new Integer[gids.length-1];
+			for (int i = 0; i < gids.length; i++) {
+				if(i==0){
+					 map.put("gid", gids[0]);
+				}else {
+					uids[i-1]=gids[i];
+				}
+			}
+			map.put("ids", uids);
+		webchatGroupDetailService.deleteBatch(map);
 		
+		return R.ok();
+	}
+	
+	@RequestMapping("/admins/{gid}-{uid}")
+	@RequiresPermissions("webchatgroupdetail:admins")
+	public R administrator(@PathVariable("gid") Integer gid,@PathVariable("uid") Integer uid){
+	     Map<String,Object> map=new HashMap<>();
+	     
+	     map.put("gid", gid);
+	     map.put("uid", uid);
+	     System.out.println("map:"+map);
+	     WebchatGroupDetailEntity WebchatGroupDetail=webchatGroupDetailService.queryFindObject(map);
+	     Integer level=WebchatGroupDetail.getLevel();
+	      if(level==1){
+	    	  level=2;
+	      }else if (level==2) {
+	    	  level=1;
+		}
+	     WebchatGroupDetail.setLevel(level);
+	     System.out.println("WebchatGroupDetail:"+WebchatGroupDetail);
+		webchatGroupDetailService.update(WebchatGroupDetail);
+
+	     
+	     
+		return R.ok();
+	}
+
+	@RequestMapping("/banned")
+	@RequiresPermissions("webchatgroupdetail:banned")
+	public R banned(@RequestBody WebchatGroupDetailEntity webchatGroupDetail){
+	     System.out.println("WebchatGroupDetail:"+webchatGroupDetail);
+
+	     
+	     if(webchatGroupDetail.getBannedTime()==null||webchatGroupDetail.getBannedTime().toString()==""){
+	    	 webchatGroupDetail.setGStatus(0);
+	    	 webchatGroupDetail.setBannedTime(null);
+	     }else {
+	    	 
+	    	 Date date=new Date();
+	    	 
+	    	 SimpleDateFormat sdf1 = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss.SSS"); 
+	    	 System.out.println(webchatGroupDetail.getBannedTime());
+	    	 System.out.println(sdf1.format(date));
+	    	 webchatGroupDetail.setGStatus(1);
+		 }
+		
+	     webchatGroupDetailService.update(webchatGroupDetail);
+
 		return R.ok();
 	}
 	

@@ -31,6 +31,8 @@ public class WebchatUserEntity implements Serializable {
 	private Date addtime;
 	//0 离线 1在线 状态
 	private Integer online;
+	
+	private String hashcode;
 
 	/**
 	 * 设置：
@@ -128,10 +130,18 @@ public class WebchatUserEntity implements Serializable {
 	public Integer getOnline() {
 		return online;
 	}
+	public String getHashcode() {
+		return hashcode;
+	}
+	public void setHashcode(String hashcode) {
+		this.hashcode = hashcode;
+	}
 	@Override
 	public String toString() {
 		return "WebchatUserEntity [id=" + id + ", uid=" + uid + ", name=" + name + ", password=" + password + ", sign="
-				+ sign + ", headphoto=" + headphoto + ", addtime=" + addtime + ", online=" + online + "]";
+				+ sign + ", headphoto=" + headphoto + ", addtime=" + addtime + ", online=" + online + ", hashcode="
+				+ hashcode + "]";
 	}
+   
 	
 }

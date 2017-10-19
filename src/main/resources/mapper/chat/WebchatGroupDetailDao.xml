@@ -18,6 +18,10 @@
 		select * from webchat_group_detail where gid = #{value}
 	</select>
 
+	<select id="queryFindObject" resultType="com.effecia.modules.chat.entity.WebchatGroupDetailEntity">
+		select * from webchat_group_detail where gid = #{gid} and uid = #{uid}
+	</select>
+
 	<select id="group_quantity" resultType="int">
 		SELECT COUNT(uid) FROM webchat_group_detail where gid = #{value}
 	</select>
@@ -77,24 +81,25 @@
 	<update id="update" parameterType="com.effecia.modules.chat.entity.WebchatGroupDetailEntity">
 		update webchat_group_detail 
 		<set>
-			<if test="uid != null">`uid` = #{uid}, </if>
 			<if test="addtime != null">`addtime` = #{addtime}, </if>
 			<if test="gStatus != null">`g_status` = #{gStatus}, </if>
-			<if test="bannedTime != null">`banned_time` = #{bannedTime}, </if>
+			`banned_time` = #{bannedTime},
 			<if test="speakTime != null">`speak_time` = #{speakTime}, </if>
 			<if test="level != null">`level` = #{level}</if>
 		</set>
-		where gid = #{gid}
+		where gid = #{gid} and uid = #{uid}
 	</update>
+
+	 
 	
 	<delete id="delete">
 		delete from webchat_group_detail where gid = #{value}
 	</delete>
 	
 	<delete id="deleteBatch">
-		delete from webchat_group_detail where uid in 
-		<foreach item="uid" collection="array" open="(" separator="," close=")">
-			#{gid}
+		delete from webchat_group_detail where gid = #{gid} and uid in 
+		<foreach item="gids" collection="ids" open="(" separator="," close=")">
+			#{gids}
 		</foreach>
 	</delete>
 

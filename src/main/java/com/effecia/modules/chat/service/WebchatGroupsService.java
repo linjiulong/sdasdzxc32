@@ -21,7 +21,8 @@ public interface WebchatGroupsService {
 	
 	List<WebchatGroupsEntity> querySelect(Map<String, Object> map);
 
-	
+	List<WebchatGroupsEntity> queryFindGorup(Integer id);
+
 	int queryTotal(Map<String, Object> map);
 	
 	void save(WebchatGroupsEntity webchatGroups);

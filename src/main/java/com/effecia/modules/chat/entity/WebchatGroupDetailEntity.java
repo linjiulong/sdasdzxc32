@@ -32,6 +32,9 @@ public class WebchatGroupDetailEntity implements Serializable {
 	
 	//群成员管理功能
 	private String qfunction;
+	
+	//会员列表
+	private String users;
 
 	/**
 	 * 设置：
@@ -123,12 +126,20 @@ public class WebchatGroupDetailEntity implements Serializable {
 	public void setQfunction(String qfunction) {
 		this.qfunction = qfunction;
 	}
+	public String getUsers() {
+		return users;
+	}
+	public void setUsers(String users) {
+		this.users = users;
+	}
 	@Override
 	public String toString() {
 		return "WebchatGroupDetailEntity [gid=" + gid + ", uid=" + uid + ", addtime=" + addtime + ", gStatus=" + gStatus
 				+ ", bannedTime=" + bannedTime + ", speakTime=" + speakTime + ", level=" + level + ", qfunction="
-				+ qfunction + "]";
+				+ qfunction + ", users=" + users + "]";
 	}
+	 
+	
 	
 	
 	

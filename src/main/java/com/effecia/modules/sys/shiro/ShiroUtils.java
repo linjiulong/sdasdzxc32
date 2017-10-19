@@ -29,7 +29,6 @@ public class ShiroUtils {
 	}
 
 	public static Session getSession() {
-		System.out.println(SecurityUtils.getSubject().getSession().getId());
 		return SecurityUtils.getSubject().getSession();
 	}
 

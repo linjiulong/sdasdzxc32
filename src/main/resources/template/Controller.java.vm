@@ -13,9 +13,9 @@ import org.springframework.web.bind.annotation.RestController;
 
 import ${package}.entity.${className}Entity;
 import ${package}.service.${className}Service;
-import ${package}.utils.PageUtils;
-import ${package}.utils.Query;
-import ${package}.utils.R;
+import com.effecia.common.utils.PageUtils;
+import com.effecia.common.utils.Query;
+import com.effecia.common.utils.R;
 
 
 /**

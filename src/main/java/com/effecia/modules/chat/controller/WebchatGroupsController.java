@@ -140,7 +140,6 @@ public class WebchatGroupsController {
 		//往新群内添加成员
 		
 		List<Object> users= JSON.parseArray(webchatGroups.getUsers());
-		System.out.println("users:"+users);
 		WebchatGroupDetailEntity webchatGroupDetail=new WebchatGroupDetailEntity();
 		webchatGroupDetail.setAddtime(date);
 		webchatGroupDetail.setBannedTime(null);

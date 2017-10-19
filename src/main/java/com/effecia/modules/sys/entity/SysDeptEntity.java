@@ -31,7 +31,14 @@ public class SysDeptEntity implements Serializable {
 
 	private List<?> list;
 
-
+	//标识
+	private String hashcode;
+	
+	//客服聊天
+	
+	private String serviceurl;
+	
+	
 	public void setDeptId(Long deptId) {
 		this.deptId = deptId;
 	}
@@ -99,4 +106,29 @@ public class SysDeptEntity implements Serializable {
 	public void setList(List<?> list) {
 		this.list = list;
 	}
+
+	public String getHashcode() {
+		return hashcode;
+	}
+
+	public void setHashcode(String hashcode) {
+		this.hashcode = hashcode;
+	}
+
+	public String getServiceurl() {
+		return serviceurl;
+	}
+
+	public void setServiceurl(String serviceurl) {
+		this.serviceurl = serviceurl;
+	}
+
+	@Override
+	public String toString() {
+		return "SysDeptEntity [deptId=" + deptId + ", parentId=" + parentId + ", name=" + name + ", parentName="
+				+ parentName + ", orderNum=" + orderNum + ", open=" + open + ", list=" + list + ", hashcode=" + hashcode
+				+ ", serviceurl=" + serviceurl + "]";
+	}
+	
+	
 }

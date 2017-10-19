@@ -53,6 +53,9 @@
  	<select id="queryTotal" resultType="int">
 		select count(*) from webchat_groups 
 	</select>
+ 	<select id="queryFindGorup" resultType="com.effecia.modules.chat.entity.WebchatGroupsEntity">
+		SELECT * FROM webchat_groups WHERE id = (SELECT gid FROM webchat_group_detail WHERE uid = #{value} )
+	</select>
 	 
 	<insert id="save" parameterType="com.effecia.modules.chat.entity.WebchatGroupsEntity" useGeneratedKeys="true" keyProperty="id">
 		insert into webchat_groups

@@ -43,6 +43,15 @@
 	<select id="queryList" resultType="com.effecia.modules.sys.entity.SysMenuEntity">
 		select m.*,(select p.name from sys_menu p where p.menu_id = m.parent_id) as parentName 
 			from sys_menu m
+		<where>
+			<if test="DeptId != null">
+				 `menu_id` in (
+					SELECT menu_id FROM sys_role_menu WHERE role_id IN(
+						SELECT role_id FROM sys_role_dept WHERE dept_id = #{DeptId} 
+						)
+					)
+			</if>
+		</where>
 		<choose>
 			<when test="sidx != null and sidx.trim() != ''">
 				order by m.${sidx} ${order}

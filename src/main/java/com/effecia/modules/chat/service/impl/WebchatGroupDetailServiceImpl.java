@@ -48,13 +48,19 @@ public class WebchatGroupDetailServiceImpl implements WebchatGroupDetailService 
 	}
 	
 	@Override
-	public void deleteBatch(Integer[] gids){
-		webchatGroupDetailDao.deleteBatch(gids);
+	public 	void deleteBatch(Map<String,Object> map){
+		webchatGroupDetailDao.deleteBatch(map);
 	}
 
 	@Override
 	public int group_quantity(int gid) {
 		return webchatGroupDetailDao.group_quantity(gid);
+	}
+
+
+	@Override
+	public WebchatGroupDetailEntity queryFindObject(Map<String, Object> map) {
+		return webchatGroupDetailDao.queryFindObject(map);
 	}
 	
 }

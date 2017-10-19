@@ -17,8 +17,25 @@
 		select * from webchat_msg where id = #{value}
 	</select>
 
+	<select id="queryFind" resultType="com.effecia.modules.chat.entity.WebchatGroupDeptEntity">
+		SELECT * FROM webchat_group_dept WHERE dept_id=#{deptid} AND groups_id=#{groupsid}
+	</select>
+
 	<select id="queryList" resultType="com.effecia.modules.chat.entity.WebchatMsgEntity">
 		select * from webchat_msg
+		<where>
+			<if test="uid != null  ">
+				and uid like concat('%',#{uid},'%') or   msg like concat('%',#{uid},'%')
+			</if> 
+			<if test="DeptId != null  ">
+				and gid IN( SELECT groups_id FROM webchat_group_dept WHERE dept_id = #{DeptId} )
+			</if> 
+			<if test="gid != null  ">
+				and gid = #{gid} 
+			</if> 
+			<!--  数据过滤  -->
+			${filterSql}
+		</where>
         <choose>
             <when test="sidx != null and sidx.trim() != ''">
                 order by ${sidx} ${order}

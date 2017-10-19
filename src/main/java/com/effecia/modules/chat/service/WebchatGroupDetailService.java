@@ -26,9 +26,16 @@ public interface WebchatGroupDetailService {
 	
 	void delete(Integer gid);
 	
-	void deleteBatch(Integer[] gids);
+	void deleteBatch(Map<String,Object> map);
 	
 	//群人数
 	int group_quantity(int gid);
+	
+	
+	//查看该会员在该群的信息
+	WebchatGroupDetailEntity queryFindObject(Map<String,Object> map);
+
+	
+	
 	
 }

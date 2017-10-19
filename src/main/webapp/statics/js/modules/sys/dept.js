@@ -26,7 +26,7 @@ var vm = new Vue({
     },
     methods: {
         getDept: function(){
-            //加载部门树
+            //加载树
             $.get(baseURL + "sys/dept/select", function(r){
                 ztree = $.fn.zTree.init($("#deptTree"), setting, r.deptList);
                 var node = ztree.getNodeByParam("deptId", vm.dept.parentId);
@@ -101,7 +101,7 @@ var vm = new Vue({
                 type: 1,
                 offset: '50px',
                 skin: 'layui-layer-molv',
-                title: "选择部门",
+                title: "选择",
                 area: ['300px', '450px'],
                 shade: 0,
                 shadeClose: false,
@@ -109,7 +109,7 @@ var vm = new Vue({
                 btn: ['确定', '取消'],
                 btn1: function (index) {
                     var node = ztree.getSelectedNodes();
-                    //选择上级部门
+                    //选择上级
                     vm.dept.parentId = node[0].deptId;
                     vm.dept.parentName = node[0].name;
 
@@ -136,10 +136,12 @@ var Dept = {
 Dept.initColumn = function () {
     var columns = [
         {field: 'selectItem', radio: true},
-        {title: '公司ID', field: 'deptId', visible: false, align: 'center', valign: 'middle', width: '80px'},
-        {title: '公司名称', field: 'name', align: 'center', valign: 'middle', sortable: true, width: '180px'},
-        {title: '所属上级', field: 'parentName', align: 'center', valign: 'middle', sortable: true, width: '100px'},
-        {title: '排序号', field: 'orderNum', align: 'center', valign: 'middle', sortable: true, width: '100px'}]
+        {title: 'ID', field: 'deptId', visible: false, align: 'center', valign: 'middle', width: '20px'},
+        {title: '名称', field: 'name', align: 'center', valign: 'middle', sortable: true, width: '180px'},
+        {title: '所属', field: 'parentName', align: 'center', valign: 'middle', sortable: true, width: '50px'},
+        {title: '客服', field: 'serviceurl', align: 'center', valign: 'middle', sortable: true, width: '100px'},
+        {title: 'HashCode', field: 'hashcode', align: 'center', valign: 'middle', sortable: true, width: '100px'},
+        {title: '排序号', field: 'orderNum', align: 'center', valign: 'middle', sortable: true, width: '20px'}]
     return columns;
 };
 

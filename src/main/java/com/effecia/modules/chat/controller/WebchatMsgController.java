@@ -3,6 +3,7 @@ package com.effecia.modules.chat.controller;
 import java.util.List;
 import java.util.Map;
 
+import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -11,8 +12,10 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.effecia.modules.chat.entity.WebchatGroupDeptEntity;
 import com.effecia.modules.chat.entity.WebchatMsgEntity;
 import com.effecia.modules.chat.service.WebchatMsgService;
+import com.effecia.modules.sys.entity.SysUserEntity;
 import com.effecia.common.utils.PageUtils;
 import com.effecia.common.utils.Query;
 import com.effecia.common.utils.R;
@@ -37,14 +40,43 @@ public class WebchatMsgController {
 	@RequestMapping("/list")
 	@RequiresPermissions("webchatmsg:list")
 	public R list(@RequestParam Map<String, Object> params){
-		//查询列表数据
-        Query query = new Query(params);
+		Long DeptId = ((SysUserEntity) SecurityUtils.getSubject().getPrincipal()).getDeptId();
 
+		if(DeptId!=8){
+			params.put("DeptId", DeptId);
+		}
+
+		//查询列表数据
+		Query query = new Query(params);
 		List<WebchatMsgEntity> webchatMsgList = webchatMsgService.queryList(query);
 		int total = webchatMsgService.queryTotal(query);
 		
 		PageUtils pageUtil = new PageUtils(webchatMsgList, total, query.getLimit(), query.getPage());
 		
+		return R.ok().put("page", pageUtil);
+	}
+
+	@RequestMapping("/select/{gid}")
+	@RequiresPermissions("webchatmsg:select")
+	public R select(@PathVariable("gid") Integer gid,@RequestParam Map<String, Object> params){
+		
+		params.put("gid", gid);
+		Long DeptId = ((SysUserEntity) SecurityUtils.getSubject().getPrincipal()).getDeptId();
+		if(DeptId!=8){
+			WebchatGroupDeptEntity WebchatGroupDept=webchatMsgService.queryFind(gid,DeptId);
+			if(WebchatGroupDept==null){
+				return R.error("无权限");
+			}
+		}
+		
+		//查询列表数据
+		Query query = new Query(params);
+		
+		List<WebchatMsgEntity> webchatMsgList = webchatMsgService.queryList(query);
+		int total = webchatMsgService.queryTotal(query);
+		
+		PageUtils pageUtil = new PageUtils(webchatMsgList, total, query.getLimit(), query.getPage());
+		System.out.println("params"+params);
 		return R.ok().put("page", pageUtil);
 	}
 	

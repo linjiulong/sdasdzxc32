@@ -47,11 +47,11 @@ public class SysDeptController extends AbstractController {
 	public R select(){
 		List<SysDeptEntity> deptList = sysDeptService.queryList(new HashMap<String, Object>());
 
-		//添加一级部门
+		//添加一级
 		if(getUserId() == Constant.SUPER_ADMIN){
 			SysDeptEntity root = new SysDeptEntity();
 			root.setDeptId(0L);
-			root.setName("一级部门");
+			root.setName("总公司");
 			root.setParentId(-1L);
 			root.setOpen(true);
 			deptList.add(root);
@@ -117,7 +117,7 @@ public class SysDeptController extends AbstractController {
 		//判断是否有子部门
 		List<Long> deptList = sysDeptService.queryDetpIdList(deptId);
 		if(deptList.size() > 0){
-			return R.error("请先删除子部门");
+			return R.error("请先删除子公司");
 		}
 
 		sysDeptService.delete(deptId);

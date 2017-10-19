@@ -1,7 +1,4 @@
 $(function () {
-	$.get(baseURL + "webchatgroups/select", function(r){
-		vm.webchatGroups=r.list;
-    });
 	
 	$("#jqGrid").jqGrid({
         url:  "",
@@ -46,17 +43,37 @@ $(function () {
         gridComplete:function(){
         	//隐藏grid底部滚动条
         	$("#jqGrid").closest(".ui-jqgrid-bdiv").css({ "overflow-x" : "hidden" }); 
+        },
+        onSelectRow: function(id,status){  
+          var id = $("#jqGrid").jqGrid('getGridParam','selrow'); 
+          var rowData = $("#jqGrid").jqGrid("getRowData",id); 
+          var val= rowData.level; 
+           
+          if(val.indexOf("普通会员")==-1){
+        	 vm.adminsname="取消管理员";
+          }else{
+        	  vm.adminsname="设置管理员";
+          }
         }
     });
-    
-    
-});
-
-function open(){
+	
 	$.get(baseURL + "webchatgroups/select", function(r){
 		vm.webchatGroups=r.list;
     });
-} 
+	
+	vm.getGroups();
+    
+	
+});
+
+ 
+//$("#jqGrid").click(function(){
+//    var id = $("#jqGrid").jqGrid('getGridParam','selrow'); 
+//    var rowData = $("#jqGrid").jqGrid("getRowData",id); 
+//    var val= rowData.level; 
+//    alert(val)
+//})
+
 
 function selectOnchang(obj){ 
 	var value = obj.options[obj.selectedIndex].value;
@@ -74,6 +91,8 @@ var vm = new Vue({
 		title: null,
 		svalue:null,
 		webchatGroups: {},
+		webchatGroupDetail: {},
+		adminsname:"设置管理员",
 		user:{
             count:null
 		}
@@ -84,6 +103,7 @@ var vm = new Vue({
 		},
 		add: function(){
 			vm.getUsers();
+			vm.webchatGroups = {};
 			if(vm.svalue!=null){
 	        	layer.open({
 	                type: 1,
@@ -103,8 +123,10 @@ var vm = new Vue({
 	                		   alert("未选择，添加失败!");
 	                	 }else{
 	                		 vm.user.count=count.length+"位";
-	                		 vm.webchatGroups.users=count;
-	                		 vm.saveOrUpdate();
+	                		 vm.webchatGroupDetail.gid=vm.svalue;
+	                		 
+	                		 vm.webchatGroupDetail.users=count;
+	                		 vm.save();
 	                	 }
 	                    layer.close(index);
 	                }
@@ -113,13 +135,12 @@ var vm = new Vue({
 				alert("请先选择需要管理的聊天群")
 			}
 		},
-		saveOrUpdate: function (event) {
-			var url = vm.webchatGroups.id == null ? "webchatgroups/save" : "webchatgroups/update";
+		save: function (event) {
 			$.ajax({
 				type: "POST",
-			    url: baseURL + url,
+			    url: baseURL + "webchatgroupdetail/save",
 			    contentType: "application/json",
-			    data: JSON.stringify(vm.webchatGroups),
+			    data: JSON.stringify(vm.webchatGroupDetail),
 			    success: function(r){
 			    	if(r.code === 0){
 						alert('操作成功', function(index){
@@ -133,6 +154,8 @@ var vm = new Vue({
 		},
 		del: function (event) {
 			var ids = getSelectedRows();
+			var gid=vm.svalue;
+			ids.splice(0, 0, gid);  
 			if(ids == null){
 				return ;
 			}
@@ -155,12 +178,96 @@ var vm = new Vue({
 				});
 			});
 		},
+		banned: function (event) {
+		    var userId = getSelectedRow();
+            if(userId == null){
+                return ;
+            }
+            
+         
+            
+        	layer.open({
+                type: 1,
+                offset: '50px',
+                skin: 'layui-layer-molv',
+                title: "禁言设置",
+                area: ['300px', '450px'],
+                shade: 0,
+                shadeClose: false,
+                content: jQuery("#bannedLayer"),
+                btn: ['确定', '取消'],
+                btn1: function (index) {
+                	
+                	 var userId = getSelectedRow();
+     	            if(userId == null){
+     	                return ;
+     	            }
+     	            
+     	            var gid=vm.svalue;
+     	            var banned_time=document.getElementById("banned_time").value;  
+     	           console.log("gid:"+gid)
+     	           console.log("uid:"+userId)
+     	           console.log("banned_time:"+banned_time)
+     	            vm.webchatGroupDetail.gid=gid;
+     	           vm.webchatGroupDetail.uid=userId;
+     	           vm.webchatGroupDetail.bannedTime=banned_time;
+     	           			
+     	           			$.ajax({
+								type: "POST",
+							    url: baseURL + "webchatgroupdetail/banned",
+							    contentType: "application/json",
+							    data: JSON.stringify(vm.webchatGroupDetail),
+							    success: function(r){
+							    	if(r.code === 0){
+										alert('操作成功', function(index){
+											vm.reload();
+										});
+									}else{
+										alert(r.msg);
+									}
+								}
+							});
+     	           
+                    layer.close(index);
+                }
+            });
+            
+             
+		},
+		getGroups: function(){
+//			 $("#bs3Select").empty();
+//	         var $select = $("#bs3Select");
+	         var objSelect = document.getElementById("bs3Select");
+			 $.get(baseURL + "webchatgroups/select", function(r){
+				 $.each(r.list,function(n,value) {
+		                $opt = $("<option />", {
+		                    value: value.id,
+		                    text: value.name
+		                });
+		                console.log("------- groups uid:"+value.id+" name:"+value.name)
+		                objSelect.options.add(new Option(value.name,value.id));
+//			            $select.append($opt);
+			            
+				 });
+			 })
+		}, 
+		admins: function (event) {
+			 var userId = getSelectedRow();
+	            if(userId == null){
+	                return ;
+	            }
+	            
+	            var gid=vm.svalue;
+	        	$.get(baseURL + "webchatgroupdetail/admins/"+gid+"-"+userId, function(r){
+	        		vm.reload();
+	            });
+	        	
+		},
 		getUsers: function(){
 			 $("#tableInfoId0").empty();
 	         var $select = $("#tableInfoId0")
 			 $.get(baseURL + "webchatuser/select", function(r){
 				 $.each(r.list,function(n,value) {
-					 console.log(n+"----"+value.uid+"-----"+value.name);
 		                $opt = $("<option />", {
 		                    value: value.uid,
 		                    text: value.name

@@ -10,6 +10,7 @@ $(function () {
 			{ label: '个人介绍', name: 'sign', index: 'sign', width: 80 }, 			
 			{ label: '头像', name: 'headphoto', index: 'headphoto', width: 80 }, 			
 			{ label: '注册时间', name: 'addtime', index: 'addtime', width: 80 }, 			
+			{ label: 'hashcode', name: 'hashcode', index: 'hashcode', width: 80 }, 			
 			{ label: '0 离线 1在线 状态', name: 'online', index: 'online', width: 80 }			
         ],
 		viewrecords: true,

@@ -1,8 +1,5 @@
 $(function () {
-	$.get(baseURL + "webchatgroups/select", function(r){
-		vm.webchatGroups=r.list;
-    });
-	
+ 
 	 $("#jqGrid").jqGrid({
 	        url: baseURL + 'webchatmsg/list',
 	        datatype: "json",
@@ -40,20 +37,17 @@ $(function () {
 	        }
 	    });
     
-    
+		vm.getGroups();
+		
 });
 
-function open(){
-	$.get(baseURL + "webchatgroups/select", function(r){
-		vm.webchatGroups=r.list;
-    });
-} 
-
-function selectOnchang(obj){ 
-	var value = obj.options[obj.selectedIndex].value;
-	vm.getdate(value);
-	vm.svalue=value;
-}
+ 
+//
+//function selectOnchang(obj){ 
+//	var value = obj.options[obj.selectedIndex].value;
+//	vm.getdate(value);
+//	vm.svalue=value;
+//}
 
 var vm = new Vue({
 	el:'#rrapp',
@@ -64,6 +58,7 @@ var vm = new Vue({
 	    showList: true,
 		title: null,
 		svalue:null,
+		groupname: null,
 		webchatGroups: {},
 		user:{
             count:null
@@ -73,107 +68,58 @@ var vm = new Vue({
         query: function () {
 			vm.reload();
 		},
-		add: function(){
-			vm.getUsers();
-			if(vm.svalue!=null){
-	        	layer.open({
-	                type: 1,
-	                offset: '50px',
-	                skin: 'layui-layer-molv',
-	                title: "选择用户",
-	                area: ['300px', '450px'],
-	                shade: 0,
-	                shadeClose: false,
-	                content: jQuery("#usersLayer"),
-	                btn: ['确定', '取消'],
-	                btn1: function (index) {
-	                	
-	                	 var $select = $("#tableInfoId0")
-	                	 var count=$('#tableInfoId0').multipleSelect('getSelects');
-	                	 if(count==null||count==""){
-	                		   alert("未选择，添加失败!");
-	                	 }else{
-	                		 vm.user.count=count.length+"位";
-	                		 vm.webchatGroups.users=count;
-	                		 vm.saveOrUpdate();
-	                	 }
-	                    layer.close(index);
-	                }
-	            });
-			}else{
-				alert("请先选择需要管理的聊天群")
-			}
-		},
-		saveOrUpdate: function (event) {
-			var url = vm.webchatGroups.id == null ? "webchatgroups/save" : "webchatgroups/update";
-			$.ajax({
-				type: "POST",
-			    url: baseURL + url,
-			    contentType: "application/json",
-			    data: JSON.stringify(vm.webchatGroups),
-			    success: function(r){
-			    	if(r.code === 0){
-						alert('操作成功', function(index){
-							vm.reload();
-						});
-					}else{
-						alert(r.msg);
-					}
-				}
-			});
-		},
-		del: function (event) {
-			var ids = getSelectedRows();
-			if(ids == null){
-				return ;
-			}
-			
-			confirm('确定要删除选中的记录？', function(){
-				$.ajax({
-					type: "POST",
-				    url: baseURL + "webchatgroupdetail/delete",
-				    contentType: "application/json",
-				    data: JSON.stringify(ids),
-				    success: function(r){
-						if(r.code == 0){
-							alert('操作成功', function(index){
-								$("#jqGrid").trigger("reloadGrid");
-							});
-						}else{
-							alert(r.msg);
-						}
-					}
-				});
-			});
-		},
-		getUsers: function(){
-			 $("#tableInfoId0").empty();
-	         var $select = $("#tableInfoId0")
-			 $.get(baseURL + "webchatuser/select", function(r){
-				 $.each(r.list,function(n,value) {
-					 console.log(n+"----"+value.uid+"-----"+value.name);
-		                $opt = $("<option />", {
-		                    value: value.uid,
-		                    text: value.name
-		                });
-			            $select.append($opt).multipleSelect("refresh");
-			            $select.multipleSelect('uncheckAll');
-			            
-				 });
-			 })
-       }, 
 		reload: function (event) {
 			vm.showList = true;
 			var page = $("#jqGrid").jqGrid('getGridParam','page');
 			$("#jqGrid").jqGrid('setGridParam',{ 
-                postData:{'uid': vm.q.uid},
+                postData:{'uid': vm.q.msg},
                 page:page
             }).trigger("reloadGrid");
-		} ,
+		},
+		getGroups: function(){
+			 $("#tableInfoId0").empty();
+	         var $select = $("#tableInfoId0")
+			 $.get(baseURL + "webchatgroups/select", function(r){
+				 $.each(r.list,function(n,value) {
+		                $opt = $("<option />", {
+		                    value: value.id,
+		                    text: value.name
+		                });
+			            $select.append($opt).multipleSelect("refresh");
+			            $select.multipleSelect('uncheckAll');
+		                console.log("------- groups uid:"+value.id+" name:"+value.name)
+			            
+				 });
+			 })
+		}, 
+		GroupTree: function(){
+			vm.getGroups();
+            layer.open({
+                type: 1,
+                offset: '50px',
+                skin: 'layui-layer-molv',
+                title: "选择聊天群",
+                area: ['300px', '450px'],
+                shade: 0,
+                shadeClose: false,
+                content: jQuery("#GroupLayer"),
+                btn: ['确定', '取消'],
+                btn1: function (index) {
+                	 var $select = $("#tableInfoId0")
+                	 var id=$('#tableInfoId0').multipleSelect('getSelects', 'value');
+                	 var name=$('#tableInfoId0').multipleSelect('getSelects', 'text');
+                	 vm.groupname="当前群名:"+name;
+                	   console.log("id:"+id)
+        	           console.log("name:"+name)
+                	 vm.getdate(id);
+                	 layer.close(index);
+                }
+            });
+        },
 		getdate(value){
 			$('#jqGrid').jqGrid('clearGridData');
-			$('#jqGrid').jqGrid('setGridParam', {
-				url: baseURL + 'webchatgroupdetail/select/'+value,
+			$('#jqGrid').jqGrid('setGridParam', {                
+				url: baseURL + 'webchatmsg/select/'+value,
 			}).trigger('reloadGrid');
 		}
 	}

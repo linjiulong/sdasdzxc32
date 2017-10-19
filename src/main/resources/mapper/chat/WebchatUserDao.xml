@@ -13,6 +13,7 @@
         <result property="headphoto" column="headphoto"/>
         <result property="addtime" column="addtime"/>
         <result property="online" column="online"/>
+        <result property="hashcode" column="hashcode"/>
     </resultMap>
 
 	<select id="queryObject" resultType="com.effecia.modules.chat.entity.WebchatUserEntity">
@@ -50,7 +51,8 @@
 			`sign`, 
 			`headphoto`, 
 			`addtime`, 
-			`online`
+			`online`,
+			`hashcode`
 		)
 		values
 		(
@@ -60,7 +62,8 @@
 			#{sign}, 
 			#{headphoto}, 
 			#{addtime}, 
-			#{online}
+			#{online}, 
+			#{hashcode}
 		)
 	</insert>
 	 
@@ -73,7 +76,8 @@
 			<if test="sign != null">`sign` = #{sign}, </if>
 			<if test="headphoto != null">`headphoto` = #{headphoto}, </if>
 			<if test="addtime != null">`addtime` = #{addtime}, </if>
-			<if test="online != null">`online` = #{online}</if>
+			<if test="online != null">`online` = #{online},</if>
+			<if test="hashcode != null">`hashcode` = #{hashcode}</if>
 		</set>
 		where id = #{id}
 	</update>

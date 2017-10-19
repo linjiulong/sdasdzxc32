@@ -66,7 +66,6 @@ public class SysUserController extends AbstractController {
 	 */
 	@RequestMapping("/info")
 	public R info(){
-		logger.info(getUser().toString());
 		return R.ok().put("user", getUser());
 	}
 	

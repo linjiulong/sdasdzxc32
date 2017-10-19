@@ -3,23 +3,33 @@
 <head>
 <title></title>
 <#include "/header.html">
-<link href="https://cdn.bootcss.com/bootstrap-select/2.0.0-beta1/css/bootstrap-select.css" rel="stylesheet">
- <script src="https://cdn.bootcss.com/bootstrap-select/2.0.0-beta1/js/bootstrap-select.js"></script>
+
+<link rel="stylesheet" href="${request.contextPath}/statics/css/layui.css" media="all">
 <link rel="stylesheet" href="${request.contextPath}/statics/css/multiple-select.css">
 <script src="${request.contextPath}/statics/js/multiple-select.js"></script>
+<script src="${request.contextPath}/statics/plugins/laydate/laydate.js"></script>
+
 </head>
 <body>
 <div id="rrapp" v-cloak>
 	<div v-show="showList">
 		<div class="grid-btn">
-			
-					
+		 
+					 
+				 
+			 
 			<div class="form-group col-sm-2" >
-					 <select id="bs3Select" class="selectpicker show-tick form-control" onclick="open()"  onchange="selectOnchang(this)"  data-live-search="true"  >  
+					 <select id="bs3Select" class="selectpicker show-tick form-control"     onchange="selectOnchang(this)"  data-live-search="true"  >  
                       	<option  disabled selected value>选择聊天群</option>
-                      	<option  v-for="Groups in webchatGroups" :value='Groups.id'  >{{Groups.name}}</option>
+					    	<!-- 
+					    		   <template v-for="site in webchatGroups">
+					     	  	<option  disabled selected value>{{site.name}}</option>
+						 		</template>
+					    	 -->
                     </select>  
 			</div>
+			
+			
 			<div class="form-group col-sm-2">
 				<input type="text" class="form-control" v-model="q.uid" @keyup.enter="query" placeholder="搜索昵称或Uid">
 			</div>
@@ -27,12 +37,18 @@
 			
 			<#if shiro.hasPermission("webchatgroupdetail:save")>
 			
-            	<a class="btn btn-primary" @click="add"   ><i class="fa fa-plus"></i>&nbsp;添加成员  {{user.count}}</a>
+            	<a class="btn btn-primary" @click="add"   ><i class="fa fa-plus"></i>&nbsp;添加成员  {{webchatGroups.users}}</a>
 			</#if>
 			<#if shiro.hasPermission("webchatgroupdetail:delete")>
             <a class="btn btn-danger" @click="del"><i class="fa fa-trash-o"></i>&nbsp;删除成员</a>
 			</#if>
-			 
+			
+			<#if shiro.hasPermission("webchatgroupdetail:banned")>
+            	<a class="btn btn-warning" @click="banned"><i class="fa fa-trash-o"></i>&nbsp;禁言成员</a>
+            </#if>
+			<#if shiro.hasPermission("webchatgroupdetail:admins")>
+            	<a class="btn btn-success" @click="admins"><i class="fa fa-trash-o"></i>&nbsp;{{adminsname}}</a>
+			</#if>			 
 		</div>
 	    <table id="jqGrid"></table>
 	    <div id="jqGridPager"></div>
@@ -47,6 +63,19 @@
 		<select id="tableInfoId0"></select>
 		
 </div>
+
+<!-- 禁言时间 -->
+<div id=bannedLayer style="display: none;padding:10px;">
+		
+		    <div class="layui-inline">
+			      <label class="layui-form-label">禁言：</label>
+			      <div class="layui-input-inline">
+			        <input type="text" class="layui-input"   id="banned_time" placeholder="留空即取消禁言">
+			      </div>
+		    </div> 
+		
+</div>
+
 			 <script>
 		   	 //给下拉框添加样式 
 			   	 $("#tableInfoId0").multipleSelect({
@@ -54,13 +83,23 @@
 				        width:200
 			   	 	}
 			   	 );
-
-		   	 
-			     
-		   	 
 		 	</script>
 	 
-
+	 <script>
+		
+	 	laydate.render(
+		 	{
+			  elem: '#banned_time'
+			 ,done: function(value, date, endDate){
+					    console.log(value); //得到日期生成的值，如：2017-08-18
+ 			 }
+			  ,min: '-1'
+			  ,type: 'datetime'
+			});
+		</script>
+		
+		
+		 
 <script src="${request.contextPath}/statics/js/modules/webchat/webchatgroupuser.js?_${.now?long}"></script>
 </body>
 </html>

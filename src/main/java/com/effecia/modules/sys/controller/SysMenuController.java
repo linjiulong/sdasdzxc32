@@ -5,8 +5,10 @@ import com.effecia.common.exception.RRException;
 import com.effecia.common.utils.Constant;
 import com.effecia.common.utils.R;
 import com.effecia.modules.sys.entity.SysMenuEntity;
+import com.effecia.modules.sys.entity.SysUserEntity;
 import com.effecia.modules.sys.service.SysMenuService;
 import org.apache.commons.lang.StringUtils;
+import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -17,6 +19,7 @@ import org.springframework.web.bind.annotation.RestController;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * 系统菜单
@@ -68,7 +71,20 @@ public class SysMenuController extends AbstractController {
 	@RequestMapping("/list")
 	@RequiresPermissions("sys:menu:list")
 	public List<SysMenuEntity> list(){
-		List<SysMenuEntity> menuList = sysMenuService.queryList(new HashMap<String, Object>());
+		Long DeptId = ((SysUserEntity) SecurityUtils.getSubject().getPrincipal()).getDeptId();
+		System.out.println("sys:menu:list DeptId:"+DeptId);
+		
+		List<SysMenuEntity> menuList=new ArrayList<>();
+		if(DeptId!=8){
+			  Map<String, Object> params=new HashMap<>();
+			  params.put("DeptId", DeptId);
+			  menuList = sysMenuService.queryList(params);
+			
+		}else {
+			  menuList = sysMenuService.queryList(new HashMap<String, Object>());
+		}
+		
+		 
 		return menuList;
 	}
 	
@@ -81,14 +97,10 @@ public class SysMenuController extends AbstractController {
 		//查询列表数据
 		List<SysMenuEntity> menuList = sysMenuService.queryNotButtonList();
 		
+		Long DeptId = ((SysUserEntity) SecurityUtils.getSubject().getPrincipal()).getDeptId();
+		System.out.println("sys:menu:select DeptId:"+DeptId);
 
-		//添加顶级菜单
-		SysMenuEntity roots = new SysMenuEntity();
-		roots.setMenuId(0L);
-		roots.setName("顶部菜单");
-		roots.setParentId(-2L);
-		roots.setOpen(true);
-		menuList.add(roots);
+	 
 	
 		//左侧菜单
 		SysMenuEntity root = new SysMenuEntity();
