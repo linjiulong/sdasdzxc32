@@ -3,10 +3,12 @@ package com.effecia.modules.chat.service.impl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 import com.effecia.modules.chat.dao.WebchatUserDao;
+import com.effecia.modules.chat.entity.WebchatGroupsEntity;
 import com.effecia.modules.chat.entity.WebchatUserEntity;
 import com.effecia.modules.chat.service.WebchatUserService;
 
@@ -55,6 +57,11 @@ public class WebchatUserServiceImpl implements WebchatUserService {
 	@Override
 	public List<WebchatUserEntity> querySelect(Map<String, Object> map) {
 		return webchatUserDao.querySelect(map);
+	}
+
+	@Override
+	public List<WebchatGroupsEntity> groupname(String[] ids) {
+		return webchatUserDao.groupname(ids);
 	}
 	
 }

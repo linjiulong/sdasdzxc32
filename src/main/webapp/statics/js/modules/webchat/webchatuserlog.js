@@ -4,10 +4,10 @@ $(function () {
         datatype: "json",
         colModel: [			
 			{ label: 'id', name: 'id', index: 'id', width: 50, key: true },
-			{ label: '', name: 'uid', index: 'uid', width: 80 }, 			
-			{ label: '', name: 'ip', index: 'ip', width: 80 }, 			
-			{ label: '', name: 'addtime', index: 'addtime', width: 80 }, 			
-			{ label: '', name: 'log', index: 'log', width: 80 }			
+			{ label: '用户ID', name: 'uid', index: 'uid', width: 80 }, 			
+			{ label: '操作IP', name: 'ip', index: 'ip', width: 80 }, 			
+			{ label: '操作时间', name: 'addtime', index: 'addtime', width: 80 }, 			
+			{ label: '操作内容', name: 'log', index: 'log', width: 80 }			
         ],
 		viewrecords: true,
         height: 385,

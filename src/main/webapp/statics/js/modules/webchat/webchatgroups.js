@@ -44,7 +44,7 @@ $(function () {
     
     
     new AjaxUpload('#upload', {
-        action: baseURL + "sys/oss/upload",
+        action: baseURL + "sys/oss/upload/groups",
         name: 'file',
         autoSubmit:true,
         responseType:"json",

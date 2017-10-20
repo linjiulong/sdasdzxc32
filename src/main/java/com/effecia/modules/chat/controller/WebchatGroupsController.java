@@ -55,6 +55,8 @@ public class WebchatGroupsController {
 	@Autowired
 	private SysUserService sysUserService;
 	
+	
+	
 	/**
 	 * 列表
 	 */
@@ -114,6 +116,16 @@ public class WebchatGroupsController {
 	@RequestMapping("/info/{id}")
 	@RequiresPermissions("webchatgroups:info")
 	public R info(@PathVariable("id") Integer id){
+		
+		
+		Long DeptId = ((SysUserEntity) SecurityUtils.getSubject().getPrincipal()).getDeptId();
+		if(DeptId!=8){
+				WebchatGroupDeptEntity GroupDeptEntity=webchatGroupDeptService.queryFind(id,DeptId);
+				if(GroupDeptEntity==null){
+					return R.error("无权限");
+				}
+		}
+		
 		WebchatGroupsEntity webchatGroups = webchatGroupsService.queryObject(id);
 		
 		return R.ok().put("webchatGroups", webchatGroups);
@@ -127,6 +139,8 @@ public class WebchatGroupsController {
 	public R save(@RequestBody WebchatGroupsEntity webchatGroups){
 		
 		ValidatorUtils.validateEntity(webchatGroups, AddGroup.class);
+		
+		
 		
 		
 		//新建群
@@ -173,7 +187,17 @@ public class WebchatGroupsController {
 	@RequiresPermissions("webchatgroups:update")
 	public R update(@RequestBody WebchatGroupsEntity webchatGroups){
 		ValidatorUtils.validateEntity(webchatGroups, UpdateGroup.class);
-
+		
+		 
+		
+		Long DeptId = ((SysUserEntity) SecurityUtils.getSubject().getPrincipal()).getDeptId();
+		if(DeptId!=8){
+			WebchatGroupDeptEntity GroupDeptEntity=webchatGroupDeptService.queryFind(webchatGroups.getId(),DeptId);
+			if(GroupDeptEntity==null){
+				return R.error("无权限");
+			}
+		}		
+		
 		webchatGroupsService.update(webchatGroups);
 		
 		return R.ok();
@@ -185,6 +209,15 @@ public class WebchatGroupsController {
 	@RequestMapping("/delete")
 	@RequiresPermissions("webchatgroups:delete")
 	public R delete(@RequestBody Integer[] ids){
+		Long DeptId = ((SysUserEntity) SecurityUtils.getSubject().getPrincipal()).getDeptId();
+		if(DeptId!=8){
+			for (Integer integer : ids) {
+				WebchatGroupDeptEntity GroupDeptEntity=webchatGroupDeptService.queryFind(integer,DeptId);
+				if(GroupDeptEntity==null){
+					return R.error("无权限");
+				}
+			}
+		}	
 		webchatGroupsService.deleteBatch(ids);
 		
 		return R.ok();

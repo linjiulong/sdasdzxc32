@@ -18,7 +18,7 @@ public class WebchatUserEntity implements Serializable {
 	//
 	private Integer id;
 	//用户ID
-	private Integer uid;
+	private String uid;
 	//用户名
 	private String name;
 	//密码
@@ -32,7 +32,10 @@ public class WebchatUserEntity implements Serializable {
 	//0 离线 1在线 状态
 	private Integer online;
 	
+	//唯一值
 	private String hashcode;
+	//会员所在群 群名
+	private String groupname;
 
 	/**
 	 * 设置：
@@ -49,13 +52,13 @@ public class WebchatUserEntity implements Serializable {
 	/**
 	 * 设置：用户ID
 	 */
-	public void setUid(Integer uid) {
+	public void setUid(String uid) {
 		this.uid = uid;
 	}
 	/**
 	 * 获取：用户ID
 	 */
-	public Integer getUid() {
+	public String getUid() {
 		return uid;
 	}
 	/**
@@ -136,12 +139,17 @@ public class WebchatUserEntity implements Serializable {
 	public void setHashcode(String hashcode) {
 		this.hashcode = hashcode;
 	}
+	public String getGroupname() {
+		return groupname;
+	}
+	public void setGroupname(String groupname) {
+		this.groupname = groupname;
+	}
 	@Override
 	public String toString() {
 		return "WebchatUserEntity [id=" + id + ", uid=" + uid + ", name=" + name + ", password=" + password + ", sign="
 				+ sign + ", headphoto=" + headphoto + ", addtime=" + addtime + ", online=" + online + ", hashcode="
-				+ hashcode + "]";
+				+ hashcode + ", groupname=" + groupname + "]";
 	}
-   
-	
+	 
 }

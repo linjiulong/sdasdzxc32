@@ -3,6 +3,7 @@ package com.effecia.modules.chat.dao;
 import java.util.List;
 import java.util.Map;
 
+import com.effecia.modules.chat.entity.WebchatGroupsEntity;
 import com.effecia.modules.chat.entity.WebchatUserEntity;
 import com.effecia.modules.sys.dao.BaseDao;
 
@@ -15,4 +16,6 @@ import com.effecia.modules.sys.dao.BaseDao;
  */
 public interface WebchatUserDao extends BaseDao<WebchatUserEntity> {
 	List<WebchatUserEntity> querySelect(Map<String, Object> map);
+	List<WebchatGroupsEntity> groupname(String[] ids);
+
 }

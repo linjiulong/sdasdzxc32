@@ -15,6 +15,7 @@ import com.effecia.modules.oss.entity.SysOssEntity;
 import com.effecia.modules.oss.service.SysOssService;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -44,18 +45,32 @@ public class SysOssController {
 	/**
 	 * 上传文件
 	 */
-	@RequestMapping("/upload")
+	@RequestMapping("/upload/{type}")
 	@RequiresPermissions("sys:oss:all")
-	public R upload(@RequestParam("file") MultipartFile file,HttpServletRequest request) throws Exception {
+	public R upload(@PathVariable("type") String type,@RequestParam("file") MultipartFile file,HttpServletRequest request) throws Exception {
 		if (file.isEmpty()) {
 			throw new RRException("上传文件不能为空");
 		}
-
+		
+		if(type==""||type==null){
+			throw new RRException("上传错误");
+		}
+		
+		
+		
 		//上传文件
 
         String serverPath = request.getSession().getServletContext().getRealPath(""); 
         System.out.println("serverPath:"+serverPath);
         serverPath=serverPath+"/statics/upload/image/";
+        
+        if(type=="user"){
+        	serverPath=serverPath+"/users/";
+		}else if(type=="groups"){
+        	serverPath=serverPath+"/groups/";
+		}
+        
+        
         
         Date date=new Date();
         String fileName = date.getTime()+file.getOriginalFilename();  
@@ -76,12 +91,7 @@ public class SysOssController {
         }  
 
 		
-		
-//		//保存文件信息
-//		SysOssEntity ossEntity = new SysOssEntity();
-//		ossEntity.setUrl(url);
-//		ossEntity.setCreateDate(new Date());
-//		sysOssService.save(ossEntity);
+		 
         return R.ok().put("url",request.getScheme()+"://"+request.getServerName()+":"+request.getServerPort()+ request.getContextPath()+"/statics/upload/image/"+fileName);
 	}
 

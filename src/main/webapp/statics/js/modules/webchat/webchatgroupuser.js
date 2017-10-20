@@ -49,6 +49,20 @@ $(function () {
           var rowData = $("#jqGrid").jqGrid("getRowData",id); 
           var val= rowData.level; 
            
+          if(typeof(val)=="undefined"){ 
+	   		  　$('#offline').attr("disabled","disabled");  
+	   		  $('#del').attr("disabled","disabled");  
+	   		  $('#admins').attr("disabled","disabled");  
+	   		  $('#banned').attr("disabled","disabled");  
+	   	   }else {
+	   		   console.log("222222222")
+	   		   $("#offline").attr("disabled", false);
+	   		   $("#del").attr("disabled", false);
+	   		   $("#admins").attr("disabled", false);
+	   		   $("#banned").attr("disabled", false);
+	   	   }
+          
+          
           if(val.indexOf("普通会员")==-1){
         	 vm.adminsname="取消管理员";
           }else{
@@ -62,17 +76,7 @@ $(function () {
 	
 });
 
- 
-//$("#jqGrid").click(function(){
-//    var id = $("#jqGrid").jqGrid('getGridParam','selrow'); 
-//    var rowData = $("#jqGrid").jqGrid("getRowData",id); 
-//    var val= rowData.level; 
-//    alert(val)
-//})
-
-
- 
-
+  
 var vm = new Vue({
 	el:'#rrapp',
 	data:{
@@ -82,6 +86,7 @@ var vm = new Vue({
 	    showList: true,
 		title: null,
 		svalue:null,
+		gid:null,
 		groupname:null,
 		webchatGroups: {},
 		webchatGroupDetail: {},
@@ -145,6 +150,31 @@ var vm = new Vue({
 				}
 			});
 		},
+		offline: function(event){
+			var id = getSelectedRow();
+			if(id == null){
+				return ;
+			}
+			
+			confirm('确定要选中的用户下线？', function(){
+				$.ajax({
+					type: "POST",
+				    url: baseURL + "webchatuser/offline",
+				    contentType: "application/json",
+				    data: JSON.stringify(id),
+				    success: function(r){
+				    	if(r.code === 0){
+							alert('操作成功', function(index){
+								vm.reload();
+							});
+						}else{
+							alert(r.msg);
+						}
+					}
+				});
+			});
+			
+		},
 		del: function (event) {
 			var ids = getSelectedRows();
 			var gid=vm.svalue;
@@ -176,8 +206,8 @@ var vm = new Vue({
             if(userId == null){
                 return ;
             }
-            
-         
+          
+
             
         	layer.open({
                 type: 1,
@@ -196,7 +226,7 @@ var vm = new Vue({
      	                return ;
      	            }
      	            
-     	            var gid=vm.svalue;
+     				var gid=vm.gid[0];
      	            var banned_time=document.getElementById("banned_time").value;  
      	           console.log("gid:"+gid)
      	           console.log("uid:"+userId)
@@ -248,7 +278,9 @@ var vm = new Vue({
 	                return ;
 	            }
 	            
-	            var gid=vm.svalue;
+	      
+	            
+	            var gid=vm.gid;
 	        	$.get(baseURL + "webchatgroupdetail/admins/"+gid+"-"+userId, function(r){
 	        		vm.reload();
 	            });
@@ -288,6 +320,7 @@ var vm = new Vue({
                	 vm.groupname="当前群名:"+name;
                	   console.log("id:"+id)
        	           console.log("name:"+name)
+       	           vm.gid=id;
                	 vm.getdate(id);
                	 layer.close(index);
                }
@@ -301,6 +334,11 @@ var vm = new Vue({
                 page:page
             }).trigger("reloadGrid");
 		} ,
+		getInfo: function(id){
+			$.get(baseURL + "webchatgroupdetail/info/"+id, function(r){
+                vm.webchatFriendgroup = r.webchatFriendgroup;
+            });
+		},
 		getdate(value){
 			$('#jqGrid').jqGrid('clearGridData');
 			$('#jqGrid').jqGrid('setGridParam', {

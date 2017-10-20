@@ -102,6 +102,7 @@ public class WebchatGroupDetailController {
 	@RequestMapping("/info/{gid}")
 	@RequiresPermissions("webchatgroupdetail:info")
 	public R info(@PathVariable("gid") Integer gid){
+		System.out.println("gid:"+gid);
 		WebchatGroupDetailEntity webchatGroupDetail = webchatGroupDetailService.queryObject(gid);
 		
 		return R.ok().put("webchatGroupDetail", webchatGroupDetail);
