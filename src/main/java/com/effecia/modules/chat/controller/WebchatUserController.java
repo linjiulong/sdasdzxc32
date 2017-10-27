@@ -61,16 +61,8 @@ public class WebchatUserController {
         Query query = new Query(params);
 
 		List<WebchatUserEntity> webchatUserList = webchatUserService.queryList(query);
-		String[] ids=new String[webchatUserList.size()];;
-		for (int i = 0; i < webchatUserList.size(); i++) {
-			ids[i]=webchatUserList.get(i).getUid();
-			webchatUserList.get(i).setPassword(null);
-		}
-		List<WebchatGroupsEntity> name=webchatUserService.groupname(ids);
-		for (int i = 0; i < name.size(); i++) {
-			
-			webchatUserList.get(i).setGroupname(name.get(i).getName().toString());
-		}
+		 
+		 
 		int total = webchatUserService.queryTotal(query);
 		
 		PageUtils pageUtil = new PageUtils(webchatUserList, total, query.getLimit(), query.getPage());
@@ -118,14 +110,8 @@ public class WebchatUserController {
 		
 		Date date=new Date();
 		Long DeptId = ((SysUserEntity) SecurityUtils.getSubject().getPrincipal()).getDeptId();
-		if(DeptId!=8){
-			webchatUser.setHashcode(sysDeptService.queryObject(DeptId).getHashcode());
-		}
-		webchatUser.setAddtime(date);
-		webchatUser.setOnline(0);
-		String dates=(date.getTime()+"");
-		String Uid=(date.getTime()+"").substring(dates.length()-8,dates.length());
-		webchatUser.setUid( Uid);
+		 
+		System.out.println("webchatUser save:"+webchatUser);
 		
 		
 		webchatUserService.save(webchatUser);

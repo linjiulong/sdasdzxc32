@@ -28,11 +28,11 @@
 	<insert id="save" parameterType="com.effecia.modules.sys.entity.SysDeptEntity" useGeneratedKeys="true" keyProperty="deptId">
 		insert into sys_dept
 		(
-			`parent_id`, `name`, `order_num`, `hashcode`, `serviceurl`
+			`parent_id`, `name`, `order_num`, `hashcode`, `serviceurl`, `cash_url`,remark
 		)
 		values
 		(
-			#{parentId},  #{name},  #{orderNum} ,#{hashcode}, #{serviceurl}
+			#{parentId},  #{name},  #{orderNum} ,#{hashcode}, #{serviceurl},#{cashUrl},  #{remark} 
 		)
 	</insert>
 	 
@@ -44,6 +44,8 @@
 			<if test="orderNum != null">`order_num` = #{orderNum},</if>
 			<if test="hashcode != null">`hashcode` = #{hashcode},</if>
 			<if test="serviceurl != null">`serviceurl` = #{serviceurl},</if>
+			<if test="cashUrl != null">`cash_url` = #{cashUrl},</if>
+			<if test="remark != null">remark = #{remark},</if>
 		</set>
 		where dept_id = #{deptId}
 	</update>

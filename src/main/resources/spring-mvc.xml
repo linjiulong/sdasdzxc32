@@ -102,5 +102,10 @@
 	    </property>
 	</bean>
 	
+	<!-- 线程池 -->
+	
+	     <import resource="common_config.xml" />
+	 
+	
 	
 </beans>

@@ -24,7 +24,7 @@ public class SysUserEntity implements Serializable {
 	/**
 	 * 用户ID
 	 */
-	private Long userId;
+	private Long id;
 
 	/**
 	 * 用户名
@@ -43,17 +43,6 @@ public class SysUserEntity implements Serializable {
 	 */
 	private String salt;
 
-	/**
-	 * 邮箱
-	 */
-	@NotBlank(message="邮箱不能为空!", groups = {AddGroup.class, UpdateGroup.class})
-	@Email(message="邮箱格式不正确", groups = {AddGroup.class, UpdateGroup.class})
-	private String email;
-
-	/**
-	 * 手机号
-	 */
-	private String mobile;
 
 	/**
 	 * 状态  0：禁用   1：正常
@@ -83,18 +72,18 @@ public class SysUserEntity implements Serializable {
 
 	/**
 	 * 设置：
-	 * @param userId 
+	 * @param Id 
 	 */
-	public void setUserId(Long userId) {
-		this.userId = userId;
+	public void setId(Long id) {
+		this.id = id;
 	}
 
 	/**
 	 * 获取：
 	 * @return Long
 	 */
-	public Long getUserId() {
-		return userId;
+	public Long getId() {
+		return id;
 	}
 	
 	/**
@@ -129,37 +118,7 @@ public class SysUserEntity implements Serializable {
 		return password;
 	}
 	
-	/**
-	 * 设置：邮箱
-	 * @param email 邮箱
-	 */
-	public void setEmail(String email) {
-		this.email = email;
-	}
-
-	/**
-	 * 获取：邮箱
-	 * @return String
-	 */
-	public String getEmail() {
-		return email;
-	}
-	
-	/**
-	 * 设置：手机号
-	 * @param mobile 手机号
-	 */
-	public void setMobile(String mobile) {
-		this.mobile = mobile;
-	}
-
-	/**
-	 * 获取：手机号
-	 * @return String
-	 */
-	public String getMobile() {
-		return mobile;
-	}
+	 
 	
 	/**
 	 * 设置：状态  0：禁用   1：正常
@@ -227,9 +186,11 @@ public class SysUserEntity implements Serializable {
 
 	@Override
 	public String toString() {
-		return "SysUserEntity [userId=" + userId + ", username=" + username + ", password=" + password + ", salt="
-				+ salt + ", email=" + email + ", mobile=" + mobile + ", status=" + status + ", roleIdList=" + roleIdList
-				+ ", createTime=" + createTime + ", deptId=" + deptId + ", deptName=" + deptName + "]";
+		return "SysUserEntity [id=" + id + ", username=" + username + ", password=" + password + ", salt=" + salt
+				+ ", status=" + status + ", roleIdList=" + roleIdList + ", createTime=" + createTime + ", deptId="
+				+ deptId + ", deptName=" + deptName + "]";
 	}
+	
+	
 	
 }

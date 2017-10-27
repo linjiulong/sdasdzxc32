@@ -35,6 +35,8 @@ public class WebchatGroupDetailEntity implements Serializable {
 	
 	//会员列表
 	private String users;
+	
+	private Integer dept_id;//对应包网
 
 	/**
 	 * 设置：
@@ -132,13 +134,26 @@ public class WebchatGroupDetailEntity implements Serializable {
 	public void setUsers(String users) {
 		this.users = users;
 	}
+	public Integer getgStatus() {
+		return gStatus;
+	}
+	public void setgStatus(Integer gStatus) {
+		this.gStatus = gStatus;
+	}
+	public Integer getDept_id() {
+		return dept_id;
+	}
+	public void setDept_id(Integer dept_id) {
+		this.dept_id = dept_id;
+	}
 	@Override
 	public String toString() {
 		return "WebchatGroupDetailEntity [gid=" + gid + ", uid=" + uid + ", addtime=" + addtime + ", gStatus=" + gStatus
 				+ ", bannedTime=" + bannedTime + ", speakTime=" + speakTime + ", level=" + level + ", qfunction="
-				+ qfunction + ", users=" + users + "]";
+				+ qfunction + ", users=" + users + ", dept_id=" + dept_id + "]";
 	}
-	 
+	
+	
 	
 	
 	

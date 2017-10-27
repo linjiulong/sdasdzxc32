@@ -42,7 +42,7 @@ public class DataFilterAspect {
             SysUserEntity user = ShiroUtils.getUserEntity();
 
             //如果不是超级管理员，则只能查询本部门及子部门数据
-            if(user.getUserId() != Constant.SUPER_ADMIN){
+            if(user.getId() != Constant.SUPER_ADMIN){
                 Map map = (Map)params;
                 map.put("filterSql", getFilterSQL(user, point));
             }
@@ -74,7 +74,7 @@ public class DataFilterAspect {
 
         //没有本部门数据权限，也能查询本人数据
         if(dataFilter.user()){
-            filterSql.append(" or ").append(tableAlias).append("user_id=").append(user.getUserId());
+            filterSql.append(" or ").append(tableAlias).append("user_id=").append(user.getId());
         }
         filterSql.append(")");
 

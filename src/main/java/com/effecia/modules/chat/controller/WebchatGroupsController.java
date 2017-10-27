@@ -21,8 +21,7 @@ import com.effecia.modules.chat.entity.WebchatUserEntity;
 import com.effecia.modules.chat.service.WebchatGroupDeptService;
 import com.effecia.modules.chat.service.WebchatGroupDetailService;
 import com.effecia.modules.chat.service.WebchatGroupsService;
-import com.effecia.modules.sys.entity.SysUserEntity;
-import com.effecia.modules.sys.service.SysUserService;
+import com.effecia.modules.chat.service.WebchatUserService;
 import com.alibaba.fastjson.JSON;
 import com.effecia.common.utils.PageUtils;
 import com.effecia.common.utils.Query;
@@ -52,9 +51,9 @@ public class WebchatGroupsController {
 	@Autowired
 	private WebchatGroupDeptService webchatGroupDeptService;
 	
-	@Autowired
-	private SysUserService sysUserService;
 	
+	@Autowired
+	private WebchatUserService webchatUserService;
 	
 	
 	/**
@@ -64,7 +63,7 @@ public class WebchatGroupsController {
 	@RequiresPermissions("webchatgroups:list")
 	public R list(@RequestParam Map<String, Object> params){
 		
-		Long DeptId = ((SysUserEntity) SecurityUtils.getSubject().getPrincipal()).getDeptId();
+		Long DeptId = ((WebchatUserEntity) SecurityUtils.getSubject().getPrincipal()).getDeptId();
 		if(DeptId!=8){
 			params.put("DeptId", DeptId);
 		}
@@ -76,9 +75,20 @@ public class WebchatGroupsController {
 		List<WebchatGroupsEntity> webchatGroupsList = webchatGroupsService.queryList(query);
 		for (WebchatGroupsEntity webchatGroupsEntity : webchatGroupsList) {
 			webchatGroupsEntity.setQuantity(webchatGroupDetailService.group_quantity(webchatGroupsEntity.getId()));
-			webchatGroupsEntity.setUsername(sysUserService.queryObject(Long.parseLong(webchatGroupsEntity.getOwnerUid()+"")).getUsername());
+			if(webchatGroupsEntity.getOwnerUid()!=null){
+				String username=webchatUserService.queryObject(webchatGroupsEntity.getOwnerUid()).getUsername();
+				if(username!=null){
+					webchatGroupsEntity.setUsername(username);
+				}else {
+					webchatGroupsEntity.setUsername("暂未指定");
+				}
+			}else {
+				webchatGroupsEntity.setUsername("暂未指定");
+			}
+			
 			String Headphoto=webchatGroupsEntity.getHeadphoto();
 			webchatGroupsEntity.setHeadphoto(" <a href= \" "+Headphoto+" \"   target=\"_blank\"  > 点击查看头像  </a>");
+			System.out.println("webchatGroupsList:"+webchatGroupsEntity);
 		}
 		
 		
@@ -97,7 +107,7 @@ public class WebchatGroupsController {
 	@RequiresPermissions("webchatgroups:select")
 	public R  select(@RequestParam Map<String, Object> params){
 	
-		Long DeptId = ((SysUserEntity) SecurityUtils.getSubject().getPrincipal()).getDeptId();
+		Long DeptId = ((WebchatUserEntity) SecurityUtils.getSubject().getPrincipal()).getDeptId();
 		if(DeptId!=8){
 			params.put("DeptId", DeptId);
 		}
@@ -118,7 +128,7 @@ public class WebchatGroupsController {
 	public R info(@PathVariable("id") Integer id){
 		
 		
-		Long DeptId = ((SysUserEntity) SecurityUtils.getSubject().getPrincipal()).getDeptId();
+		Long DeptId = ((WebchatUserEntity) SecurityUtils.getSubject().getPrincipal()).getDeptId();
 		if(DeptId!=8){
 				WebchatGroupDeptEntity GroupDeptEntity=webchatGroupDeptService.queryFind(id,DeptId);
 				if(GroupDeptEntity==null){
@@ -147,6 +157,8 @@ public class WebchatGroupsController {
 		
 		Date date=new Date();
 		webchatGroups.setAddtime(date);
+		Integer DeptId = Integer.parseInt(((WebchatUserEntity) SecurityUtils.getSubject().getPrincipal()).getDeptId()+"");
+		webchatGroups.setDeptId(DeptId);
 		webchatGroupsService.save(webchatGroups);
 		
 		
@@ -169,12 +181,6 @@ public class WebchatGroupsController {
 		}
 		
 		
-		Long DeptId = ((SysUserEntity) SecurityUtils.getSubject().getPrincipal()).getDeptId();
-		Integer gid=webchatGroupDetail.getGid();
-		WebchatGroupDeptEntity webchatGroupDept=new WebchatGroupDeptEntity();
-		webchatGroupDept.setDeptId(Integer.parseInt(DeptId+""));
-		webchatGroupDept.setGroupsId(gid);
-		webchatGroupDeptService.save(webchatGroupDept);
 		
 		
 		return R.ok();
@@ -190,7 +196,7 @@ public class WebchatGroupsController {
 		
 		 
 		
-		Long DeptId = ((SysUserEntity) SecurityUtils.getSubject().getPrincipal()).getDeptId();
+		Long DeptId = ((WebchatUserEntity) SecurityUtils.getSubject().getPrincipal()).getDeptId();
 		if(DeptId!=8){
 			WebchatGroupDeptEntity GroupDeptEntity=webchatGroupDeptService.queryFind(webchatGroups.getId(),DeptId);
 			if(GroupDeptEntity==null){
@@ -209,7 +215,7 @@ public class WebchatGroupsController {
 	@RequestMapping("/delete")
 	@RequiresPermissions("webchatgroups:delete")
 	public R delete(@RequestBody Integer[] ids){
-		Long DeptId = ((SysUserEntity) SecurityUtils.getSubject().getPrincipal()).getDeptId();
+		Long DeptId = ((WebchatUserEntity) SecurityUtils.getSubject().getPrincipal()).getDeptId();
 		if(DeptId!=8){
 			for (Integer integer : ids) {
 				WebchatGroupDeptEntity GroupDeptEntity=webchatGroupDeptService.queryFind(integer,DeptId);

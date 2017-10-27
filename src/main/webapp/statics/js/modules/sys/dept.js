@@ -135,13 +135,14 @@ var Dept = {
  */
 Dept.initColumn = function () {
     var columns = [
-        {field: 'selectItem', radio: true},
-        {title: 'ID', field: 'deptId', visible: false, align: 'center', valign: 'middle', width: '20px'},
-        {title: '名称', field: 'name', align: 'center', valign: 'middle', sortable: true, width: '180px'},
-        {title: '所属', field: 'parentName', align: 'center', valign: 'middle', sortable: true, width: '50px'},
-        {title: '客服', field: 'serviceurl', align: 'center', valign: 'middle', sortable: true, width: '100px'},
-        {title: 'HashCode', field: 'hashcode', align: 'center', valign: 'middle', sortable: true, width: '100px'},
-        {title: '排序号', field: 'orderNum', align: 'center', valign: 'middle', sortable: true, width: '20px'}]
+	        {field: 'selectItem', radio: true},
+	        {title: 'ID', field: 'deptId', visible: false, align: 'center', valign: 'middle', width: '20px'},
+	        {title: '包网代号', field: 'name', align: 'center', valign: 'middle', sortable: true, width: '180px'},
+	        {title: '包网名称', field: 'remark', align: 'center', valign: 'middle', sortable: true, width: '180px'},
+	        {title: '客服url', field: 'serviceurl', align: 'center', valign: 'middle', sortable: true, width: '100px'},
+	        {title: 'HashCode', field: 'hashcode', align: 'center', valign: 'middle', sortable: true, width: '100px'},
+	        {title: '请求路径', field: 'cashUrl', align: 'center', valign: 'middle', sortable: true, width: '100px'}
+        ]
     return columns;
 };
 

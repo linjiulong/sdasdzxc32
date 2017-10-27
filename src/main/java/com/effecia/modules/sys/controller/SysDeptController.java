@@ -2,6 +2,9 @@ package com.effecia.modules.sys.controller;
 
 import com.effecia.common.utils.Constant;
 import com.effecia.common.utils.R;
+import com.effecia.common.validator.ValidatorUtils;
+import com.effecia.modules.chat.entity.WebchatGroupsEntity;
+import com.effecia.modules.chat.service.WebchatGroupsService;
 import com.effecia.modules.sys.entity.SysDeptEntity;
 import com.effecia.modules.sys.service.SysDeptService;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
@@ -11,6 +14,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 
@@ -25,8 +29,12 @@ import java.util.List;
 @RestController
 @RequestMapping("/sys/dept")
 public class SysDeptController extends AbstractController {
+	
 	@Autowired
 	private SysDeptService sysDeptService;
+	
+	@Autowired
+	private WebchatGroupsService webchatGroupsService;
 	
 	/**
 	 * 列表
@@ -35,7 +43,6 @@ public class SysDeptController extends AbstractController {
 	@RequiresPermissions("sys:dept:list")
 	public List<SysDeptEntity> list(){
 		List<SysDeptEntity> deptList = sysDeptService.queryList(new HashMap<String, Object>());
-
 		return deptList;
 	}
 
@@ -92,7 +99,20 @@ public class SysDeptController extends AbstractController {
 	@RequestMapping("/save")
 	@RequiresPermissions("sys:dept:save")
 	public R save(@RequestBody SysDeptEntity dept){
+		ValidatorUtils.validateEntity(dept);
+		
 		sysDeptService.save(dept);
+		WebchatGroupsEntity webchatGroups=new WebchatGroupsEntity();
+		
+		Date date=new Date();
+		webchatGroups.setAddtime(date);
+		webchatGroups.setDesc("游客群");
+		webchatGroups.setName(dept.getGroupname());
+		webchatGroups.setLevel(0);
+		webchatGroups.setDeptId(Integer.parseInt(dept.getDeptId()+""));
+		
+		webchatGroupsService.save(webchatGroups);
+		
 		
 		return R.ok();
 	}
@@ -103,6 +123,7 @@ public class SysDeptController extends AbstractController {
 	@RequestMapping("/update")
 	@RequiresPermissions("sys:dept:update")
 	public R update(@RequestBody SysDeptEntity dept){
+		ValidatorUtils.validateEntity(dept);
 		sysDeptService.update(dept);
 		
 		return R.ok();

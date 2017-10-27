@@ -1,6 +1,8 @@
 package com.effecia.modules.sys.controller;
 
+import com.effecia.modules.chat.entity.WebchatUserEntity;
 import com.effecia.modules.sys.entity.SysUserEntity;
+
 import org.apache.shiro.SecurityUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -20,7 +22,7 @@ public abstract class AbstractController {
 	}
 
 	protected Long getUserId() {
-		return getUser().getUserId();
+		return getUser().getId();
 	}
 
 	protected Long getDeptId() {

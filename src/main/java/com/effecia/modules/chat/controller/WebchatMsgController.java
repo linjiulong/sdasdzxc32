@@ -13,9 +13,9 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.effecia.modules.chat.entity.WebchatGroupDeptEntity;
+import com.effecia.modules.chat.entity.WebchatUserEntity;
 import com.effecia.modules.chat.entity.WebchatMsgEntity;
 import com.effecia.modules.chat.service.WebchatMsgService;
-import com.effecia.modules.sys.entity.SysUserEntity;
 import com.effecia.common.utils.PageUtils;
 import com.effecia.common.utils.Query;
 import com.effecia.common.utils.R;
@@ -40,7 +40,7 @@ public class WebchatMsgController {
 	@RequestMapping("/list")
 	@RequiresPermissions("webchatmsg:list")
 	public R list(@RequestParam Map<String, Object> params){
-		Long DeptId = ((SysUserEntity) SecurityUtils.getSubject().getPrincipal()).getDeptId();
+		Long DeptId = ((WebchatUserEntity) SecurityUtils.getSubject().getPrincipal()).getDeptId();
 
 		if(DeptId!=8){
 			params.put("DeptId", DeptId);
@@ -61,7 +61,7 @@ public class WebchatMsgController {
 	public R select(@PathVariable("gid") Integer gid,@RequestParam Map<String, Object> params){
 		
 		params.put("gid", gid);
-		Long DeptId = ((SysUserEntity) SecurityUtils.getSubject().getPrincipal()).getDeptId();
+		Long DeptId = ((WebchatUserEntity) SecurityUtils.getSubject().getPrincipal()).getDeptId();
 		if(DeptId!=8){
 			WebchatGroupDeptEntity WebchatGroupDept=webchatMsgService.queryFind(gid,DeptId);
 			if(WebchatGroupDept==null){

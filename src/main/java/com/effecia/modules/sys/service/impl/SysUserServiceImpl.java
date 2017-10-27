@@ -76,7 +76,7 @@ public class SysUserServiceImpl implements SysUserService {
 		sysUserDao.save(user);
 		
 		//保存用户与角色关系
-		sysUserRoleService.saveOrUpdate(user.getUserId(), user.getRoleIdList());
+		sysUserRoleService.saveOrUpdate(user.getId(), user.getRoleIdList());
 	}
 
 	@Override
@@ -90,7 +90,7 @@ public class SysUserServiceImpl implements SysUserService {
 		sysUserDao.update(user);
 		
 		//保存用户与角色关系
-		sysUserRoleService.saveOrUpdate(user.getUserId(), user.getRoleIdList());
+		sysUserRoleService.saveOrUpdate(user.getId(), user.getRoleIdList());
 	}
 
 	@Override

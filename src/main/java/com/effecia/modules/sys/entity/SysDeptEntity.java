@@ -3,9 +3,14 @@ package com.effecia.modules.sys.entity;
 import java.io.Serializable;
 import java.util.List;
 
+import org.hibernate.validator.constraints.NotBlank;
+
+import com.effecia.common.validator.group.AddGroup;
+import com.effecia.common.validator.group.UpdateGroup;
+
 
 /**
- * 部门管理
+ * 包网管理
  * 
  * @author lin
  * @email lin.lin@support888.net
@@ -14,13 +19,14 @@ import java.util.List;
 public class SysDeptEntity implements Serializable {
 	private static final long serialVersionUID = 1L;
 	
-	//部门ID
+	//包网ID
 	private Long deptId;
-	//上级部门ID，一级部门为0
+	//上级包网ID，一级包网为0
 	private Long parentId;
-	//部门名称
+	//包网名称
+	@NotBlank(message="包网代号不能为空")
 	private String name;
-	//上级部门名称
+	//上级包网名称
 	private String parentName;
 	//排序
 	private Integer orderNum;
@@ -32,11 +38,24 @@ public class SysDeptEntity implements Serializable {
 	private List<?> list;
 
 	//标识
+	@NotBlank(message="HashCode不能为空")
 	private String hashcode;
 	
 	//客服聊天
-	
+	@NotBlank(message="客服聊天地址")
 	private String serviceurl;
+	
+	//现金网登陆请求地址
+	@NotBlank(message="请求路径不能为空!")
+	private String cashUrl;
+	
+	
+	@NotBlank(message="群名称不能为空!")
+	private String remark;
+	
+
+	@NotBlank(message="群名称不能为空!")
+	private String groupname;
 	
 	
 	public void setDeptId(Long deptId) {
@@ -47,25 +66,25 @@ public class SysDeptEntity implements Serializable {
 		return deptId;
 	}
 	/**
-	 * 设置：上级部门ID，一级部门为0
+	 * 设置：上级包网ID，一级包网为0
 	 */
 	public void setParentId(Long parentId) {
 		this.parentId = parentId;
 	}
 	/**
-	 * 获取：上级部门ID，一级部门为0
+	 * 获取：上级包网ID，一级包网为0
 	 */
 	public Long getParentId() {
 		return parentId;
 	}
 	/**
-	 * 设置：部门名称
+	 * 设置：包网名称
 	 */
 	public void setName(String name) {
 		this.name = name;
 	}
 	/**
-	 * 获取：部门名称
+	 * 获取：包网名称
 	 */
 	public String getName() {
 		return name;
@@ -123,12 +142,45 @@ public class SysDeptEntity implements Serializable {
 		this.serviceurl = serviceurl;
 	}
 
+	
+
+	public String getCashUrl() {
+		return cashUrl;
+	}
+
+	public void setCashUrl(String cashUrl) {
+		this.cashUrl = cashUrl;
+	}
+
+	public String getRemark() {
+		return remark;
+	}
+
+	public void setRemark(String remark) {
+		this.remark = remark;
+	}
+
+	public String getGroupname() {
+		return groupname;
+	}
+
+	public void setGroupname(String groupname) {
+		this.groupname = groupname;
+	}
+
 	@Override
 	public String toString() {
 		return "SysDeptEntity [deptId=" + deptId + ", parentId=" + parentId + ", name=" + name + ", parentName="
 				+ parentName + ", orderNum=" + orderNum + ", open=" + open + ", list=" + list + ", hashcode=" + hashcode
-				+ ", serviceurl=" + serviceurl + "]";
+				+ ", serviceurl=" + serviceurl + ", cashUrl=" + cashUrl + ", remark=" + remark + ", groupname="
+				+ groupname + "]";
 	}
+
+	 
+ 
 	
+	
+
+	 
 	
 }

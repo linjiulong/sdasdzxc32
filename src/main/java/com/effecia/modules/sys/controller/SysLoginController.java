@@ -24,6 +24,8 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.effecia.common.utils.R;
+import com.effecia.modules.chat.entity.WebchatUserEntity;
+import com.effecia.modules.chat.service.WebchatUserService;
 import com.effecia.modules.sys.entity.SysUserEntity;
 import com.effecia.modules.sys.shiro.ShiroUtils;
 import com.google.code.kaptcha.Constants;
@@ -40,6 +42,8 @@ import com.google.code.kaptcha.Producer;
 public class SysLoginController {
 	@Autowired
 	private Producer producer;
+	
+ 
 	
 	@RequestMapping("captcha.jpg")
 	public void captcha(HttpServletResponse response)throws ServletException, IOException {
@@ -73,10 +77,6 @@ public class SysLoginController {
 			UsernamePasswordToken token = new UsernamePasswordToken(username, password);
 			subject.login(token);
 			SysUserEntity user = (SysUserEntity) SecurityUtils.getSubject().getPrincipal();
-			
-			if(user.getStatus()==0){
-				return R.error("账号已被锁定,请联系管理员");
-			}
 			
 		}catch (UnknownAccountException e) {
 			return R.error(e.getMessage());

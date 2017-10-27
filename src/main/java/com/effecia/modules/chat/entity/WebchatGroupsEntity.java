@@ -49,6 +49,9 @@ public class WebchatGroupsEntity implements Serializable {
 	//群主昵称
 	private String username;
 
+	private Integer deptId;//对应包网
+
+	
 	/**
 	 * 设置：id
 	 */
@@ -151,13 +154,21 @@ public class WebchatGroupsEntity implements Serializable {
 	public void setUsername(String username) {
 		this.username = username;
 	}
+	public Integer getDeptId() {
+		return deptId;
+	}
+	public void setDeptId(Integer deptId) {
+		this.deptId = deptId;
+	}
 	@Override
 	public String toString() {
 		return "WebchatGroupsEntity [id=" + id + ", name=" + name + ", headphoto=" + headphoto + ", desc=" + desc
 				+ ", ownerUid=" + ownerUid + ", addtime=" + addtime + ", level=" + level + ", users=" + users
-				+ ", quantity=" + quantity + ", username=" + username + "]";
+				+ ", quantity=" + quantity + ", username=" + username + ", deptId=" + deptId + "]";
 	}
 	 
+	
+ 
 	
 	
 	

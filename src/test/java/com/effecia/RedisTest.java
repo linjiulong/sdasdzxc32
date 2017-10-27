@@ -2,8 +2,6 @@ package com.effecia;
 
 import com.alibaba.fastjson.JSON;
 import com.effecia.common.utils.RedisUtils;
-import com.effecia.modules.sys.entity.SysUserEntity;
-import com.effecia.modules.sys.service.SysUserService;
 import com.google.gson.Gson;
 
 import java.util.ArrayList;
@@ -22,8 +20,6 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 public class RedisTest {
     @Autowired
     private RedisUtils redisUtils;
-    @Autowired
-    private SysUserService sysUserService;
 //
 //    @Test
 //    public void test(){

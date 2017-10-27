@@ -1,7 +1,9 @@
 package com.effecia.modules.chat.entity;
 
 import java.io.Serializable;
+import java.math.BigDecimal;
 import java.util.Date;
+import java.util.List;
 
 
 
@@ -10,17 +12,15 @@ import java.util.Date;
  * 
  * @author lin
  * @email lin.lin@support888.net
- * @date 2017-10-07 16:02:13
+ * @date 2017-10-26 17:48:29
  */
 public class WebchatUserEntity implements Serializable {
 	private static final long serialVersionUID = 1L;
 	
-	//
-	private Integer id;
 	//用户ID
-	private String uid;
+	private Long id;
 	//用户名
-	private String name;
+	private String username;
 	//密码
 	private String password;
 	//个人介绍
@@ -28,50 +28,57 @@ public class WebchatUserEntity implements Serializable {
 	//头像
 	private String headphoto;
 	//注册时间
-	private Date addtime;
+	private Date addTime;
 	//0 离线 1在线 状态
 	private Integer online;
+	//包网id标识
+	private Long deptId;
+	//盐
+	private String salt;
+	//登录次数
+	private Integer count;
+	//状态 0禁用 1正常
+	private Integer status;
+	//金额
+	private BigDecimal limits;
 	
-	//唯一值
-	private String hashcode;
-	//会员所在群 群名
-	private String groupname;
+	/**
+	 * 角色ID列表
+	 */
+	private List<Long> roleIdList;
+	
+	
+	public List<Long> getRoleIdList() {
+		return roleIdList;
+	}
 
-	/**
-	 * 设置：
-	 */
-	public void setId(Integer id) {
-		this.id = id;
+	public void setRoleIdList(List<Long> roleIdList) {
+		this.roleIdList = roleIdList;
 	}
-	/**
-	 * 获取：
-	 */
-	public Integer getId() {
-		return id;
-	}
+	
 	/**
 	 * 设置：用户ID
 	 */
-	public void setUid(String uid) {
-		this.uid = uid;
+	public void setId(Long id) {
+		this.id = id;
 	}
 	/**
 	 * 获取：用户ID
 	 */
-	public String getUid() {
-		return uid;
+	public Long getId() {
+		return id;
 	}
 	/**
 	 * 设置：用户名
 	 */
-	public void setName(String name) {
-		this.name = name;
+	public void setUsername(String username) {
+		this.username = username;
 	}
 	/**
 	 * 获取：用户名
 	 */
-	public String getName() {
-		return name;
+	public String getUsername() {
+		return username;
 	}
 	/**
 	 * 设置：密码
@@ -112,14 +119,14 @@ public class WebchatUserEntity implements Serializable {
 	/**
 	 * 设置：注册时间
 	 */
-	public void setAddtime(Date addtime) {
-		this.addtime = addtime;
+	public void setAddTime(Date addTime) {
+		this.addTime = addTime;
 	}
 	/**
 	 * 获取：注册时间
 	 */
-	public Date getAddtime() {
-		return addtime;
+	public Date getAddTime() {
+		return addTime;
 	}
 	/**
 	 * 设置：0 离线 1在线 状态
@@ -133,23 +140,68 @@ public class WebchatUserEntity implements Serializable {
 	public Integer getOnline() {
 		return online;
 	}
-	public String getHashcode() {
-		return hashcode;
+	/**
+	 * 设置：包网id标识
+	 */
+	public void setDeptId(Long deptId) {
+		this.deptId = deptId;
 	}
-	public void setHashcode(String hashcode) {
-		this.hashcode = hashcode;
+	/**
+	 * 获取：包网id标识
+	 */
+	public Long getDeptId() {
+		return deptId;
 	}
-	public String getGroupname() {
-		return groupname;
+	/**
+	 * 设置：盐
+	 */
+	public void setSalt(String salt) {
+		this.salt = salt;
 	}
-	public void setGroupname(String groupname) {
-		this.groupname = groupname;
+	/**
+	 * 获取：盐
+	 */
+	public String getSalt() {
+		return salt;
 	}
+	/**
+	 * 设置：登录次数
+	 */
+	public void setCount(Integer count) {
+		this.count = count;
+	}
+	/**
+	 * 获取：登录次数
+	 */
+	public Integer getCount() {
+		return count;
+	}
+	/**
+	 * 设置：状态 0禁用 1正常
+	 */
+	public void setStatus(Integer status) {
+		this.status = status;
+	}
+	/**
+	 * 获取：状态 0禁用 1正常
+	 */
+	public Integer getStatus() {
+		return status;
+	}
+	public BigDecimal getLimits() {
+		return limits;
+	}
+	public void setLimits(BigDecimal limits) {
+		this.limits = limits;
+	}
+
 	@Override
 	public String toString() {
-		return "WebchatUserEntity [id=" + id + ", uid=" + uid + ", name=" + name + ", password=" + password + ", sign="
-				+ sign + ", headphoto=" + headphoto + ", addtime=" + addtime + ", online=" + online + ", hashcode="
-				+ hashcode + ", groupname=" + groupname + "]";
+		return "WebchatUserEntity [id=" + id + ", username=" + username + ", password=" + password + ", sign=" + sign
+				+ ", headphoto=" + headphoto + ", addTime=" + addTime + ", online=" + online + ", deptId=" + deptId
+				+ ", salt=" + salt + ", count=" + count + ", status=" + status + ", limits=" + limits + ", roleIdList="
+				+ roleIdList + "]";
 	}
+	 
 	 
 }

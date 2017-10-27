@@ -10,6 +10,7 @@
 			classpath:spring-mvc.xml
 			classpath:spring-jdbc.xml
 			classpath:spring-redis.xml
+			<!--  classpath:common_config.xml  -->	
 			<!--  classpath:spring-scheduler.xml -->		
 		</param-value>
 	</context-param>
@@ -31,6 +32,7 @@
 	<listener>
 		<listener-class>org.springframework.web.context.ContextLoaderListener</listener-class>
 	</listener>
+	 
 	
 	<filter>
 		<filter-name>encodingFilter</filter-name>

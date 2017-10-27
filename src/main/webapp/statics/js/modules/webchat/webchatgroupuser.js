@@ -15,9 +15,14 @@ $(function () {
 			{ label: '禁言时长', name: 'bannedTime', index: 'banned_time', width: 80 }, 			
 			{ label: '最后发言时间', name: 'speakTime', index: 'speak_time', width: 80 }, 			
 			{ label: '级别', name: 'level',  width: 80 , formatter: function(value, options, row){
-				return value === 1 ? 
-						'<span class="label label-success">普通会员</span>' : 
-						'<span class="label label-danger">管理员</span>';
+					if(value==0){
+						return '<span class="label label-warning">群主</span>' ;
+					}else if (value==1) {
+						return '<span class="label label-primary">会员</span>' ; 
+					}else if (value==2) {
+						vm.groupadmin="设为群主";
+						return '<span class="label label-success">管理员</span>' ; 
+					}
 			}}
         ],
 		viewrecords: true,
@@ -50,24 +55,29 @@ $(function () {
           var val= rowData.level; 
            
           if(typeof(val)=="undefined"){ 
-	   		  　$('#offline').attr("disabled","disabled");  
+//	   		  　$('#offline').attr("disabled","disabled");  
 	   		  $('#del').attr("disabled","disabled");  
 	   		  $('#admins').attr("disabled","disabled");  
 	   		  $('#banned').attr("disabled","disabled");  
+	   		  $('#groupadmin').attr("disabled","disabled");  
 	   	   }else {
 	   		   console.log("222222222")
-	   		   $("#offline").attr("disabled", false);
+//	   		   $("#offline").attr("disabled", false);
 	   		   $("#del").attr("disabled", false);
 	   		   $("#admins").attr("disabled", false);
+	   		   $("#groupadmin").attr("disabled", false);
 	   		   $("#banned").attr("disabled", false);
 	   	   }
           
           
-          if(val.indexOf("普通会员")==-1){
+          if(val.indexOf("会员")==-1){
         	 vm.adminsname="取消管理员";
           }else{
         	  vm.adminsname="设置管理员";
           }
+          
+         
+          
         }
     });
 	 
@@ -88,6 +98,7 @@ var vm = new Vue({
 		svalue:null,
 		gid:null,
 		groupname:null,
+		groupadmin:null,
 		webchatGroups: {},
 		webchatGroupDetail: {},
 		adminsname:"设置管理员",
@@ -102,7 +113,7 @@ var vm = new Vue({
 		add: function(){
 			vm.getUsers();
 			vm.webchatGroups = {};
-			if(vm.svalue!=null){
+			if(vm.groupname!=null){
 	        	layer.open({
 	                type: 1,
 	                offset: '50px',

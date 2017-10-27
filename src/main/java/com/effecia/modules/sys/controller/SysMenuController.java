@@ -5,7 +5,6 @@ import com.effecia.common.exception.RRException;
 import com.effecia.common.utils.Constant;
 import com.effecia.common.utils.R;
 import com.effecia.modules.sys.entity.SysMenuEntity;
-import com.effecia.modules.sys.entity.SysUserEntity;
 import com.effecia.modules.sys.service.SysMenuService;
 import org.apache.commons.lang.StringUtils;
 import org.apache.shiro.SecurityUtils;
@@ -14,6 +13,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import com.effecia.modules.chat.entity.WebchatUserEntity;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.ArrayList;
@@ -71,7 +71,7 @@ public class SysMenuController extends AbstractController {
 	@RequestMapping("/list")
 	@RequiresPermissions("sys:menu:list")
 	public List<SysMenuEntity> list(){
-		Long DeptId = ((SysUserEntity) SecurityUtils.getSubject().getPrincipal()).getDeptId();
+		Long DeptId = ((WebchatUserEntity) SecurityUtils.getSubject().getPrincipal()).getDeptId();
 		System.out.println("sys:menu:list DeptId:"+DeptId);
 		
 		List<SysMenuEntity> menuList=new ArrayList<>();
@@ -97,7 +97,7 @@ public class SysMenuController extends AbstractController {
 		//查询列表数据
 		List<SysMenuEntity> menuList = sysMenuService.queryNotButtonList();
 		
-		Long DeptId = ((SysUserEntity) SecurityUtils.getSubject().getPrincipal()).getDeptId();
+		Long DeptId = ((WebchatUserEntity) SecurityUtils.getSubject().getPrincipal()).getDeptId();
 		System.out.println("sys:menu:select DeptId:"+DeptId);
 
 	 
