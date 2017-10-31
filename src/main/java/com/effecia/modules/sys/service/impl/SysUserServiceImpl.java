@@ -68,7 +68,7 @@ public class SysUserServiceImpl implements SysUserService {
 	@Override
 	@Transactional
 	public void save(SysUserEntity user) {
-		user.setCreateTime(new Date());
+		user.setAddTime(new Date());
 		//sha256加密
 		String salt = RandomStringUtils.randomAlphanumeric(20);
 		user.setSalt(salt);

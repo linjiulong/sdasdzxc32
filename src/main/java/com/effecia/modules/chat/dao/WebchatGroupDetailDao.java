@@ -21,5 +21,8 @@ public interface WebchatGroupDetailDao extends BaseDao<WebchatGroupDetailEntity>
 	void deleteBatch(Map<String,Object> map);
 	
 	WebchatGroupDetailEntity queryFindObject(Map<String,Object> map);
+	
+	void group_detail(Integer uid);
+
 
 }

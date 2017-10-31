@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.effecia.modules.chat.dao.WebchatBroadDao">
+
+	<!-- 可根据自己的需求，是否要使用 -->
+    <resultMap type="com.effecia.modules.chat.entity.WebchatBroadEntity" id="webchatBroadMap">
+        <result property="id" column="id"/>
+        <result property="title" column="title"/>
+        <result property="msg" column="msg"/>
+        <result property="beginTime" column="begin_time"/>
+        <result property="endTime" column="end_time"/>
+        <result property="bState" column="b_state"/>
+    </resultMap>
+
+	<select id="queryObject" resultType="com.effecia.modules.chat.entity.WebchatBroadEntity">
+		select * from webchat_broad where id = #{value}
+	</select>
+
+	<select id="queryList" resultType="com.effecia.modules.chat.entity.WebchatBroadEntity">
+		select * from webchat_broad
+        <choose>
+            <when test="sidx != null and sidx.trim() != ''">
+                order by ${sidx} ${order}
+            </when>
+			<otherwise>
+                order by id desc
+			</otherwise>
+        </choose>
+		<if test="offset != null and limit != null">
+			limit #{offset}, #{limit}
+		</if>
+	</select>
+	
+ 	<select id="queryTotal" resultType="int">
+		select count(*) from webchat_broad 
+	</select>
+	 
+	<insert id="save" parameterType="com.effecia.modules.chat.entity.WebchatBroadEntity">
+		insert into webchat_broad
+		(
+			`id`, 
+			`title`, 
+			`msg`, 
+			`begin_time`, 
+			`end_time`, 
+			`b_state`
+		)
+		values
+		(
+			#{id}, 
+			#{title}, 
+			#{msg}, 
+			#{beginTime}, 
+			#{endTime}, 
+			#{bState}
+		)
+	</insert>
+	 
+	<update id="update" parameterType="com.effecia.modules.chat.entity.WebchatBroadEntity">
+		update webchat_broad 
+		<set>
+			<if test="title != null">`title` = #{title}, </if>
+			<if test="msg != null">`msg` = #{msg}, </if>
+			<if test="beginTime != null">`begin_time` = #{beginTime}, </if>
+			<if test="endTime != null">`end_time` = #{endTime}, </if>
+			<if test="bState != null">`b_state` = #{bState}</if>
+		</set>
+		where id = #{id}
+	</update>
+	
+	<delete id="delete">
+		delete from webchat_broad where id = #{value}
+	</delete>
+	
+	<delete id="deleteBatch">
+		delete from webchat_broad where id in 
+		<foreach item="id" collection="array" open="(" separator="," close=")">
+			#{id}
+		</foreach>
+	</delete>
+
+</mapper>

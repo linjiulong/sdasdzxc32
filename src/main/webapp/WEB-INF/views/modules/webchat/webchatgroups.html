@@ -32,7 +32,7 @@
     <div v-show="!showList" class="panel panel-default">
 		<div class="panel-heading">{{title}}</div>
 		<form class="form-horizontal">
-											<div class="form-group">
+			<div class="form-group">
 			   	<div class="col-sm-2 control-label">群名</div>
 			   	<div class="col-sm-10">
 			      <input type="text" class="form-control" v-model="webchatGroups.name" placeholder="群名"/>
@@ -47,16 +47,17 @@
 			<div class="form-group">
 			   	<div class="col-sm-2 control-label">群介绍</div>
 			   	<div class="col-sm-10">
-			      <input type="text" class="form-control" v-model="webchatGroups.desc" placeholder="群介绍"/>
+			      	<textarea rows="6" maxlength="140" onchange="this.value=this.value.substring(0, 140)" onkeydown="this.value=this.value.substring(0, 140)" onkeyup="this.value=this.value.substring(0, 140)" class="form-control" v-model="webchatGroups.desc" placeholder="群介绍不超过140字."/>
+			   	    </textarea>
 			    </div>
 			</div>
 			<div class="form-group">
-			   	<div class="col-sm-2 control-label">0 游客 1普通群</div>
+			   	<div class="col-sm-2 control-label">群公告</div>
 			   	<div class="col-sm-10">
-			      <input type="text" class="form-control" v-model="webchatGroups.level" placeholder="0 游客 1普通群"/>
+			        <textarea rows="6" maxlength="140" onchange="this.value=this.value.substring(0, 140)" onkeydown="this.value=this.value.substring(0, 140)" onkeyup="this.value=this.value.substring(0, 140)" class="form-control" v-model="webchatGroups.anno" placeholder="群公告不超过140字."/>
+			   	    </textarea>
 			    </div>
 			</div>
-			
 			<div class="form-group"   v-if="title=='新增'" >
 				<div class="col-sm-2 control-label">邀请成员</div>
 				<div class="col-sm-10">

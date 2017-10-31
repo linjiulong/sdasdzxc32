@@ -37,36 +37,39 @@
     <div v-show="!showList" class="panel panel-default">
 		<div class="panel-heading">{{title}}</div>
 		<form class="form-horizontal">
-			<div class="form-group">
-			   	<div class="col-sm-2 control-label">用户ID</div>
-			   	<div class="col-sm-10">
-			      <input type="text" class="form-control" disabled="disabled" v-model="webchatUser.uid" placeholder="自动生成"/>
-			    </div>
-			</div>
-									<div class="form-group">
+			 
+			<div class="form-group" v-if="title=='修改'" >
 			   	<div class="col-sm-2 control-label">用户名</div>
 			   	<div class="col-sm-10">
-			      <input type="text" class="form-control" v-model="webchatUser.name" placeholder="用户名"/>
+			      <input type="text" class="form-control" disabled="disabled" v-model="webchatUser.username" placeholder="用户名"/>
 			    </div>
 			</div>
-									<div class="form-group">
+
+			<div class="form-group">
 			   	<div class="col-sm-2 control-label">密码</div>
 			   	<div class="col-sm-10">
 			      <input type="password" class="form-control" v-model="webchatUser.password" placeholder="密码"/>
 			    </div>
 			</div>
-									<div class="form-group">
+			<div class="form-group">
 			   	<div class="col-sm-2 control-label">个人介绍</div>
 			   	<div class="col-sm-10">
-			      <input type="text" class="form-control" v-model="webchatUser.sign" placeholder="个人介绍"/>
+			      <textarea rows="3" maxlength="40" onchange="this.value=this.value.substring(0, 40)" onkeydown="this.value=this.value.substring(0, 40)" onkeyup="this.value=this.value.substring(0, 40)"   class="form-control" v-model="webchatUser.sign" placeholder="个人介绍,不能超过40字."/>
+			      </textarea >
 			    </div>
 			</div>
-									<div class="form-group">
+			<div class="form-group">
 			   	<div class="col-sm-2 control-label">头像</div>
 			   	<div class="col-sm-10">
 			      		<a class="btn btn-primary" id="upload"><i class="fa fa-plus"></i>&nbsp;上传文件</a>
 			    </div>
 			</div>
+			<div class="form-group">
+				<div class="col-sm-2 control-label">加入群组</div>
+				<div class="col-sm-10">
+									<input type="text" class="form-control" style="cursor:pointer;" v-model="groupnames" @click="GroupTree" readonly="readonly" placeholder="群组列表"/>
+ 				</div>
+ 			</div>
 			<div class="form-group">
 				<div class="col-sm-2 control-label"></div> 
 				<input type="button" class="btn btn-primary" @click="saveOrUpdate" value="确定"/>
@@ -76,6 +79,21 @@
 	</div>
 </div>
 
+
+<!-- 选择聊天群 -->
+<div id="GroupLayer" style="display: none;padding:10px;">
+	  <select id="Group"   ></select>
+</div>
+
+			 <script>
+			   	 //给下拉框添加样式 
+			   	 $("#Group").multipleSelect({
+				        filter: true , 
+				        single: true,
+				        width:200
+			   	 	}
+			   	 );
+			 </script>
 <script src="${request.contextPath}/statics/js/modules/webchat/webchatuser.js?_${.now?long}"></script>
 </body>
 </html>

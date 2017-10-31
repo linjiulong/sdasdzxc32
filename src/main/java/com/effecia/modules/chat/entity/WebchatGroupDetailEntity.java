@@ -20,7 +20,7 @@ public class WebchatGroupDetailEntity implements Serializable {
 	//群成员
 	private Integer uid;
 	//加入时间
-	private Date addtime;
+	private Date addTime;
 	// 0 正常 1禁言
 	private Integer gStatus;
 	//禁言时长
@@ -65,14 +65,14 @@ public class WebchatGroupDetailEntity implements Serializable {
 	/**
 	 * 设置：加入时间
 	 */
-	public void setAddtime(Date addtime) {
-		this.addtime = addtime;
+	public void setAddTime(Date addTime) {
+		this.addTime = addTime;
 	}
 	/**
 	 * 获取：加入时间
 	 */
-	public Date getAddtime() {
-		return addtime;
+	public Date getAddTime() {
+		return addTime;
 	}
 	/**
 	 * 设置： 0 正常 1禁言
@@ -148,7 +148,7 @@ public class WebchatGroupDetailEntity implements Serializable {
 	}
 	@Override
 	public String toString() {
-		return "WebchatGroupDetailEntity [gid=" + gid + ", uid=" + uid + ", addtime=" + addtime + ", gStatus=" + gStatus
+		return "WebchatGroupDetailEntity [gid=" + gid + ", uid=" + uid + ", addTime=" + addTime + ", gStatus=" + gStatus
 				+ ", bannedTime=" + bannedTime + ", speakTime=" + speakTime + ", level=" + level + ", qfunction="
 				+ qfunction + ", users=" + users + ", dept_id=" + dept_id + "]";
 	}

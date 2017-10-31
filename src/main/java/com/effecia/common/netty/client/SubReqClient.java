@@ -1,5 +1,7 @@
 package com.effecia.common.netty.client;
 
+import java.io.BufferedReader;
+import java.io.InputStreamReader;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
@@ -15,6 +17,7 @@ import com.effecia.common.netty.consts.cache.NettyCache;
 import com.effecia.common.netty.consts.po.common.NettyCommandPo;
 import com.effecia.common.netty.consts.po.common.NettyHeaderBasis;
 import com.effecia.common.netty.handler.SubReqClientHandler;
+import com.effecia.common.netty.server.TcpServer;
 import com.google.gson.Gson;
 
 import io.netty.bootstrap.Bootstrap;
@@ -41,6 +44,7 @@ public class SubReqClient implements Runnable{
     }
     
     public void send(NettyCommandPo po){
+    	System.out.println("-------");
     	ChannelHandlerContext ctx = NettyCache.getChannels().get("client");
     	logger.info("[send] [channel :"+ctx+"]");
 		if(ctx != null && !ctx.isRemoved() ){
@@ -78,21 +82,10 @@ public class SubReqClient implements Runnable{
             })
             .option(ChannelOption.SO_KEEPALIVE, true);
             doConnect();
-            NettyCommandPo po = new  NettyCommandPo();
-        	NettyHeaderBasis head = new NettyHeaderBasis();
-        	Map<String, Object> parameter = new HashMap<String, Object>();
-        	head.setCommandId(UUID.randomUUID().toString());
-        	head.setCommandType("TEST");
-        	head.setSendTime(new Date());
-        	head.setNeedsReturn(false);
-        	head.setRequestType("REGISTER");
-        	po.setHeader(head);
-        	po.setParameter(parameter);
-            send(po);
         } catch (Exception e){
         	logger.error("[Disconnect From Server] - [Wait For Reconnect Again]");
         } finally {
-        	logger.error("ggg");
+        	logger.error("over");
 //            workGroup.shutdownGracefully();
         }
     }
@@ -100,11 +93,14 @@ public class SubReqClient implements Runnable{
 	//负责客户端和服务器的 TCP 连接的建立,并且当 TCP连接失败时, doConnect会通过 "channel().eventLoop().schedule" 来延时10s后尝试重新连接.
 	public void doConnect() {
         if (channel != null && channel.isActive()) {
+        	
             return;
         }
         try {
         	// 发起异步链接操作
         	ChannelFuture channelFuture = bootstrap.connect("localhost",2222).sync().channel().closeFuture().sync();
+     
+        	
             //断线重连机制
         	channelFuture.addListener(new ChannelFutureListener() {
             	@Override
@@ -123,9 +119,20 @@ public class SubReqClient implements Runnable{
                     }
                  }
              });
+        	
         } catch (Exception e){
         	logger.error("[Lost] [Connection] - [ready to connect again]");
         }
+	}
+	
+	
+	public static void main(String[] args) {
+		try {
+			Thread t = new Thread(new SubReqClient());
+			t.start();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
 	}
 	
 	@Override

@@ -3,11 +3,11 @@ package com.effecia.common.utils;
 import java.io.IOException;
 import java.sql.Timestamp;
 
-import com.dyuproject.protostuff.Input;
-import com.dyuproject.protostuff.Output;
-import com.dyuproject.protostuff.Pipe;
-import com.dyuproject.protostuff.WireFormat.FieldType;
-import com.dyuproject.protostuff.runtime.Delegate;
+import io.protostuff.Input;
+import io.protostuff.Output;
+import io.protostuff.Pipe;
+import io.protostuff.WireFormat.FieldType;
+import io.protostuff.runtime.Delegate;
 
 public class TimestampDelegate implements Delegate<Timestamp> {
     

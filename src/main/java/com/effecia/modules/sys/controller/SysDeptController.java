@@ -4,6 +4,7 @@ import com.effecia.common.utils.Constant;
 import com.effecia.common.utils.R;
 import com.effecia.common.validator.ValidatorUtils;
 import com.effecia.modules.chat.entity.WebchatGroupsEntity;
+import com.effecia.modules.chat.service.WebchatGroupDetailService;
 import com.effecia.modules.chat.service.WebchatGroupsService;
 import com.effecia.modules.sys.entity.SysDeptEntity;
 import com.effecia.modules.sys.service.SysDeptService;
@@ -35,6 +36,12 @@ public class SysDeptController extends AbstractController {
 	
 	@Autowired
 	private WebchatGroupsService webchatGroupsService;
+	
+	
+	
+	
+	@Autowired
+	private WebchatGroupDetailService webchatGroupDetailService;
 	
 	/**
 	 * 列表
@@ -100,17 +107,18 @@ public class SysDeptController extends AbstractController {
 	@RequiresPermissions("sys:dept:save")
 	public R save(@RequestBody SysDeptEntity dept){
 		ValidatorUtils.validateEntity(dept);
-		
+		System.out.println("dept:"+dept);
 		sysDeptService.save(dept);
 		WebchatGroupsEntity webchatGroups=new WebchatGroupsEntity();
 		
 		Date date=new Date();
-		webchatGroups.setAddtime(date);
-		webchatGroups.setDesc("游客群");
-		webchatGroups.setName(dept.getGroupname());
+		webchatGroups.setAddTime(date);
+		webchatGroups.setDesc("游客厅");
+		webchatGroups.setName("游客大厅");
 		webchatGroups.setLevel(0);
 		webchatGroups.setDeptId(Integer.parseInt(dept.getDeptId()+""));
-		
+		webchatGroups.setAnno("欢迎进入游客大厅,请遵守本大厅聊天规则.");
+		System.out.println("webchatGroups:"+webchatGroups);
 		webchatGroupsService.save(webchatGroups);
 		
 		

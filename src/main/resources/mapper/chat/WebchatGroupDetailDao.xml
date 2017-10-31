@@ -7,7 +7,7 @@
     <resultMap type="com.effecia.modules.chat.entity.WebchatGroupDetailEntity" id="webchatGroupDetailMap">
         <result property="gid" column="gid"/>
         <result property="uid" column="uid"/>
-        <result property="addtime" column="addtime"/>
+        <result property="addTime" column="add_time"/>
         <result property="gStatus" column="g_status"/>
         <result property="bannedTime" column="banned_time"/>
         <result property="speakTime" column="speak_time"/>
@@ -17,6 +17,11 @@
 	<select id="queryObject" resultType="com.effecia.modules.chat.entity.WebchatGroupDetailEntity">
 		select * from webchat_group_detail where gid = #{value}
 	</select>
+	
+	<!-- 调用存储过程，若一个用户加了多个群，则每个群的级别都是管理员 -->
+	  <select id="group_detail"  statementType="CALLABLE">
+ 			CALL group_detail( #{value} )
+      </select>
 
 	<select id="queryFindObject" resultType="com.effecia.modules.chat.entity.WebchatGroupDetailEntity">
 		select * from webchat_group_detail where gid = #{gid} and uid = #{uid}
@@ -52,7 +57,7 @@
 	</select>
 	
  	<select id="queryTotal" resultType="int">
-		select count(*) from webchat_group_detail 
+		select count(*) from webchat_group_detail where `gid`=#{gid}
 	</select>
 	 
 	<insert id="save" parameterType="com.effecia.modules.chat.entity.WebchatGroupDetailEntity">
@@ -60,7 +65,7 @@
 		(
 			`gid`, 
 			`uid`, 
-			`addtime`, 
+			`add_time`, 
 			`g_status`, 
 			`banned_time`, 
 			`speak_time`, 
@@ -70,7 +75,7 @@
 		(
 			#{gid}, 
 			#{uid}, 
-			#{addtime}, 
+			#{addTime}, 
 			#{gStatus}, 
 			#{bannedTime}, 
 			#{speakTime}, 
@@ -81,7 +86,7 @@
 	<update id="update" parameterType="com.effecia.modules.chat.entity.WebchatGroupDetailEntity">
 		update webchat_group_detail 
 		<set>
-			<if test="addtime != null">`addtime` = #{addtime}, </if>
+			<if test="addTime != null">`add_time` = #{addTime}, </if>
 			<if test="gStatus != null">`g_status` = #{gStatus}, </if>
 			`banned_time` = #{bannedTime},
 			<if test="speakTime != null">`speak_time` = #{speakTime}, </if>

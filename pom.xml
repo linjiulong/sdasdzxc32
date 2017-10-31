@@ -1,4 +1,5 @@
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>com.effecia</groupId>
 	<artifactId>chatroom</artifactId>
@@ -34,7 +35,7 @@
 		<freemarker-version>2.3.23</freemarker-version>
 		<protostuff-version>1.1.2</protostuff-version>
 	</properties>
-	 
+
 	<!-- 阿里云maven仓库 -->
 	<repositories>
 		<repository>
@@ -61,81 +62,80 @@
 	</pluginRepositories>
 
 	<dependencies>
-	
-	
-				<dependency>
-				    <groupId>com.google.code.gson</groupId>
-				    <artifactId>gson</artifactId>
-				    <version>2.8.2</version>
-				</dependency>
-
-			<!-- https://mvnrepository.com/artifact/org.objenesis/objenesis -->
-			<dependency>
-			    <groupId>org.objenesis</groupId>
-			    <artifactId>objenesis</artifactId>
-			    <version>2.6</version>
-			    <scope>test</scope>
-			</dependency>
-			
-					
-		<!-- protostuff -->
-			<dependency>
-			    <groupId>com.dyuproject.protostuff</groupId>
-			    <artifactId>protostuff-core</artifactId>
-			    <version>${protostuff-version}</version>
-			    <scope>test</scope>
-			</dependency>
-				
-			<dependency>
-			    <groupId>com.dyuproject.protostuff</groupId>
-			    <artifactId>protostuff-runtime</artifactId>
-			    <version>1.1.2</version>
-			    <scope>test</scope>
-			</dependency>
-				
-				
-			<dependency>
-			    <groupId>com.dyuproject.protostuff</groupId>
-			    <artifactId>protostuff-api</artifactId>
-			    <version>${protostuff-version}</version>
-			</dependency>
-			
-			<dependency>
-			    <groupId>com.dyuproject.protostuff</groupId>
-			    <artifactId>protostuff-runtime</artifactId>
-			    <version>${protostuff-version}</version>
-			    <scope>test</scope>
-			</dependency>
-			 
-	 
-						
-		<!-- https://mvnrepository.com/artifact/com.dyuproject.protostuff/protostuff-collectionschema -->
-			<dependency>
-			    <groupId>com.dyuproject.protostuff</groupId>
-			    <artifactId>protostuff-collectionschema</artifactId>
-			    <version>1.1.2</version>
-			</dependency>
 
 
-			
-		 
-								
-
-	<!-- https://mvnrepository.com/artifact/io.netty/netty -->
-			<dependency>
-			    <groupId>io.netty</groupId>
-			    <artifactId>netty-all</artifactId>
-			    <version>4.1.16.Final</version>
-			</dependency>
-	  
-  <!-- netty end  -->
-	
 		<dependency>
-            <groupId>junit</groupId>
-            <artifactId>junit</artifactId>
-            <version>${junit-version}</version>
-            <scope>test</scope>
-        </dependency>
+			<groupId>com.google.code.gson</groupId>
+			<artifactId>gson</artifactId>
+			<version>2.8.2</version>
+		</dependency>
+
+		<!-- https://mvnrepository.com/artifact/org.objenesis/objenesis -->
+		<dependency>
+			<groupId>org.objenesis</groupId>
+			<artifactId>objenesis</artifactId>
+			<version>2.6</version>
+			<scope>test</scope>
+		</dependency>
+
+
+		<!-- https://mvnrepository.com/artifact/io.protostuff/protostuff-core -->
+		<dependency>
+			<groupId>io.protostuff</groupId>
+			<artifactId>protostuff-core</artifactId>
+			<version>1.6.0</version>
+			<scope>test</scope>
+		</dependency>
+
+
+		<dependency>
+			<groupId>io.protostuff</groupId>
+			<artifactId>protostuff-runtime</artifactId>
+			<version>1.6.0</version>
+			<scope>test</scope>
+		</dependency>
+
+
+		<!-- https://mvnrepository.com/artifact/io.protostuff/protostuff-api -->
+		<dependency>
+			<groupId>io.protostuff</groupId>
+			<artifactId>protostuff-api</artifactId>
+			<version>1.6.0</version>
+		</dependency>
+
+		<!-- https://mvnrepository.com/artifact/io.protostuff/protostuff-collectionschema -->
+		<dependency>
+			<groupId>io.protostuff</groupId>
+			<artifactId>protostuff-collectionschema</artifactId>
+			<version>1.6.0</version>
+		</dependency>
+
+
+		<!-- https://mvnrepository.com/artifact/org.aeonbits.owner/owner -->
+		<dependency>
+			<groupId>org.aeonbits.owner</groupId>
+			<artifactId>owner</artifactId>
+			<version>1.0.9</version>
+		</dependency>
+
+
+
+
+		<!-- https://mvnrepository.com/artifact/io.netty/netty -->
+		<dependency>
+			<groupId>io.netty</groupId>
+			<artifactId>netty-all</artifactId>
+			<version>4.1.16.Final</version>
+		</dependency>
+
+		<!-- netty end -->
+
+		<dependency>
+			<groupId>junit</groupId>
+			<artifactId>junit</artifactId>
+			<version>${junit-version}</version>
+			<scope>test</scope>
+		</dependency>
 		<dependency>
 			<groupId>javax.servlet</groupId>
 			<artifactId>javax.servlet-api</artifactId>
@@ -178,9 +178,9 @@
 			<version>${springframework-version}</version>
 		</dependency>
 		<dependency>
-		    <groupId>org.springframework</groupId>
-		    <artifactId>spring-aspects</artifactId>
-		    <version>${springframework-version}</version>
+			<groupId>org.springframework</groupId>
+			<artifactId>spring-aspects</artifactId>
+			<version>${springframework-version}</version>
 		</dependency>
 		<dependency>
 			<groupId>org.springframework</groupId>
@@ -199,20 +199,20 @@
 			<version>${jedis-version}</version>
 		</dependency>
 		<dependency>
-            <groupId>org.slf4j</groupId>
+			<groupId>org.slf4j</groupId>
 			<artifactId>slf4j-api</artifactId>
-            <version>${slf4j-version}</version>
-        </dependency>
-        <dependency>
-            <groupId>org.slf4j</groupId>
-			<artifactId>slf4j-log4j12</artifactId>
-            <version>${slf4j-version}</version>
-        </dependency>
+			<version>${slf4j-version}</version>
+		</dependency>
 		<dependency>
-            <groupId>log4j</groupId>
-            <artifactId>log4j</artifactId>
-            <version>${log4j-version}</version>
-        </dependency>
+			<groupId>org.slf4j</groupId>
+			<artifactId>slf4j-log4j12</artifactId>
+			<version>${slf4j-version}</version>
+		</dependency>
+		<dependency>
+			<groupId>log4j</groupId>
+			<artifactId>log4j</artifactId>
+			<version>${log4j-version}</version>
+		</dependency>
 		<dependency>
 			<groupId>mysql</groupId>
 			<artifactId>mysql-connector-java</artifactId>
@@ -239,14 +239,14 @@
 			<version>${commons-io-version}</version>
 		</dependency>
 		<dependency>
-		    <groupId>com.alibaba</groupId>
-		    <artifactId>fastjson</artifactId>
-		    <version>${fastjson-version}</version>
+			<groupId>com.alibaba</groupId>
+			<artifactId>fastjson</artifactId>
+			<version>${fastjson-version}</version>
 		</dependency>
 		<dependency>
-		    <groupId>commons-codec</groupId>
-		    <artifactId>commons-codec</artifactId>
-		    <version>${commons-codec-version}</version>
+			<groupId>commons-codec</groupId>
+			<artifactId>commons-codec</artifactId>
+			<version>${commons-codec-version}</version>
 		</dependency>
 		<dependency>
 			<groupId>commons-configuration</groupId>
@@ -254,14 +254,14 @@
 			<version>${commons-configuration-version}</version>
 		</dependency>
 		<dependency>
-		    <groupId>org.apache.shiro</groupId>
-		    <artifactId>shiro-core</artifactId>
-		    <version>${shiro-version}</version>
+			<groupId>org.apache.shiro</groupId>
+			<artifactId>shiro-core</artifactId>
+			<version>${shiro-version}</version>
 		</dependency>
 		<dependency>
-		    <groupId>org.apache.shiro</groupId>
-		    <artifactId>shiro-spring</artifactId>
-		    <version>${shiro-version}</version>
+			<groupId>org.apache.shiro</groupId>
+			<artifactId>shiro-spring</artifactId>
+			<version>${shiro-version}</version>
 		</dependency>
 		<dependency>
 			<groupId>com.github.axet</groupId>
@@ -271,11 +271,11 @@
 		<!-- 代码生成器所需jar -->
 		<dependency>
 			<artifactId>velocity</artifactId>
-            <groupId>org.apache.velocity</groupId>
+			<groupId>org.apache.velocity</groupId>
 			<version>${velocity-version}</version>
 		</dependency>
-        <!-- JSP视图所需jar -->
-        <dependency>
+		<!-- JSP视图所需jar -->
+		<dependency>
 			<groupId>jstl</groupId>
 			<artifactId>jstl</artifactId>
 			<version>${jstl-version}</version>
@@ -286,7 +286,7 @@
 			<version>${taglibs-version}</version>
 		</dependency>
 		<!-- Freemarker视图所需jar -->
-        <dependency>
+		<dependency>
 			<groupId>org.freemarker</groupId>
 			<artifactId>freemarker</artifactId>
 			<version>${freemarker-version}</version>

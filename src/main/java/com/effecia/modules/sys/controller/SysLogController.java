@@ -45,7 +45,7 @@ public class SysLogController {
 		Long DeptId = ((WebchatUserEntity) SecurityUtils.getSubject().getPrincipal()).getDeptId();
 		System.out.println("DeptId:"+DeptId);
 		
-		if(DeptId!=8){
+		if(DeptId!=0){
 			params.put("DeptId", DeptId);
 		}
 		

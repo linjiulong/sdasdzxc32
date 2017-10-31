@@ -6,14 +6,13 @@ $(function () {
         colModel: [			
 			{ label: '群号', name: 'gid', index: 'gid', width: 50},
 			{ label: '群员ID', name: 'uid', index: 'uid', width: 80 , key: true ,sortname:false}, 			
-			{ label: '入群时间', name: 'addtime', index: 'addtime', width: 80 }, 			
-			{ label: '发言状态', name: 'gStatus', width: 80, formatter: function(value, options, row){
+			{ label: '入群时间', name: 'addTime', width: 80 }, 			
+			{ label: '状态', name: 'gStatus', width: 80, formatter: function(value, options, row){
 				return value === 0 ? 
 						'<span class="label label-success">未禁言</span>' : 
 						'<span class="label label-danger">被禁言</span>';
 			}}, 			
-			{ label: '禁言时长', name: 'bannedTime', index: 'banned_time', width: 80 }, 			
-			{ label: '最后发言时间', name: 'speakTime', index: 'speak_time', width: 80 }, 			
+			{ label: '禁言', name: 'bannedTime',   width: 80 }, 			
 			{ label: '级别', name: 'level',  width: 80 , formatter: function(value, options, row){
 					if(value==0){
 						return '<span class="label label-warning">群主</span>' ;
@@ -112,7 +111,6 @@ var vm = new Vue({
 		},
 		add: function(){
 			vm.getUsers();
-			vm.webchatGroups = {};
 			if(vm.groupname!=null){
 	        	layer.open({
 	                type: 1,
@@ -125,16 +123,18 @@ var vm = new Vue({
 	                content: jQuery("#usersLayer"),
 	                btn: ['确定', '取消'],
 	                btn1: function (index) {
-	                	
-	                	 var $select = $("#tableInfoId0")
-	                	 var count=$('#tableInfoId0').multipleSelect('getSelects');
+	                		vm.webchatGroupDetail={};
+	                	 var $select = $("#userselect")
+	                	 var count=$('#userselect').multipleSelect('getSelects');
+	                	 console.log("count"+count)
 	                	 if(count==null||count==""){
 	                		   alert("未选择，添加失败!");
 	                	 }else{
 	                		 vm.user.count=count.length+"位";
-	                		 vm.webchatGroupDetail.gid=vm.svalue;
-	                		 
+	                		 vm.webchatGroupDetail.gid=vm.gid[0];
 	                		 vm.webchatGroupDetail.users=count;
+	                		 console.log("vm.gid:"+vm.gid)
+	                		 console.log("vm.users:"+count)
 	                		 vm.save();
 	                	 }
 	                    layer.close(index);
@@ -231,7 +231,7 @@ var vm = new Vue({
                 content: jQuery("#bannedLayer"),
                 btn: ['确定', '取消'],
                 btn1: function (index) {
-                	
+                	vm.webchatGroupDetail={};
                 	 var userId = getSelectedRow();
      	            if(userId == null){
      	                return ;
@@ -298,20 +298,21 @@ var vm = new Vue({
 	        	
 		},
 		getUsers: function(){
-			 $("#tableInfoId0").empty();
-	         var $select = $("#tableInfoId0")
+			 $("#userselect").empty();
+	         var $select = $("#userselect")
 			 $.get(baseURL + "webchatuser/select", function(r){
 				 $.each(r.list,function(n,value) {
+					 console.log(n+"----"+value.uid+"-----"+value.username);
 		                $opt = $("<option />", {
-		                    value: value.uid,
-		                    text: value.name
+		                    value: value.id,
+		                    text: value.username
 		                });
 			            $select.append($opt).multipleSelect("refresh");
 			            $select.multipleSelect('uncheckAll');
 			            
 				 });
 			 })
-       }, 
+       },
        GroupTree: function(){
 			vm.getGroups();
            layer.open({

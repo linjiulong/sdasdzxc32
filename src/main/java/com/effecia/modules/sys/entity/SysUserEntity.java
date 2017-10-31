@@ -1,22 +1,26 @@
 package com.effecia.modules.sys.entity;
 
 
-import com.effecia.common.validator.group.AddGroup;
-import com.effecia.common.validator.group.UpdateGroup;
-import org.hibernate.validator.constraints.Email;
-import org.hibernate.validator.constraints.NotBlank;
-
-import javax.validation.constraints.NotNull;
 import java.io.Serializable;
+import java.math.BigDecimal;
 import java.util.Date;
 import java.util.List;
 
+import javax.validation.constraints.NotNull;
+
+import org.hibernate.validator.constraints.NotBlank;
+
+import com.effecia.common.validator.group.AddGroup;
+import com.effecia.common.validator.group.UpdateGroup;
+
+
+
 /**
- * 系统用户
+ * 
  * 
  * @author lin
  * @email lin.lin@support888.net
- * @date 2017年10月18日 上午9:28:55
+ * @date 2017-10-26 17:48:29
  */
 public class SysUserEntity implements Serializable {
 	private static final long serialVersionUID = 1L;
@@ -57,7 +61,7 @@ public class SysUserEntity implements Serializable {
 	/**
 	 * 创建时间
 	 */
-	private Date createTime;
+	private Date addTime;
 
 	/**
 	 * 部门ID
@@ -69,6 +73,8 @@ public class SysUserEntity implements Serializable {
 	 * 部门名称
 	 */
 	private String deptName;
+	
+	private BigDecimal limits;
 
 	/**
 	 * 设置：
@@ -138,18 +144,18 @@ public class SysUserEntity implements Serializable {
 	
 	/**
 	 * 设置：创建时间
-	 * @param createTime 创建时间
+	 * @param AddTime 创建时间
 	 */
-	public void setCreateTime(Date createTime) {
-		this.createTime = createTime;
+	public void setAddTime(Date addTime) {
+		this.addTime = addTime;
 	}
 
 	/**
 	 * 获取：创建时间
 	 * @return Date
 	 */
-	public Date getCreateTime() {
-		return createTime;
+	public Date getAddTime() {
+		return addTime;
 	}
 
 	public List<Long> getRoleIdList() {
@@ -184,13 +190,26 @@ public class SysUserEntity implements Serializable {
 		this.deptName = deptName;
 	}
 
+	public BigDecimal getLimits() {
+		return limits;
+	}
+
+	public void setLimits(BigDecimal limits) {
+		this.limits = limits;
+	}
+
 	@Override
 	public String toString() {
 		return "SysUserEntity [id=" + id + ", username=" + username + ", password=" + password + ", salt=" + salt
-				+ ", status=" + status + ", roleIdList=" + roleIdList + ", createTime=" + createTime + ", deptId="
-				+ deptId + ", deptName=" + deptName + "]";
-	}
+				+ ", status=" + status + ", roleIdList=" + roleIdList + ", addTime=" + addTime + ", deptId=" + deptId
+				+ ", deptName=" + deptName + ", limits=" + limits + "]";
+	}	
 	
 	
-	
+	 
+	 
 }
+
+	
+	
+	

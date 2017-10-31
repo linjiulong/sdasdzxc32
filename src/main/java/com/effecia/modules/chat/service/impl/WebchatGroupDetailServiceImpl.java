@@ -62,5 +62,10 @@ public class WebchatGroupDetailServiceImpl implements WebchatGroupDetailService 
 	public WebchatGroupDetailEntity queryFindObject(Map<String, Object> map) {
 		return webchatGroupDetailDao.queryFindObject(map);
 	}
+
+	@Override
+	public void group_detail(Integer uid) {
+		webchatGroupDetailDao.group_detail(uid);		
+	}
 	
 }

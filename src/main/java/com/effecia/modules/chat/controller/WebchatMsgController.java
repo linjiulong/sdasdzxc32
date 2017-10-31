@@ -42,7 +42,7 @@ public class WebchatMsgController {
 	public R list(@RequestParam Map<String, Object> params){
 		Long DeptId = ((WebchatUserEntity) SecurityUtils.getSubject().getPrincipal()).getDeptId();
 
-		if(DeptId!=8){
+		if(DeptId!=0){
 			params.put("DeptId", DeptId);
 		}
 
@@ -62,7 +62,7 @@ public class WebchatMsgController {
 		
 		params.put("gid", gid);
 		Long DeptId = ((WebchatUserEntity) SecurityUtils.getSubject().getPrincipal()).getDeptId();
-		if(DeptId!=8){
+		if(DeptId!=0){
 			WebchatGroupDeptEntity WebchatGroupDept=webchatMsgService.queryFind(gid,DeptId);
 			if(WebchatGroupDept==null){
 				return R.error("无权限");

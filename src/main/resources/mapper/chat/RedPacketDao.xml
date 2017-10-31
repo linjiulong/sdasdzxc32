@@ -1,0 +1,99 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.effecia.modules.chat.dao.RedPacketDao">
+
+	<!-- 可根据自己的需求，是否要使用 -->
+    <resultMap type="com.effecia.modules.chat.entity.RedPacketEntity" id="redPacketMap">
+        <result property="id" column="id"/>
+        <result property="gid" column="gid"/>
+        <result property="uid" column="uid"/>
+        <result property="amount" column="amount"/>
+        <result property="num" column="num"/>
+        <result property="take" column="take"/>
+        <result property="outTime" column="out_time"/>
+        <result property="sendTime" column="send_time"/>
+        <result property="headMessage" column="head_message"/>
+        <result property="detailMessage" column="detail_message"/>
+    </resultMap>
+
+	<select id="queryObject" resultType="com.effecia.modules.chat.entity.RedPacketEntity">
+		select * from red_packet where id = #{value}
+	</select>
+
+	<select id="queryList" resultType="com.effecia.modules.chat.entity.RedPacketEntity">
+		select * from red_packet
+        <choose>
+            <when test="sidx != null and sidx.trim() != ''">
+                order by ${sidx} ${order}
+            </when>
+			<otherwise>
+                order by id desc
+			</otherwise>
+        </choose>
+		<if test="offset != null and limit != null">
+			limit #{offset}, #{limit}
+		</if>
+	</select>
+	
+ 	<select id="queryTotal" resultType="int">
+		select count(*) from red_packet 
+	</select>
+	 
+	<insert id="save" parameterType="com.effecia.modules.chat.entity.RedPacketEntity">
+		insert into red_packet
+		(
+			`id`, 
+			`gid`, 
+			`uid`, 
+			`amount`, 
+			`num`, 
+			`take`, 
+			`out_time`, 
+			`send_time`, 
+			`head_message`, 
+			`detail_message`
+		)
+		values
+		(
+			#{id}, 
+			#{gid}, 
+			#{uid}, 
+			#{amount}, 
+			#{num}, 
+			#{take}, 
+			#{outTime}, 
+			#{sendTime}, 
+			#{headMessage}, 
+			#{detailMessage}
+		)
+	</insert>
+	 
+	<update id="update" parameterType="com.effecia.modules.chat.entity.RedPacketEntity">
+		update red_packet 
+		<set>
+			<if test="gid != null">`gid` = #{gid}, </if>
+			<if test="uid != null">`uid` = #{uid}, </if>
+			<if test="amount != null">`amount` = #{amount}, </if>
+			<if test="num != null">`num` = #{num}, </if>
+			<if test="take != null">`take` = #{take}, </if>
+			<if test="outTime != null">`out_time` = #{outTime}, </if>
+			<if test="sendTime != null">`send_time` = #{sendTime}, </if>
+			<if test="headMessage != null">`head_message` = #{headMessage}, </if>
+			<if test="detailMessage != null">`detail_message` = #{detailMessage}</if>
+		</set>
+		where id = #{id}
+	</update>
+	
+	<delete id="delete">
+		delete from red_packet where id = #{value}
+	</delete>
+	
+	<delete id="deleteBatch">
+		delete from red_packet where id in 
+		<foreach item="id" collection="array" open="(" separator="," close=")">
+			#{id}
+		</foreach>
+	</delete>
+
+</mapper>

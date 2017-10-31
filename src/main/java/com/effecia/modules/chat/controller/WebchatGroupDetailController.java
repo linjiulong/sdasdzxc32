@@ -19,7 +19,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.effecia.modules.chat.entity.WebchatGroupDeptEntity;
 import com.effecia.modules.chat.entity.WebchatGroupDetailEntity;
-import com.effecia.modules.chat.entity.WebchatUserEntity;
+import com.effecia.modules.sys.entity.SysUserEntity;
 import com.effecia.modules.chat.service.WebchatGroupDeptService;
 import com.effecia.modules.chat.service.WebchatGroupDetailService;
 import com.alibaba.fastjson.JSON;
@@ -74,8 +74,8 @@ public class WebchatGroupDetailController {
 		
 		params.put("gid", gid);
 		
-		Long DeptId = ((WebchatUserEntity) SecurityUtils.getSubject().getPrincipal()).getDeptId();
-		if(DeptId!=8){
+		Long DeptId = ((SysUserEntity) SecurityUtils.getSubject().getPrincipal()).getDeptId();
+		if(DeptId!=0){
 			params.put("DeptId", DeptId);
 			WebchatGroupDeptEntity GroupDeptEntity=webchatGroupDeptService.queryFind(gid,DeptId);
 			if(GroupDeptEntity==null){
@@ -120,7 +120,7 @@ public class WebchatGroupDetailController {
 		if(users!=null){
 			for (Object userid : users) {
 				Date addtime=new Date();
-				webchatGroupDetail.setAddtime(addtime);
+				webchatGroupDetail.setAddTime(addtime);
 				webchatGroupDetail.setLevel(1);
 				webchatGroupDetail.setGStatus(0);
 				webchatGroupDetail.setUid(Integer.parseInt(userid+""));

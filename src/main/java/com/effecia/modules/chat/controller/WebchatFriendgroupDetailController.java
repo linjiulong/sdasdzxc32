@@ -66,6 +66,9 @@ public class WebchatFriendgroupDetailController {
 	@RequestMapping("/save")
 	@RequiresPermissions("webchatfriendgroupdetail:save")
 	public R save(@RequestBody WebchatFriendgroupDetailEntity webchatFriendgroupDetail){
+		
+		
+		
 		webchatFriendgroupDetailService.save(webchatFriendgroupDetail);
 		
 		return R.ok();

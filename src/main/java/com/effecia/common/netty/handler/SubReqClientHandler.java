@@ -1,5 +1,9 @@
 package com.effecia.common.netty.handler;
 
+import java.util.Date;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.UUID;
 import java.util.concurrent.TimeUnit;
 
 import org.slf4j.Logger;
@@ -8,6 +12,7 @@ import org.slf4j.LoggerFactory;
 import com.effecia.common.netty.client.SubReqClient;
 import com.effecia.common.netty.consts.cache.NettyCache;
 import com.effecia.common.netty.consts.po.common.NettyCommandPo;
+import com.effecia.common.netty.consts.po.common.NettyHeaderBasis;
 import com.google.gson.Gson;
 
 import io.netty.channel.ChannelHandler.Sharable;
@@ -37,8 +42,25 @@ public class SubReqClientHandler extends SimpleChannelInboundHandler<NettyComman
 
     @Override
     public void channelActive(ChannelHandlerContext ctx) throws Exception {
+    		System.out.println("--------------");
             logger.info("[Connect To The Server] [Id:"+ctx.channel().id().asLongText()+"]");
             NettyCache.getChannels().put("client",ctx);
+            NettyCommandPo po = new  NettyCommandPo();
+        	NettyHeaderBasis head = new NettyHeaderBasis();
+        	Map<String, Object> parameter = new HashMap<String, Object>();
+        	head.setCommandId(UUID.randomUUID().toString());
+        	head.setCommandType("TEST");
+        	head.setSendTime(new Date());
+        	head.setNeedsReturn(false);
+        	head.setRequestType("REGISTER");
+        	po.setHeader(head);
+        	po.setParameter(parameter);
+        	if(ctx != null && !ctx.isRemoved() ){
+    			logger.info("[Client] [Send] ["+gson.toJson(po)+"]");
+    			ctx.writeAndFlush(po);
+    		} else {
+    			logger.error("[ChannelHandlerContext Is Null] [Or] [ChannelHandlerContext Is Removed]");
+    		}	
     }
 
     @Override
@@ -84,14 +106,7 @@ public class SubReqClientHandler extends SimpleChannelInboundHandler<NettyComman
 	@Override
 	protected void channelRead0(ChannelHandlerContext ctx, NettyCommandPo msg) throws Exception {
 		logger.info("[received] [Server] [message] - ["+gson.toJson(msg)+"]");
-		String commandType = msg.getHeader().getCommandType();
-		if("BACK".equals(commandType)){
-			msg.getHeader().setCommandType("BACK");
-			msg.getHeader().setRequestType("RESPONSE");
-			msg.getParameter().put("wade","client1");
-			msg.getHeader().setNeedsReturn(false);
-			ctx.writeAndFlush(msg);
-		}
+	      
 	}
 	
 }

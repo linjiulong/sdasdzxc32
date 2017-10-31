@@ -50,12 +50,9 @@ public class SysDeptEntity implements Serializable {
 	private String cashUrl;
 	
 	
-	@NotBlank(message="群名称不能为空!")
 	private String remark;
 	
 
-	@NotBlank(message="群名称不能为空!")
-	private String groupname;
 	
 	
 	public void setDeptId(Long deptId) {
@@ -160,23 +157,16 @@ public class SysDeptEntity implements Serializable {
 		this.remark = remark;
 	}
 
-	public String getGroupname() {
-		return groupname;
-	}
-
-	public void setGroupname(String groupname) {
-		this.groupname = groupname;
-	}
-
 	@Override
 	public String toString() {
 		return "SysDeptEntity [deptId=" + deptId + ", parentId=" + parentId + ", name=" + name + ", parentName="
 				+ parentName + ", orderNum=" + orderNum + ", open=" + open + ", list=" + list + ", hashcode=" + hashcode
-				+ ", serviceurl=" + serviceurl + ", cashUrl=" + cashUrl + ", remark=" + remark + ", groupname="
-				+ groupname + "]";
+				+ ", serviceurl=" + serviceurl + ", cashUrl=" + cashUrl + ", remark=" + remark + "]";
 	}
 
-	 
+ 
+
+ 
  
 	
 	

@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title></title>
+<#include "/header.html">
+<link rel="stylesheet" href="${request.contextPath}/statics/css/layui.css" media="all">
+<link rel="stylesheet" href="${request.contextPath}/statics/css/multiple-select.css">
+<script src="${request.contextPath}/statics/js/multiple-select.js"></script>
+<script src="${request.contextPath}/statics/plugins/laydate/laydate.js"></script></head>
+<body>
+<div id="rrapp" v-cloak>
+	<div v-show="showList">
+		<div class="grid-btn">
+		
+			<div class="form-group col-sm-2" >
+			        <input type="text" class="form-control" style="cursor:pointer;" v-model="groupnames"   @click="groupsTrees"   readonly="readonly" placeholder="群组列表"/>
+			</div>
+			<div class="form-group col-sm-2">
+				<input type="text" class="form-control"   placeholder="搜索">
+			</div>
+			<a class="btn btn-default" @click="query">查询</a>
+			
+			<#if shiro.hasPermission("webchatbroad:save")>
+            <a class="btn btn-primary" @click="add"><i class="fa fa-plus"></i>&nbsp;新增</a>
+			</#if>
+			<#if shiro.hasPermission("webchatbroad:update")>
+            <a class="btn btn-primary" @click="update"><i class="fa fa-pencil-square-o"></i>&nbsp;修改</a>
+			</#if>
+			<#if shiro.hasPermission("webchatbroad:delete")>
+            <a class="btn btn-primary" @click="del"><i class="fa fa-trash-o"></i>&nbsp;删除</a>
+			</#if>
+		</div>
+	    <table id="jqGrid"></table>
+	    <div id="jqGridPager"></div>
+    </div>
+    
+    <div v-show="!showList" class="panel panel-default">
+		<div class="panel-heading">{{title}}</div>
+		<form class="form-horizontal">
+											<div class="form-group">
+			   	<div class="col-sm-2 control-label">广播标题</div>
+			   	<div class="col-sm-10">
+			      <input type="text" class="form-control" v-model="webchatBroad.title" placeholder="广播标题"/>
+			    </div>
+			</div>
+									<div class="form-group">
+			   	<div class="col-sm-2 control-label">广播内容</div>
+			   	<div class="col-sm-10">
+			        <textarea rows="6" maxlength="140" onchange="this.value=this.value.substring(0, 140)" onkeydown="this.value=this.value.substring(0, 140)" onkeyup="this.value=this.value.substring(0, 140)" class="form-control" v-model="webchatBroad.msg" placeholder="不超过140字."/>
+			   	    </textarea>
+			    </div>
+			</div>
+			<div class="form-group">
+			   	<div class="col-sm-2 control-label">广播时间</div>
+			   	<div class="col-sm-10">
+			        <input type="text" class="layui-input"   id="Range_time" placeholder="不能为空">
+			    </div>
+			</div>
+			<div class="form-group">
+			   	<div class="col-sm-2 control-label">广播群名</div>
+			   	<div class="col-sm-10">
+			        <input type="text" class="form-control" style="cursor:pointer;" v-model="groupname"   @click="groupsTree"   readonly="readonly" placeholder="群组列表"/>
+			    </div>
+			</div>
+			 
+							<div class="form-group">
+				<div class="col-sm-2 control-label"></div> 
+				<input type="button" class="btn btn-primary" @click="saveOrUpdate" value="确定"/>
+				&nbsp;&nbsp;<input type="button" class="btn btn-warning" @click="reload" value="返回"/>
+			</div>
+		</form>
+	</div>
+</div>
+
+
+<div id="GroupLayers" style="display: none;padding:10px;">
+		<select id="Groups"></select>
+</div>
+
+<div id="GroupLayer" style="display: none;padding:10px;">
+		<select id="Group"></select>
+</div>
+ 
+
+<script type="text/javascript">
+		laydate.render(
+		 	{
+			  elem: '#Range_time'
+			 ,done: function(value, date, endDate){
+					    console.log(value); //得到日期生成的值，如：2017-08-18
+ 			 }
+			  ,min: '-1'
+			  ,type: 'datetime'
+			  ,range: true
+			});
+		
+		
+	   	 $("#Group").multipleSelect({
+		        filter: true , 
+		        width:200
+	   	 	}
+	   	 );
+	   	 
+	   	 $("#Groups").multipleSelect({
+		        filter: true , 
+		        single: true,
+		        width:200
+	   	 	}
+	   	 );
+	   	 
+</script>
+
+<script src="${request.contextPath}/statics/js/modules/webchat/webchatbroad.js?_${.now?long}"></script>
+</body>
+</html>

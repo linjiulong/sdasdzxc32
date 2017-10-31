@@ -19,6 +19,7 @@ import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.env.SystemEnvironmentPropertySource;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
@@ -53,10 +54,13 @@ public class SysUserController extends AbstractController {
 		//查询列表数据
 		Query query = new Query(params);
 		List<SysUserEntity> userList = sysUserService.queryList(query);
+		for (SysUserEntity sysUserEntity : userList) {
+			System.out.println(sysUserEntity);
+		}
 		int total = sysUserService.queryTotal(query);
 		
 		PageUtils pageUtil = new PageUtils(userList, total, query.getLimit(), query.getPage());
-		
+		System.out.println(pageUtil.toString());
 		return R.ok().put("page", pageUtil);
 	}
 
@@ -99,13 +103,18 @@ public class SysUserController extends AbstractController {
 	public R info(@PathVariable("userId") Long userId){
 		SysUserEntity user = sysUserService.queryObject(userId);
 		
+		System.out.println("userId:"+userId);
 		//获取用户所属的角色列表
 		List<Long> roleIdList = sysUserRoleService.queryRoleIdList(userId);
 		
-		
+		System.out.println("roleIdList:"+roleIdList);
+		System.out.println("user:"+user);
 		//deptId
 		user.setRoleIdList(roleIdList);
+		System.out.println("user:"+user);
+
 		return R.ok().put("user", user);
+	
 	}
 	
 	/**
@@ -116,7 +125,7 @@ public class SysUserController extends AbstractController {
 	@RequiresPermissions("sys:user:save")
 	public R save(@RequestBody SysUserEntity user){
 		ValidatorUtils.validateEntity(user, AddGroup.class);
-		
+		System.out.println("add user:"+user);
 		sysUserService.save(user);
 		
 		return R.ok();
@@ -131,6 +140,22 @@ public class SysUserController extends AbstractController {
 	public R update(@RequestBody SysUserEntity user){
 		ValidatorUtils.validateEntity(user, UpdateGroup.class);
 
+		sysUserService.update(user);
+		
+		return R.ok();
+	}
+	
+
+	/**
+	 * 充值
+	 */
+	@SysLog("充值额度")
+	@RequestMapping("/recharge")
+	@RequiresPermissions("sys:user:recharge")
+	public R Recharge(@RequestBody SysUserEntity user){
+			
+//		ValidatorUtils.validateEntity(user, UpdateGroup.class);
+		System.out.println("user:"+user);
 		sysUserService.update(user);
 		
 		return R.ok();

@@ -17,7 +17,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.effecia.modules.chat.entity.WebchatGroupDeptEntity;
 import com.effecia.modules.chat.entity.WebchatGroupDetailEntity;
 import com.effecia.modules.chat.entity.WebchatGroupsEntity;
-import com.effecia.modules.chat.entity.WebchatUserEntity;
+import com.effecia.modules.sys.entity.SysUserEntity;
 import com.effecia.modules.chat.service.WebchatGroupDeptService;
 import com.effecia.modules.chat.service.WebchatGroupDetailService;
 import com.effecia.modules.chat.service.WebchatGroupsService;
@@ -63,33 +63,17 @@ public class WebchatGroupsController {
 	@RequiresPermissions("webchatgroups:list")
 	public R list(@RequestParam Map<String, Object> params){
 		
-		Long DeptId = ((WebchatUserEntity) SecurityUtils.getSubject().getPrincipal()).getDeptId();
-		if(DeptId!=8){
+		Long DeptId = ((SysUserEntity) SecurityUtils.getSubject().getPrincipal()).getDeptId();
+		if(DeptId!=0){
 			params.put("DeptId", DeptId);
 		}
-		
-		
+		System.out.println("params:"+params);
+		System.out.println("DeptId:"+DeptId);
 		//查询列表数据
         Query query = new Query(params);
 
 		List<WebchatGroupsEntity> webchatGroupsList = webchatGroupsService.queryList(query);
-		for (WebchatGroupsEntity webchatGroupsEntity : webchatGroupsList) {
-			webchatGroupsEntity.setQuantity(webchatGroupDetailService.group_quantity(webchatGroupsEntity.getId()));
-			if(webchatGroupsEntity.getOwnerUid()!=null){
-				String username=webchatUserService.queryObject(webchatGroupsEntity.getOwnerUid()).getUsername();
-				if(username!=null){
-					webchatGroupsEntity.setUsername(username);
-				}else {
-					webchatGroupsEntity.setUsername("暂未指定");
-				}
-			}else {
-				webchatGroupsEntity.setUsername("暂未指定");
-			}
-			
-			String Headphoto=webchatGroupsEntity.getHeadphoto();
-			webchatGroupsEntity.setHeadphoto(" <a href= \" "+Headphoto+" \"   target=\"_blank\"  > 点击查看头像  </a>");
-			System.out.println("webchatGroupsList:"+webchatGroupsEntity);
-		}
+		 
 		
 		
 		int total = webchatGroupsService.queryTotal(query);
@@ -107,15 +91,18 @@ public class WebchatGroupsController {
 	@RequiresPermissions("webchatgroups:select")
 	public R  select(@RequestParam Map<String, Object> params){
 	
-		Long DeptId = ((WebchatUserEntity) SecurityUtils.getSubject().getPrincipal()).getDeptId();
-		if(DeptId!=8){
+		Long DeptId = ((SysUserEntity) SecurityUtils.getSubject().getPrincipal()).getDeptId();
+		if(DeptId!=0){
 			params.put("DeptId", DeptId);
 		}
 		
-		 
+		 System.out.println("DeptId:"+DeptId);
 		
 		//查询列表数据
 		List<WebchatGroupsEntity> webchatGroupsEntity = webchatGroupsService.querySelect(params);
+		for (WebchatGroupsEntity  GroupsEntity : webchatGroupsEntity) {
+			System.out.println(GroupsEntity);
+		}
 		return R.ok().put("list", webchatGroupsEntity);
 	}
 	
@@ -128,8 +115,8 @@ public class WebchatGroupsController {
 	public R info(@PathVariable("id") Integer id){
 		
 		
-		Long DeptId = ((WebchatUserEntity) SecurityUtils.getSubject().getPrincipal()).getDeptId();
-		if(DeptId!=8){
+		Long DeptId = ((SysUserEntity) SecurityUtils.getSubject().getPrincipal()).getDeptId();
+		if(DeptId!=0){
 				WebchatGroupDeptEntity GroupDeptEntity=webchatGroupDeptService.queryFind(id,DeptId);
 				if(GroupDeptEntity==null){
 					return R.error("无权限");
@@ -148,6 +135,7 @@ public class WebchatGroupsController {
 	@RequiresPermissions("webchatgroups:save")
 	public R save(@RequestBody WebchatGroupsEntity webchatGroups){
 		
+		
 		ValidatorUtils.validateEntity(webchatGroups, AddGroup.class);
 		
 		
@@ -156,9 +144,10 @@ public class WebchatGroupsController {
 		//新建群
 		
 		Date date=new Date();
-		webchatGroups.setAddtime(date);
-		Integer DeptId = Integer.parseInt(((WebchatUserEntity) SecurityUtils.getSubject().getPrincipal()).getDeptId()+"");
+		webchatGroups.setAddTime(date);
+		Integer DeptId = Integer.parseInt(((SysUserEntity) SecurityUtils.getSubject().getPrincipal()).getDeptId()+"");
 		webchatGroups.setDeptId(DeptId);
+		webchatGroups.setLevel(1);
 		webchatGroupsService.save(webchatGroups);
 		
 		
@@ -167,7 +156,7 @@ public class WebchatGroupsController {
 		
 		List<Object> users= JSON.parseArray(webchatGroups.getUsers());
 		WebchatGroupDetailEntity webchatGroupDetail=new WebchatGroupDetailEntity();
-		webchatGroupDetail.setAddtime(date);
+		webchatGroupDetail.setAddTime(date);
 		webchatGroupDetail.setBannedTime(null);
 		webchatGroupDetail.setSpeakTime(null);
 		webchatGroupDetail.setLevel(1);
@@ -176,10 +165,11 @@ public class WebchatGroupsController {
 		if(users!=null){
 			for (Object userid : users) {
 				webchatGroupDetail.setUid(Integer.parseInt(userid+""));
+				System.out.println(webchatGroupDetail);
 				webchatGroupDetailService.save(webchatGroupDetail);
+				webchatGroupDetailService.group_detail(Integer.parseInt(userid+""));
 			}
 		}
-		
 		
 		
 		
@@ -196,8 +186,8 @@ public class WebchatGroupsController {
 		
 		 
 		
-		Long DeptId = ((WebchatUserEntity) SecurityUtils.getSubject().getPrincipal()).getDeptId();
-		if(DeptId!=8){
+		Long DeptId = ((SysUserEntity) SecurityUtils.getSubject().getPrincipal()).getDeptId();
+		if(DeptId!=0){
 			WebchatGroupDeptEntity GroupDeptEntity=webchatGroupDeptService.queryFind(webchatGroups.getId(),DeptId);
 			if(GroupDeptEntity==null){
 				return R.error("无权限");
@@ -215,8 +205,8 @@ public class WebchatGroupsController {
 	@RequestMapping("/delete")
 	@RequiresPermissions("webchatgroups:delete")
 	public R delete(@RequestBody Integer[] ids){
-		Long DeptId = ((WebchatUserEntity) SecurityUtils.getSubject().getPrincipal()).getDeptId();
-		if(DeptId!=8){
+		Long DeptId = ((SysUserEntity) SecurityUtils.getSubject().getPrincipal()).getDeptId();
+		if(DeptId!=0){
 			for (Integer integer : ids) {
 				WebchatGroupDeptEntity GroupDeptEntity=webchatGroupDeptService.queryFind(integer,DeptId);
 				if(GroupDeptEntity==null){

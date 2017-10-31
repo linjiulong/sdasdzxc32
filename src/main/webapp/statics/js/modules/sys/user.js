@@ -3,17 +3,16 @@ $(function () {
         url: baseURL + 'sys/user/list',
         datatype: "json",
         colModel: [			
-			{ label: '用户ID', name: 'userId', index: "user_id", width: 45, key: true },
+			{ label: '用户ID', name: 'id', index: "id", width: 45, key: true , hidden: true},
 			{ label: '用户名', name: 'username', width: 75 },
-            { label: '所属', name: 'deptName', width: 75 },
-			{ label: '邮箱', name: 'email', width: 90 },
-			{ label: '手机号', name: 'mobile', width: 100 },
+            { label: '包网', name: 'deptName', width: 75 },
+            { label: '额度', name: 'limits', width: 75 },
+			{ label: '注册时间', name: 'addTime',  width: 80 }, 			
 			{ label: '状态', name: 'status', width: 60, formatter: function(value, options, row){
 				return value === 0 ? 
 					'<span class="label label-danger">禁用</span>' : 
 					'<span class="label label-success">正常</span>';
-			}},
-			{ label: '创建时间', name: 'createTime', index: "create_time", width: 85}
+			}}
         ],
 		viewrecords: true,
         height: 385,
@@ -21,6 +20,7 @@ $(function () {
 		rowList : [10,30,50],
         rownumbers: true, 
         rownumWidth: 25, 
+        admins:null,
         autowidth:true,
         multiselect: true,
         pager: "#jqGridPager",
@@ -99,21 +99,21 @@ var vm = new Vue({
             })
         },
         update: function () {
-            var userId = getSelectedRow();
-            if(userId == null){
+            var Id = getSelectedRow();
+            if(Id == null){
                 return ;
             }
 
             vm.showList = false;
             vm.title = "修改";
 
-            vm.getUser(userId);
+            vm.getUser(Id);
             //获取角色信息
             this.getRoleList();
         },
         del: function () {
-            var userIds = getSelectedRows();
-            if(userIds == null){
+            var Ids = getSelectedRows();
+            if(Ids == null){
                 return ;
             }
 
@@ -122,7 +122,7 @@ var vm = new Vue({
                     type: "POST",
                     url: baseURL + "sys/user/delete",
                     contentType: "application/json",
-                    data: JSON.stringify(userIds),
+                    data: JSON.stringify(Ids),
                     success: function(r){
                         if(r.code == 0){
                             alert('操作成功', function(){
@@ -136,7 +136,7 @@ var vm = new Vue({
             });
         },
         saveOrUpdate: function () {
-            var url = vm.user.userId == null ? "sys/user/save" : "sys/user/update";
+            var url = vm.user.id == null ? "sys/user/save" : "sys/user/update";
             $.ajax({
                 type: "POST",
                 url: baseURL + url,
@@ -153,13 +153,65 @@ var vm = new Vue({
                 }
             });
         },
-        getUser: function(userId){
-            $.get(baseURL + "sys/user/info/"+userId, function(r){
+        getUser: function(Id){
+            $.get(baseURL + "sys/user/info/"+Id, function(r){
                 vm.user = r.user;
                 vm.user.password = null;
-
                 vm.getDept();
             });
+        },
+        recharge: function () {
+        	var Id = getSelectedRow();
+            if(Id == null){
+                return ;
+            }
+            document.getElementById("limits").value="";
+        	 layer.open({
+                 type: 1,
+                 offset: '50px',
+                 skin: 'layui-layer-molv',
+                 title: "充值面板",
+                 area: ['300px', '280px'],
+                 shade: 0,
+                 shadeClose: false,
+                 content: jQuery("#divrecharge"),
+                 btn: ['确定', '取消'],
+                 btn1: function (index) {
+                	 console.log("Id:"+Id);
+                	 console.log("limitss:" + document.getElementById("limits").value );
+                	 
+                	 var obj = document.getElementsByName("limi");
+                	 var add="+";
+                	 for (i in obj)
+                	  {
+                		 if(obj[i].checked==true)
+                		 {
+                			 add=obj[i].value;
+                			 break;
+                		 }
+                	  }
+
+
+                	 vm.user.id = Id;
+                	 vm.user.limits = add+document.getElementById("limits").value;
+                	 $.ajax({
+                         type: "POST",
+                         url: baseURL + "sys/user/recharge",
+                         contentType: "application/json",
+                         data: JSON.stringify(vm.user),
+                         success: function(r){
+                             if(r.code === 0){
+                                 alert('操作成功', function(){
+                                     vm.reload();
+                                 });
+                             }else{
+                                 alert(r.msg);
+                             }
+                         }
+                     });
+                     layer.close(index);
+                 }
+             });
         },
         getRoleList: function(){
             $.get(baseURL + "sys/role/select", function(r){

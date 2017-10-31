@@ -16,6 +16,8 @@ public interface WebchatGroupDetailService {
 	
 	WebchatGroupDetailEntity queryObject(Integer gid);
 	
+	void group_detail(Integer uid);
+	
 	List<WebchatGroupDetailEntity> queryList(Map<String, Object> map);
 	
 	int queryTotal(Map<String, Object> map);

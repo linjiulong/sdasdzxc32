@@ -3,17 +3,15 @@ $(function () {
         url: baseURL + 'webchatuser/list',
         datatype: "json",
         colModel: [			
-			{ label: 'id', name: 'id', index: 'id', width: 50, key: true },
-			{ label: '用户ID', name: 'uid', index: 'uid', width: 80 }, 			
-			{ label: '用户名', name: 'name', index: 'name', width: 80 }, 			
-			{ label: '头像', name: 'headphoto', index: 'headphoto', width: 80 }, 			
-			{ label: '注册时间', name: 'addtime', index: 'addtime', width: 80 }, 			
-			{ label: '所在群', name: 'groupname', index: 'addtime', width: 80 }, 			
-			{ label: '状态', name: 'online', formatter: function(value, options, row){
-				return value === 0 ? 
-						'<span class="label label-danger">离线</span>' : 
-						'<span class="label label-success">在线</span>';
-				}}			
+			{ label: 'id', name: 'id', index: 'id', width: 50, key: true , hidden: true},
+			{ label: '用户名', name: 'username', index: 'username', width: 150 }, 			
+			{ label: '个人介绍', name: 'sign', index: 'sign', width: 80 }, 			
+			{ label: '注册时间', name: 'addTime', index: 'add_time', width: 70 }, 			
+			{ label: '群组', name: 'groupsname', index: 'groupsname', width: 80 }, 			
+			{ label: '在线', name: 'online', index: 'online', width: 30 }, 			
+			{ label: '状态', name: 'status', index: 'status', width: 30 }	, 	
+			{ label: '包网', name: 'deptId', index: 'dept_id', width: 40 }, 			
+			{ label: '登录次数', name: 'count', index: 'count', width: 30 }			
         ],
 		viewrecords: true,
         height: 385,
@@ -104,11 +102,12 @@ var vm = new Vue({
 	el:'#rrapp',
 	data:{
 		q:{
-			name:null
+			username:null
 		},
 		offlinestate : null,
 		showList: true,
 		title: null,
+		groupnames: null,
 		webchatUser: {}
 	},
 	methods: {
@@ -127,7 +126,7 @@ var vm = new Vue({
 			}
 			vm.showList = false;
             vm.title = "修改";
-            
+            console.log(id);
             vm.getInfo(id)
 		},
 		saveOrUpdate: function (event) {
@@ -172,6 +171,46 @@ var vm = new Vue({
 				});
 			});
 		},
+		getGroups: function(){
+			 $("#Group").empty();
+	         var $select = $("#Group")
+			 $.get(baseURL + "webchatgroups/select", function(r){
+				 $.each(r.list,function(n,value) {
+		                $opt = $("<option />", {
+		                    value: value.id,
+		                    text: value.name
+		                });
+			            $select.append($opt).multipleSelect("refresh");
+			            $select.multipleSelect('uncheckAll');
+			            
+				 });
+			 })
+		}, 
+		GroupTree: function(){
+			vm.getGroups();
+           layer.open({
+               type: 1,
+               offset: '50px',
+               skin: 'layui-layer-molv',
+               title: "选择聊天群",
+               area: ['300px', '450px'],
+               shade: 0,
+               shadeClose: false,
+               content: jQuery("#GroupLayer"),
+               btn: ['确定', '取消'],
+               btn1: function (index) {
+               	 var $select = $("#Group")
+               	 var id=$('#Group').multipleSelect('getSelects', 'value');
+               	 var name=$('#Group').multipleSelect('getSelects', 'text');
+               	 vm.groupnames="当前群名:"+name;
+               	   console.log("id:"+id)
+       	           console.log("name:"+name)
+       	           vm.gid=id;
+               	 vm.getdate(id);
+               	 layer.close(index);
+               }
+           });
+       },
 		getInfo: function(id){
 			$.get(baseURL + "webchatuser/info/"+id, function(r){
                 vm.webchatUser = r.webchatUser;
@@ -206,7 +245,7 @@ var vm = new Vue({
 			vm.showList = true;
 			var page = $("#jqGrid").jqGrid('getGridParam','page');
 			$("#jqGrid").jqGrid('setGridParam',{ 
-                postData:{'name': vm.q.name},
+                postData:{'username': vm.q.username},
                 page:page
             }).trigger("reloadGrid");
 		}

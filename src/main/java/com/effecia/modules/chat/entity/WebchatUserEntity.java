@@ -42,6 +42,7 @@ public class WebchatUserEntity implements Serializable {
 	//金额
 	private BigDecimal limits;
 	
+	private String groupsname;
 	/**
 	 * 角色ID列表
 	 */
@@ -195,13 +196,23 @@ public class WebchatUserEntity implements Serializable {
 		this.limits = limits;
 	}
 
+	public String getGroupsname() {
+		return groupsname;
+	}
+
+	public void setGroupsname(String groupsname) {
+		this.groupsname = groupsname;
+	}
+
 	@Override
 	public String toString() {
 		return "WebchatUserEntity [id=" + id + ", username=" + username + ", password=" + password + ", sign=" + sign
 				+ ", headphoto=" + headphoto + ", addTime=" + addTime + ", online=" + online + ", deptId=" + deptId
-				+ ", salt=" + salt + ", count=" + count + ", status=" + status + ", limits=" + limits + ", roleIdList="
-				+ roleIdList + "]";
+				+ ", salt=" + salt + ", count=" + count + ", status=" + status + ", limits=" + limits + ", groupsname="
+				+ groupsname + ", roleIdList=" + roleIdList + "]";
 	}
+
+ 
 	 
 	 
 }

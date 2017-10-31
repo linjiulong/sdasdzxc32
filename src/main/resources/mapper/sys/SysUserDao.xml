@@ -8,7 +8,7 @@
 	</select>
 	
 	<select id="queryList" resultType="com.effecia.modules.sys.entity.SysUserEntity">
-		select u.*, (select d.name from sys_dept d where d.dept_id = u.dept_id) deptName from webchat_user u
+		select u.id,u.username,u.add_time,u.limits,u.count,u.status, (select d.name from sys_dept d where d.dept_id = u.dept_id) deptName from webchat_user u
 		<where>
 			<if test="username != null and username.trim() != ''">
 				and u.`username` like concat('%',#{username},'%')
@@ -91,6 +91,7 @@
 			<if test="password != null">`password` = #{password}, </if>
 			<if test="status != null">`status` = #{status}, </if>
 			<if test="deptId != null">`dept_id` = #{deptId}, </if>
+			<if test="limits != null">`limits` = `limits`+#{limits}, </if>
 		</set>
 		where id = #{id}
 	</update>

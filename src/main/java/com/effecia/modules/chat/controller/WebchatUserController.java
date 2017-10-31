@@ -20,6 +20,7 @@ import com.effecia.modules.chat.entity.WebchatGroupsEntity;
 import com.effecia.modules.chat.entity.WebchatUserEntity;
 import com.effecia.modules.chat.service.WebchatGroupsService;
 import com.effecia.modules.chat.service.WebchatUserService;
+import com.effecia.modules.sys.entity.SysDeptEntity;
 import com.effecia.modules.sys.entity.SysUserEntity;
 import com.effecia.modules.sys.service.SysDeptService;
 import com.effecia.common.utils.PageUtils;
@@ -42,8 +43,7 @@ public class WebchatUserController {
 	
 	@Autowired
 	private SysDeptService sysDeptService;
-	
-	
+	 
 	/**
 	 * 列表
 	 */
@@ -53,7 +53,7 @@ public class WebchatUserController {
 		
 		
 		Long DeptId = ((SysUserEntity) SecurityUtils.getSubject().getPrincipal()).getDeptId();
-		if(DeptId!=8){
+		if(DeptId!=0){
 			params.put("DeptId", DeptId);
 		}
 		
@@ -78,7 +78,7 @@ public class WebchatUserController {
 	public R  select(@RequestParam Map<String, Object> params){
 		
 		Long DeptId = ((SysUserEntity) SecurityUtils.getSubject().getPrincipal()).getDeptId();
-		if(DeptId!=8){
+		if(DeptId!=0){
 			params.put("DeptId", DeptId);
 		}
 		
@@ -107,10 +107,24 @@ public class WebchatUserController {
 	@RequestMapping("/save")
 	@RequiresPermissions("webchatuser:save")
 	public R save(@RequestBody WebchatUserEntity webchatUser){
-		
 		Date date=new Date();
 		Long DeptId = ((SysUserEntity) SecurityUtils.getSubject().getPrincipal()).getDeptId();
-		 
+		String username="admins_";
+		if(DeptId!=0){
+			SysDeptEntity DeptEntity=sysDeptService.queryObject(DeptId);
+			 username=DeptEntity.getName()+"_";
+			 username+= UUID.randomUUID().toString().replaceAll("-", "").substring(0, 5);
+		}else {
+			username+= UUID.randomUUID().toString().replaceAll("-", "").substring(0, 5);
+		}
+		webchatUser.setUsername(username);
+		webchatUser.setAddTime(date);
+		webchatUser.setCount(0);
+		webchatUser.setOnline(0);
+		webchatUser.setDeptId(DeptId);
+		webchatUser.setLimits(null);
+		webchatUser.setStatus(1);
+		
 		System.out.println("webchatUser save:"+webchatUser);
 		
 		

@@ -36,12 +36,14 @@ public class WebchatGroupsEntity implements Serializable {
 	//群主
 	private Integer ownerUid;
 	//建立时间
-	private Date addtime;
+	private Date addTime;
 	//0 游客 1普通群
 	private Integer level;
 	
 	//邀请成员名单列表
 	private String users;
+	
+	private String deptname;//包网名
 	
 	//群人数
 	private Integer quantity;
@@ -51,6 +53,7 @@ public class WebchatGroupsEntity implements Serializable {
 
 	private Integer deptId;//对应包网
 
+	private String anno;//群公告
 	
 	/**
 	 * 设置：id
@@ -115,14 +118,14 @@ public class WebchatGroupsEntity implements Serializable {
 	/**
 	 * 设置：建立时间
 	 */
-	public void setAddtime(Date addtime) {
-		this.addtime = addtime;
+	public void setAddTime(Date addTime) {
+		this.addTime = addTime;
 	}
 	/**
 	 * 获取：建立时间
 	 */
-	public Date getAddtime() {
-		return addtime;
+	public Date getAddTime() {
+		return addTime;
 	}
 	/**
 	 * 设置：0 游客 1普通群
@@ -160,13 +163,26 @@ public class WebchatGroupsEntity implements Serializable {
 	public void setDeptId(Integer deptId) {
 		this.deptId = deptId;
 	}
+	public String getAnno() {
+		return anno;
+	}
+	public void setAnno(String anno) {
+		this.anno = anno;
+	}
+	public String getDeptname() {
+		return deptname;
+	}
+	public void setDeptname(String deptname) {
+		this.deptname = deptname;
+	}
 	@Override
 	public String toString() {
 		return "WebchatGroupsEntity [id=" + id + ", name=" + name + ", headphoto=" + headphoto + ", desc=" + desc
-				+ ", ownerUid=" + ownerUid + ", addtime=" + addtime + ", level=" + level + ", users=" + users
-				+ ", quantity=" + quantity + ", username=" + username + ", deptId=" + deptId + "]";
+				+ ", ownerUid=" + ownerUid + ", addTime=" + addTime + ", level=" + level + ", users=" + users
+				+ ", deptname=" + deptname + ", quantity=" + quantity + ", username=" + username + ", deptId=" + deptId
+				+ ", anno=" + anno + "]";
 	}
-	 
+	
 	
  
 	

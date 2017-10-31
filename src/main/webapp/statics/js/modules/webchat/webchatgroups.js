@@ -3,15 +3,34 @@ $(function () {
         url: baseURL + 'webchatgroups/list',
         datatype: "json",
         colModel: [			
-			{ label: 'id', name: 'id', index: 'id', width: 20, key: true },
-			{ label: '群名', name: 'name', index: 'name', width: 80 }, 			
-			{ label: '头像', name: 'headphoto', index: 'headphoto', width: 80 }, 			
-			{ label: '群主', name: 'username', index: 'owner_uid', width: 20 }, 			
-			{ label: '人数', name: 'quantity', index: 'quantity', width: 40 },
-			{ label: '群介绍', name: 'desc', index: '_desc', width: 80 }, 			
-			{ label: '建立时间', name: 'addtime', index: 'addtime', width: 80 }, 			
-			{ label: '公司', name: 'deptId', index: 'dept_id', width: 80 }, 			
-			{ label: '类型', name: 'level', width: 80, formatter: function(value, options, row){
+			{ label: 'id',       name: 'id',   width: 20, key: true },
+			{ label: '群名',     name: 'name',   width: 80 }, 			
+			{ label: '头像',     name: 'headphoto', width: 80 , formatter: function(value, options, row){
+				if(value==null||value==""){
+					return '暂未上传群头像';
+				}else{
+					return value;
+				}
+			}}, 			
+			{ label: '群主',     name: 'username',   width: 40 , formatter: function(value, options, row){
+				if(value==null||value==""){
+					return '暂无';
+				}else{
+					return value;
+				}
+			}}, 			
+			{ label: '人数',     name: 'quantity',   width: 30 },
+			{ label: '群介绍',   name: 'desc',   width: 80 }, 			
+			{ label: '群公告',   name: 'anno',   width: 80 , formatter: function(value, options, row){
+				if(value==null||value==""){
+					return '暂未填公告';
+				}else{
+					return value;
+				}
+			}}, 			
+			{ label: '建立时间', name: 'addTime',   width: 70 }, 			
+			{ label: '包网',		 name: 'deptname',   width: 80 }, 			
+			{ label: '类型', 	 name: 'level', width: 80, formatter: function(value, options, row){
 				return value === 0 ? 
 					'<span class="label label-danger">游客群</span>' : 
 					'<span class="label label-success">普通群</span>';
@@ -93,11 +112,6 @@ var vm = new Vue({
 		add: function(){
 			vm.showList = false;
 			vm.title = "新增";
-			vm.webchatGroups = {};
-			$.get(baseURL + "/sys/user/info", function(r){
-                vm.webchatGroups.ownerUid = r.user.userId;
-            });
-			
 			vm.getUsers();
 
 		},
@@ -172,10 +186,10 @@ var vm = new Vue({
 	         var $select = $("select")
 			 $.get(baseURL + "webchatuser/select", function(r){
 				 $.each(r.list,function(n,value) {
-					 console.log(n+"----"+value.uid+"-----"+value.name);
+					 console.log(n+"----"+value.uid+"-----"+value.username);
 		                $opt = $("<option />", {
-		                    value: value.uid,
-		                    text: value.name
+		                    value: value.id,
+		                    text: value.username
 		                });
 			            $select.append($opt).multipleSelect("refresh");
 			            $select.multipleSelect('uncheckAll');

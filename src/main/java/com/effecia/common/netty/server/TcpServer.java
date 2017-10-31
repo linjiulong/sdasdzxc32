@@ -29,20 +29,10 @@ public class TcpServer implements Runnable{
 	
 	private static Logger logger = LoggerFactory.getLogger(TcpServer.class);
 	private static ChannelFuture channelFuture;
-    private static Gson gson=new Gson();
-
+ 
 	public TcpServer(){}
 	
-	public void send(NettyCommandPo po){
-    	ChannelHandlerContext ctx = NettyCache.getChannels().get("server");
-    	logger.info("[send] [channel :"+ctx+"]");
-		if(ctx != null && !ctx.isRemoved() ){
-			logger.info("[Server] [Send] ["+gson.toJson(po)+"]");
-			ctx.writeAndFlush(po);
-		} else {
-			logger.error("[ChannelHandlerContext Is Null] [Or] [ChannelHandlerContext Is Removed]");
-		}	
-	}
+ 
 	
 	public void start(int port) throws Exception {
         NioEventLoopGroup workGroup = new NioEventLoopGroup(1);
