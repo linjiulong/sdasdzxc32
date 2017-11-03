@@ -1,7 +1,7 @@
 package com.effecia.modules.sys.controller;
 
 
-import com.effecia.modules.chat.entity.WebchatUserEntity;
+import com.effecia.modules.sys.entity.SysUserEntity;
 import com.effecia.modules.sys.entity.SysLogEntity;
 import com.effecia.modules.sys.service.SysLogService;
 import com.effecia.common.utils.PageUtils;
@@ -42,7 +42,7 @@ public class SysLogController {
 	public R list(@RequestParam Map<String, Object> params){
 		
 		
-		Long DeptId = ((WebchatUserEntity) SecurityUtils.getSubject().getPrincipal()).getDeptId();
+		Long DeptId = ((SysUserEntity) SecurityUtils.getSubject().getPrincipal()).getDeptId();
 		System.out.println("DeptId:"+DeptId);
 		
 		if(DeptId!=0){

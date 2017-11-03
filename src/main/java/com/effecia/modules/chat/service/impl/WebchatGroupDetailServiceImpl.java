@@ -67,5 +67,11 @@ public class WebchatGroupDetailServiceImpl implements WebchatGroupDetailService 
 	public void group_detail(Integer uid) {
 		webchatGroupDetailDao.group_detail(uid);		
 	}
+
+	@Override
+	public int updategroup(WebchatGroupDetailEntity webchatGroupDetail) {
+		return webchatGroupDetailDao.updategroup(webchatGroupDetail);
+			
+	}
 	
 }

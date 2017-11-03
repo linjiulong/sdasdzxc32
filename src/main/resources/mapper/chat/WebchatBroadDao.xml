@@ -6,11 +6,11 @@
 	<!-- 可根据自己的需求，是否要使用 -->
     <resultMap type="com.effecia.modules.chat.entity.WebchatBroadEntity" id="webchatBroadMap">
         <result property="id" column="id"/>
-        <result property="title" column="title"/>
         <result property="msg" column="msg"/>
         <result property="beginTime" column="begin_time"/>
         <result property="endTime" column="end_time"/>
         <result property="bState" column="b_state"/>
+        <result property="frequency" column="Frequency"/>
     </resultMap>
 
 	<select id="queryObject" resultType="com.effecia.modules.chat.entity.WebchatBroadEntity">
@@ -40,31 +40,31 @@
 		insert into webchat_broad
 		(
 			`id`, 
-			`title`, 
 			`msg`, 
 			`begin_time`, 
 			`end_time`, 
-			`b_state`
+			`b_state`, 
+			`Frequency` 
 		)
 		values
 		(
 			#{id}, 
-			#{title}, 
 			#{msg}, 
 			#{beginTime}, 
 			#{endTime}, 
-			#{bState}
+			#{bState}, 
+			#{frequency} 
 		)
 	</insert>
 	 
 	<update id="update" parameterType="com.effecia.modules.chat.entity.WebchatBroadEntity">
 		update webchat_broad 
 		<set>
-			<if test="title != null">`title` = #{title}, </if>
 			<if test="msg != null">`msg` = #{msg}, </if>
 			<if test="beginTime != null">`begin_time` = #{beginTime}, </if>
 			<if test="endTime != null">`end_time` = #{endTime}, </if>
-			<if test="bState != null">`b_state` = #{bState}</if>
+			<if test="bState != null">`b_state` = #{bState}, </if>
+			<if test="frequency != null">`Frequency` = #{frequency}, </if>
 		</set>
 		where id = #{id}
 	</update>

@@ -17,11 +17,11 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.effecia.modules.chat.entity.WebchatGroupDeptEntity;
 import com.effecia.modules.chat.entity.WebchatGroupDetailEntity;
+import com.effecia.modules.chat.entity.WebchatUserEntity;
 import com.effecia.modules.sys.entity.SysUserEntity;
-import com.effecia.modules.chat.service.WebchatGroupDeptService;
 import com.effecia.modules.chat.service.WebchatGroupDetailService;
+import com.effecia.modules.chat.service.WebchatUserService;
 import com.alibaba.fastjson.JSON;
 import com.effecia.common.utils.PageUtils;
 import com.effecia.common.utils.Query;
@@ -41,9 +41,9 @@ public class WebchatGroupDetailController {
 	@Autowired
 	private WebchatGroupDetailService webchatGroupDetailService;
 	
-	
 	@Autowired
-	private WebchatGroupDeptService webchatGroupDeptService;
+	private WebchatUserService webchatUserService;
+	
 	
 	/**
 	 * 列表
@@ -76,11 +76,7 @@ public class WebchatGroupDetailController {
 		
 		Long DeptId = ((SysUserEntity) SecurityUtils.getSubject().getPrincipal()).getDeptId();
 		if(DeptId!=0){
-			params.put("DeptId", DeptId);
-			WebchatGroupDeptEntity GroupDeptEntity=webchatGroupDeptService.queryFind(gid,DeptId);
-			if(GroupDeptEntity==null){
-				return R.error("无权限");
-			}
+			 
 		}
 		//查询列表数据
 		Query query = new Query(params);
@@ -115,16 +111,47 @@ public class WebchatGroupDetailController {
 	@RequiresPermissions("webchatgroupdetail:save")
 	public R save(@RequestBody WebchatGroupDetailEntity webchatGroupDetail){
 		
+		
+		Long DeptId = ((SysUserEntity) SecurityUtils.getSubject().getPrincipal()).getDeptId();
+		Map<String,Object> params=new HashMap<>();
+		if(DeptId!=0){
+			params.put("DeptId", DeptId);
+		}
+		
 		System.out.println("webchatGroupDetail:"+webchatGroupDetail);
 		List<Object> users= JSON.parseArray(webchatGroupDetail.getUsers());
 		if(users!=null){
 			for (Object userid : users) {
 				Date addtime=new Date();
+				Integer id=Integer.parseInt(userid+"");
 				webchatGroupDetail.setAddTime(addtime);
-				webchatGroupDetail.setLevel(1);
 				webchatGroupDetail.setGStatus(0);
-				webchatGroupDetail.setUid(Integer.parseInt(userid+""));
-				webchatGroupDetailService.save(webchatGroupDetail);
+				webchatGroupDetail.setUid(id);
+				
+				webchatGroupDetail.setLevel(1);
+				params.put("id", id);
+				System.out.println("id:"+id);
+				WebchatUserEntity   UserEntity= webchatUserService.finduser(params);
+				webchatGroupDetail.setNickName(UserEntity.getUsername());
+				System.out.println("=============");
+				System.out.println("=============");
+				System.out.println("UserEntity:"+UserEntity);
+				System.out.println("webchatGroupDetail:"+webchatGroupDetail);
+				System.out.println("=============");
+				System.out.println("=============");
+				if("0".equals(UserEntity.getSalt().toString())||"0"==UserEntity.getSalt().toString()){
+					webchatGroupDetail.setLevel(1);
+					System.out.println("修改："+params.toString());
+					int count=webchatGroupDetailService.updategroup(webchatGroupDetail);
+					System.out.println("count:"+count);
+					if(count==0){
+						webchatGroupDetailService.save(webchatGroupDetail);
+					}
+				}else {
+					webchatGroupDetail.setLevel(2);
+					webchatGroupDetailService.save(webchatGroupDetail);
+				}
+//				webchatGroupDetailService.save(webchatGroupDetail);
 			}
 		}
 //		webchatGroupDetailService.save(webchatGroupDetail);
@@ -160,6 +187,8 @@ public class WebchatGroupDetailController {
 				}
 			}
 			map.put("ids", uids);
+			System.out.println("--------delete------");
+			System.out.println(map.toString());
 		webchatGroupDetailService.deleteBatch(map);
 		
 		return R.ok();

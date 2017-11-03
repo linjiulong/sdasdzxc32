@@ -3,6 +3,7 @@ package com.effecia.modules.sys.controller;
 
 import com.effecia.common.annotation.SysLog;
 import com.effecia.modules.sys.shiro.ShiroUtils;
+import com.effecia.modules.sys.entity.SysDeptEntity;
 import com.effecia.modules.sys.entity.SysUserEntity;
 import com.effecia.common.utils.PageUtils;
 import com.effecia.common.utils.Query;
@@ -11,6 +12,7 @@ import com.effecia.common.validator.Assert;
 import com.effecia.common.validator.ValidatorUtils;
 import com.effecia.common.validator.group.AddGroup;
 import com.effecia.common.validator.group.UpdateGroup;
+import com.effecia.modules.sys.service.SysDeptService;
 import com.effecia.modules.sys.service.SysRoleDeptService;
 import com.effecia.modules.sys.service.SysUserRoleService;
 import com.effecia.modules.sys.service.SysUserService;
@@ -22,6 +24,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.env.SystemEnvironmentPropertySource;
 import org.springframework.web.bind.annotation.*;
 
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -41,6 +44,8 @@ public class SysUserController extends AbstractController {
 	private SysUserService sysUserService;
 	@Autowired
 	private SysUserRoleService sysUserRoleService;
+	@Autowired
+	private SysDeptService sysDeptService;
 	
 	private Logger logger = LoggerFactory.getLogger(getClass());
 
@@ -125,9 +130,12 @@ public class SysUserController extends AbstractController {
 	@RequiresPermissions("sys:user:save")
 	public R save(@RequestBody SysUserEntity user){
 		ValidatorUtils.validateEntity(user, AddGroup.class);
-		System.out.println("add user:"+user);
-		sysUserService.save(user);
+		SysDeptEntity DeptEntity=sysDeptService.queryObject(user.getDeptId());
 		
+		String name=DeptEntity.getName()+"_"+user.getUsername();
+		user.setUsername(name);
+		System.out.println("user："+user);
+		sysUserService.save(user);
 		return R.ok();
 	}
 	
@@ -139,6 +147,7 @@ public class SysUserController extends AbstractController {
 	@RequiresPermissions("sys:user:update")
 	public R update(@RequestBody SysUserEntity user){
 		ValidatorUtils.validateEntity(user, UpdateGroup.class);
+		
 
 		sysUserService.update(user);
 		
@@ -155,6 +164,7 @@ public class SysUserController extends AbstractController {
 	public R Recharge(@RequestBody SysUserEntity user){
 			
 //		ValidatorUtils.validateEntity(user, UpdateGroup.class);
+
 		System.out.println("user:"+user);
 		sysUserService.update(user);
 		

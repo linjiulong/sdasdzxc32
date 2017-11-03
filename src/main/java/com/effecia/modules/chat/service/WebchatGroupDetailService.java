@@ -37,6 +37,8 @@ public interface WebchatGroupDetailService {
 	//查看该会员在该群的信息
 	WebchatGroupDetailEntity queryFindObject(Map<String,Object> map);
 
+	//移动群
+	int updategroup (WebchatGroupDetailEntity webchatGroupDetail);
 	
 	
 	

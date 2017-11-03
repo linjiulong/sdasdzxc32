@@ -1,6 +1,5 @@
 package com.effecia.modules.chat.service;
 
-import com.effecia.modules.chat.entity.WebchatGroupDeptEntity;
 import com.effecia.modules.chat.entity.WebchatMsgEntity;
 
 import java.util.List;
@@ -29,7 +28,6 @@ public interface WebchatMsgService {
 	
 	void deleteBatch(Integer[] ids);
 	
-	WebchatGroupDeptEntity queryFind(Integer id,Long deptId);
 
 	
 }

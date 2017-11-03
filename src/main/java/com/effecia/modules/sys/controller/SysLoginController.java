@@ -73,6 +73,8 @@ public class SysLoginController {
 		}
 		
 		try{
+			System.out.println("username:"+username);
+			System.out.println("password:"+password);
 			Subject subject = ShiroUtils.getSubject();
 			UsernamePasswordToken token = new UsernamePasswordToken(username, password);
 			subject.login(token);

@@ -1,5 +1,7 @@
 package com.effecia.modules.sys.shiro;
 
+import org.apache.shiro.cache.CacheManager;
+import org.apache.shiro.cache.MemoryConstrainedCacheManager;
 import org.apache.shiro.mgt.SecurityManager;
 import org.apache.shiro.session.mgt.SessionManager;
 import org.apache.shiro.spring.LifecycleBeanPostProcessor;
@@ -26,21 +28,28 @@ import java.util.Map;
 public class ShiroConfig {
 
     @Bean("sessionManager")
-    public SessionManager sessionManager(RedisShiroSessionDAO redisShiroSessionDAO, @Value("${renren.redis.open}") boolean redisOpen,
-                                         @Value("${renren.shiro.redis}") boolean shiroRedis){
+    public SessionManager sessionManager(RedisShiroSessionDAO redisShiroSessionDAO, @Value("${effecia.redis.open}") boolean redisOpen,
+                                         @Value("${effecia.shiro.redis}") boolean shiroRedis){
         DefaultWebSessionManager sessionManager = new DefaultWebSessionManager();
         //设置session过期时间为1小时(单位：毫秒)，默认为30分钟
         sessionManager.setGlobalSessionTimeout(60 * 60 * 1000);
         sessionManager.setSessionValidationSchedulerEnabled(true);
         sessionManager.setSessionIdUrlRewritingEnabled(false);
 
-        //如果开启redis缓存且renren.shiro.redis=true，则shiro session存到redis里
+        //如果开启redis缓存且effecia.shiro.redis=true，则shiro session存到redis里
         if(redisOpen && shiroRedis){
             sessionManager.setSessionDAO(redisShiroSessionDAO);
         }
         return sessionManager;
     }
 
+//    @Bean("cacheManager")
+//    public CacheManager cacheManager(UserRealm userRealm, SessionManager sessionManager){
+//    	MemoryConstrainedCacheManager cache=new MemoryConstrainedCacheManager(); 
+//		return cache;
+//    }
+    	
+    
     @Bean("securityManager")
     public SecurityManager securityManager(UserRealm userRealm, SessionManager sessionManager) {
         DefaultWebSecurityManager securityManager = new DefaultWebSecurityManager();
@@ -78,6 +87,8 @@ public class ShiroConfig {
     public LifecycleBeanPostProcessor lifecycleBeanPostProcessor() {
         return new LifecycleBeanPostProcessor();
     }
+    
+    
 
     @Bean
     public DefaultAdvisorAutoProxyCreator defaultAdvisorAutoProxyCreator() {

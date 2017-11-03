@@ -6,22 +6,21 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
-import com.effecia.common.netty.codec.RpcDecoder;
-import com.effecia.common.netty.codec.RpcEncoder;
-import com.effecia.common.netty.consts.cache.NettyCache;
-import com.effecia.common.netty.consts.po.common.NettyCommandPo;
-import com.effecia.common.netty.handler.SubReqServerHandler;
-import com.google.gson.Gson;
-
 import io.netty.bootstrap.ServerBootstrap;
 import io.netty.channel.ChannelFuture;
-import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.ChannelInitializer;
 import io.netty.channel.ChannelOption;
 import io.netty.channel.nio.NioEventLoopGroup;
 import io.netty.channel.socket.SocketChannel;
 import io.netty.channel.socket.nio.NioServerSocketChannel;
 import io.netty.handler.timeout.IdleStateHandler;
+
+import com.effecia.common.netty.client.SubReqClient;
+import com.effecia.common.netty.codec.RpcDecoder;
+import com.effecia.common.netty.codec.RpcEncoder;
+import com.effecia.chat.pojo.NettyCommandPo;
+import com.effecia.common.netty.handler.SubReqServerHandler;
+ 
 
 
 @Service
@@ -83,16 +82,19 @@ public class TcpServer implements Runnable{
         } catch (InterruptedException e) {
             // TODO Auto-generated catch block
             e.printStackTrace();
-        } finally {
-            bossGroup.shutdownGracefully();
-            workGroup.shutdownGracefully();
-        }
+        } 
+//        finally {
+//            bossGroup.shutdownGracefully();
+//            workGroup.shutdownGracefully();
+//        }
     }
 
 	public static void main(String[] args) {
 		try {
 			Thread t = new Thread(new TcpServer());
 			t.start();
+//			Thread c = new Thread(new SubReqClient());
+//			c.start();
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -102,7 +104,7 @@ public class TcpServer implements Runnable{
 	@Override
 	public void run() {
 		try {
-			start(2222);
+			start(2333);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}

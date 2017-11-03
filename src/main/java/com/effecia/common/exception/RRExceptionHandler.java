@@ -34,7 +34,7 @@ public class RRExceptionHandler {
 	@ExceptionHandler(DuplicateKeyException.class)
 	public R handleDuplicateKeyException(DuplicateKeyException e){
 		logger.error(e.getMessage(), e);
-		return R.error("数据库中已存在该记录");
+		return R.error("已存在该数据");
 	}
 
 	@ExceptionHandler(AuthorizationException.class)

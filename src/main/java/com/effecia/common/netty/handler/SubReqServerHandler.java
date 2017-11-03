@@ -6,19 +6,20 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.effecia.common.netty.consts.cache.NettyCache;
-import com.effecia.common.netty.consts.po.common.NettyCommandPo;
-import com.effecia.common.netty.consts.po.common.NettyHeader;
-import com.google.gson.Gson;
+import com.effecia.chat.pojo.NettyCommandPo;
+import com.effecia.chat.pojo.NettyHeader;
 
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.SimpleChannelInboundHandler;
+import io.netty.channel.ChannelHandler.Sharable;
 import io.netty.handler.timeout.IdleState;
 import io.netty.handler.timeout.IdleStateEvent;
 
+
+@Sharable
 public class SubReqServerHandler extends SimpleChannelInboundHandler<NettyCommandPo>{
 
 	private static Logger logger = LoggerFactory.getLogger(SubReqServerHandler.class);
-    private static Gson gson=new Gson();
 
     
     @Override
@@ -55,8 +56,8 @@ public class SubReqServerHandler extends SimpleChannelInboundHandler<NettyComman
 	}
 
 	@Override
-	protected void channelRead0(ChannelHandlerContext ctx, NettyCommandPo msg) throws Exception {
-		logger.info("[Received] [Client] [Message] - ["+gson.toJson(msg)+"]");
+	public void channelRead0(ChannelHandlerContext ctx, NettyCommandPo msg) throws Exception {
+		logger.info("[Received] [Client] [Message] - ["+ msg.toString()+"]");
 		NettyHeader head = msg.getHeader();
 		String requestType = head.getRequestType();
 		if(requestType.equals("REGISTER")){
@@ -78,5 +79,21 @@ public class SubReqServerHandler extends SimpleChannelInboundHandler<NettyComman
 		logger.info("[One Client Connect To Server] [Id:"+ctx.channel().id().asLongText()+"] ");
 		NettyCache.getChannels().put("server",ctx);
 	}
+
+	@Override
+	public boolean acceptInboundMessage(Object msg) throws Exception {
+		System.out.println(msg.toString()+"===========");
+		return super.acceptInboundMessage(msg);
+	}
+
+	@Override
+	public void channelRead(ChannelHandlerContext arg0, Object arg1) throws Exception {
+		System.out.println(arg0.toString()+"==========="+arg1.toString());
+		super.channelRead(arg0, arg1);
+	}
+	
+	
+	
+	
 
 }

@@ -12,7 +12,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.effecia.modules.chat.entity.WebchatGroupDeptEntity;
 import com.effecia.modules.chat.entity.WebchatUserEntity;
 import com.effecia.modules.chat.entity.WebchatMsgEntity;
 import com.effecia.modules.chat.service.WebchatMsgService;
@@ -63,10 +62,7 @@ public class WebchatMsgController {
 		params.put("gid", gid);
 		Long DeptId = ((WebchatUserEntity) SecurityUtils.getSubject().getPrincipal()).getDeptId();
 		if(DeptId!=0){
-			WebchatGroupDeptEntity WebchatGroupDept=webchatMsgService.queryFind(gid,DeptId);
-			if(WebchatGroupDept==null){
-				return R.error("无权限");
-			}
+			 
 		}
 		
 		//查询列表数据

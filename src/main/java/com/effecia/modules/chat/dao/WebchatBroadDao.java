@@ -8,7 +8,7 @@ import com.effecia.modules.sys.dao.BaseDao;
  * 
  * @author lin
  * @email lin.lin@support888.net
- * @date 2017-10-30 15:39:59
+ * @date 2017-11-02 11:07:34
  */
 public interface WebchatBroadDao extends BaseDao<WebchatBroadEntity> {
 	

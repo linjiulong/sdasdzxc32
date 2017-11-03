@@ -6,18 +6,16 @@ import java.util.concurrent.ConcurrentHashMap;
 
 import org.objenesis.Objenesis;
 import org.objenesis.ObjenesisStd;
- 
- 
+
 import com.effecia.common.utils.TimestampDelegate;
 
-import io.protostuff.runtime.Delegate;
-
-import io.protostuff.LinkedBuffer;
-import io.protostuff.ProtostuffIOUtil;
-import io.protostuff.Schema;
-import io.protostuff.runtime.DefaultIdStrategy;
-import io.protostuff.runtime.RuntimeEnv;
-import io.protostuff.runtime.RuntimeSchema;
+import com.dyuproject.protostuff.LinkedBuffer;
+import com.dyuproject.protostuff.ProtostuffIOUtil;
+import com.dyuproject.protostuff.Schema;
+import com.dyuproject.protostuff.runtime.DefaultIdStrategy;
+import com.dyuproject.protostuff.runtime.Delegate;
+import com.dyuproject.protostuff.runtime.RuntimeEnv;
+import com.dyuproject.protostuff.runtime.RuntimeSchema;
 
 
 /**
@@ -55,6 +53,7 @@ public class SerializationUtil{
     /**   序列化        **/
     @SuppressWarnings("unchecked")
     public static <T> byte[] serialize(T obj) {
+    	System.out.println("SSSSS");
     	if (obj == null) {
             return null;
         }

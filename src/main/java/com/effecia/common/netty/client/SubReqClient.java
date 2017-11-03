@@ -1,7 +1,5 @@
 package com.effecia.common.netty.client;
 
-import java.io.BufferedReader;
-import java.io.InputStreamReader;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
@@ -11,14 +9,13 @@ import java.util.concurrent.TimeUnit;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import com.alibaba.fastjson.JSON;
 import com.effecia.common.netty.codec.RpcDecoder;
 import com.effecia.common.netty.codec.RpcEncoder;
 import com.effecia.common.netty.consts.cache.NettyCache;
-import com.effecia.common.netty.consts.po.common.NettyCommandPo;
-import com.effecia.common.netty.consts.po.common.NettyHeaderBasis;
+import com.effecia.chat.pojo.NettyCommandPo;
+import com.effecia.chat.pojo.NettyHeaderBasis;
 import com.effecia.common.netty.handler.SubReqClientHandler;
-import com.effecia.common.netty.server.TcpServer;
-import com.google.gson.Gson;
 
 import io.netty.bootstrap.Bootstrap;
 import io.netty.channel.Channel;
@@ -38,17 +35,15 @@ public class SubReqClient implements Runnable{
 	private static Logger logger = LoggerFactory.getLogger(SubReqClient.class);
     private static Bootstrap bootstrap = null;
     private static Channel channel;
-    private static Gson gson=new Gson();
     public SubReqClient(){
     	
     }
     
     public void send(NettyCommandPo po){
-    	System.out.println("-------");
     	ChannelHandlerContext ctx = NettyCache.getChannels().get("client");
     	logger.info("[send] [channel :"+ctx+"]");
 		if(ctx != null && !ctx.isRemoved() ){
-			logger.info("[Client] [Send] ["+gson.toJson(po)+"]");
+			logger.info("[Client] [Send] ["+JSON.toJSONString(po)+"]");
 			ctx.writeAndFlush(po);
 		} else {
 			logger.error("[ChannelHandlerContext Is Null] [Or] [ChannelHandlerContext Is Removed]");
@@ -82,10 +77,21 @@ public class SubReqClient implements Runnable{
             })
             .option(ChannelOption.SO_KEEPALIVE, true);
             doConnect();
+//            NettyCommandPo po = new  NettyCommandPo();
+//        	NettyHeaderBasis head = new NettyHeaderBasis();
+//        	Map<String, Object> parameter = new HashMap<String, Object>();
+//        	head.setCommandId(UUID.randomUUID().toString());
+//        	head.setCommandType("TEST");
+//        	head.setSendTime(new Date());
+//        	head.setNeedsReturn(false);
+//        	head.setRequestType("REGISTER");
+//        	po.setHeader(head);
+//        	po.setParameter(parameter);
+//            send(po);
         } catch (Exception e){
         	logger.error("[Disconnect From Server] - [Wait For Reconnect Again]");
         } finally {
-        	logger.error("over");
+        	logger.error("ggg");
 //            workGroup.shutdownGracefully();
         }
     }
@@ -93,14 +99,11 @@ public class SubReqClient implements Runnable{
 	//负责客户端和服务器的 TCP 连接的建立,并且当 TCP连接失败时, doConnect会通过 "channel().eventLoop().schedule" 来延时10s后尝试重新连接.
 	public void doConnect() {
         if (channel != null && channel.isActive()) {
-        	
             return;
         }
         try {
         	// 发起异步链接操作
-        	ChannelFuture channelFuture = bootstrap.connect("localhost",2222).sync().channel().closeFuture().sync();
-     
-        	
+        	ChannelFuture channelFuture = bootstrap.connect("127.0.0.1",2333).sync().channel().closeFuture().sync();
             //断线重连机制
         	channelFuture.addListener(new ChannelFutureListener() {
             	@Override
@@ -119,26 +122,15 @@ public class SubReqClient implements Runnable{
                     }
                  }
              });
-        	
         } catch (Exception e){
         	logger.error("[Lost] [Connection] - [ready to connect again]");
         }
 	}
 	
-	
-	public static void main(String[] args) {
-		try {
-			Thread t = new Thread(new SubReqClient());
-			t.start();
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-	}
-	
 	@Override
 	public void run() {
 		try {
-			connect("localhost",2222);
+			connect("127.0.0.1",2333);
 		} catch (Exception e) {
 			logger.error("[Connect To Server Error]");
 		}

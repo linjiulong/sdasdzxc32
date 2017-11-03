@@ -16,7 +16,7 @@ import java.util.Map;
 public interface WebchatUserService {
 	
 	WebchatUserEntity queryObject(Integer id);
-	
+	WebchatUserEntity finduser(Map<String, Object> map);
 	List<WebchatUserEntity> queryList(Map<String, Object> map);
 
 	List<WebchatGroupsEntity> groupname(String[] ids);

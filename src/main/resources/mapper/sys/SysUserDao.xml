@@ -4,7 +4,7 @@
 <mapper namespace="com.effecia.modules.sys.dao.SysUserDao">
 	
 <select id="queryObject" resultType="com.effecia.modules.sys.entity.SysUserEntity">
-		select * from webchat_user where id = #{value} and salt  IS NOT NULL
+		select * from webchat_user where id = #{value} and  salt !='0'
 	</select>
 	
 	<select id="queryList" resultType="com.effecia.modules.sys.entity.SysUserEntity">
@@ -13,7 +13,7 @@
 			<if test="username != null and username.trim() != ''">
 				and u.`username` like concat('%',#{username},'%')
 			</if>
-			and salt  IS NOT NULL
+			and  salt !='0'
 			<!--  数据过滤  -->
 			${filterSql}
 		</where>
@@ -36,7 +36,7 @@
 			<if test="username != null and username.trim() != ''">
 				and u.`username` like concat('%',#{username},'%')
 			</if>
-			and salt  IS NOT NULL
+			and  salt !='0'
 			<!--  数据过滤  -->
 			${filterSql}
 		</where>
@@ -58,7 +58,7 @@
 	</select>
 	
 	<select id="queryByUserName" resultType="com.effecia.modules.sys.entity.SysUserEntity">
-		select * from webchat_user where username = #{username} and salt  IS NOT NULL
+		select * from webchat_user where username = #{username} and  salt !='0'
 	</select>
 	
 	<insert id="save" parameterType="com.effecia.modules.sys.entity.SysUserEntity" useGeneratedKeys="true" keyProperty="userId">
@@ -98,7 +98,7 @@
 	
 	<update id="updatePassword" parameterType="map">
 		update webchat_user set `password` = #{newPassword} 
-			where id = #{id} and password = #{password} and salt  IS NOT NULL
+			where id = #{id} and password = #{password} and  salt !='0'
 	</update>
 	
 	<delete id="deleteBatch">
@@ -106,7 +106,7 @@
 		<foreach item="id" collection="array" open="(" separator="," close=")">
 			#{id}
 		</foreach>
-		and salt  IS NOT NULL
+		and  salt !='0'
 		;
 		delete from webchat_user_role where user_id in 
 		<foreach item="id" collection="array" open="(" separator="," close=")">

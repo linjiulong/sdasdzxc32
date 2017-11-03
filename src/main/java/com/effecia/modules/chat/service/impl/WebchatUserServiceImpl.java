@@ -63,5 +63,10 @@ public class WebchatUserServiceImpl implements WebchatUserService {
 	public List<WebchatGroupsEntity> groupname(String[] ids) {
 		return webchatUserDao.groupname(ids);
 	}
+
+	@Override
+	public WebchatUserEntity finduser(Map<String, Object> map) {
+		return webchatUserDao.finduser(map);
+	}
 	
 }

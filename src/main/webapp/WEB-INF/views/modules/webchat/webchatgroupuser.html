@@ -33,21 +33,21 @@
             	<a class="btn btn-primary" @click="add"   ><i class="fa fa-user-plus"></i>&nbsp;添加成员  {{webchatGroups.users}}</a>
 			</#if>
 			<#if shiro.hasPermission("webchatgroupdetail:delete")>
-            <a class="btn btn-danger" @click="del" id="del"  disabled="disabled" ><i class="fa fa-user-times"></i>&nbsp;删除成员</a>
+            <a class="btn btn-danger" @click="del" id="del"   ><i class="fa fa-user-times"></i>&nbsp;删除成员</a>
 			</#if>
-			
 			<#if shiro.hasPermission("webchatgroupdetail:banned")>
-            	<a  disabled="disabled" id="banned"  class="btn btn-warning" @click="banned" ><i class="fa fa-ban"></i>&nbsp;禁言成员</a>
+            	<a   id="banned"  class="btn btn-warning" @click="banned" ><i class="fa fa-ban"></i>&nbsp;禁言成员</a>
             </#if>
+		<!-- 
 			<#if shiro.hasPermission("webchatgroupdetail:admins")>
-            	<a class="btn btn-success" @click="admins"   disabled="disabled" id="admins"    ><i class="fa fa-user"></i>&nbsp;{{adminsname}}</a>
+            	<a class="btn btn-success" @click="admins"    id="admins"    ><i class="fa fa-user"></i>&nbsp;{{adminsname}}</a>
 			</#if>			 
-            	<a  disabled="disabled" id="groupadmin"  class="btn btn-warning" @click="groupadmin" ><i class="fa fa-user-secret"></i>&nbsp;{{groupadmin}}</a>
+            	<a   id="groupadmin"  class="btn btn-warning" @click="groupadmin" ><i class="fa fa-user-secret"></i>&nbsp;{{groupadmin}}</a>
 			
-			<!-- 
+		
 			
 				<#if shiro.hasPermission("webchatuser:offline")>
-			 <a id="offline" class="btn btn-default" disabled="disabled"    @click="offline" ><i class="fa fa-power-off"></i>&nbsp;强制下线</a>
+			 <a id="offline" class="btn btn-default"     @click="offline" ><i class="fa fa-power-off"></i>&nbsp;强制下线</a>
 			</#if>
 			
 			 -->

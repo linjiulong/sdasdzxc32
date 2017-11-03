@@ -103,7 +103,8 @@
 	</bean>
 	
 	<!-- 线程池 -->
-	
+		<!-- 系统初始化入口  --> 
+		<bean id="initService" class="com.effecia.InitService" />
 	     <import resource="common_config.xml" />
 	 
 	

@@ -9,24 +9,22 @@ import java.util.concurrent.TimeUnit;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import com.alibaba.fastjson.JSON;
 import com.effecia.common.netty.client.SubReqClient;
 import com.effecia.common.netty.consts.cache.NettyCache;
-import com.effecia.common.netty.consts.po.common.NettyCommandPo;
-import com.effecia.common.netty.consts.po.common.NettyHeaderBasis;
-import com.google.gson.Gson;
+import com.effecia.chat.pojo.NettyCommandPo;
+import com.effecia.chat.pojo.NettyHeaderBasis;
 
-import io.netty.channel.ChannelHandler.Sharable;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.EventLoop;
 import io.netty.channel.SimpleChannelInboundHandler;
 import io.netty.handler.timeout.IdleState;
 import io.netty.handler.timeout.IdleStateEvent;
 
-@Sharable
+
 public class SubReqClientHandler extends SimpleChannelInboundHandler<NettyCommandPo>{
 
 	private static Logger logger = LoggerFactory.getLogger(SubReqClientHandler.class);
-    private static Gson gson=new Gson();
 
 	private SubReqClient client;
     public SubReqClientHandler(SubReqClient subReqClient) {
@@ -42,7 +40,6 @@ public class SubReqClientHandler extends SimpleChannelInboundHandler<NettyComman
 
     @Override
     public void channelActive(ChannelHandlerContext ctx) throws Exception {
-    		System.out.println("--------------");
             logger.info("[Connect To The Server] [Id:"+ctx.channel().id().asLongText()+"]");
             NettyCache.getChannels().put("client",ctx);
             NettyCommandPo po = new  NettyCommandPo();
@@ -55,12 +52,8 @@ public class SubReqClientHandler extends SimpleChannelInboundHandler<NettyComman
         	head.setRequestType("REGISTER");
         	po.setHeader(head);
         	po.setParameter(parameter);
-        	if(ctx != null && !ctx.isRemoved() ){
-    			logger.info("[Client] [Send] ["+gson.toJson(po)+"]");
-    			ctx.writeAndFlush(po);
-    		} else {
-    			logger.error("[ChannelHandlerContext Is Null] [Or] [ChannelHandlerContext Is Removed]");
-    		}	
+
+        	NettyCache.getChannels().get("client").writeAndFlush(po);
     }
 
     @Override
@@ -104,9 +97,32 @@ public class SubReqClientHandler extends SimpleChannelInboundHandler<NettyComman
 	}
 
 	@Override
-	protected void channelRead0(ChannelHandlerContext ctx, NettyCommandPo msg) throws Exception {
-		logger.info("[received] [Server] [message] - ["+gson.toJson(msg)+"]");
-	      
+	public void channelRead0(ChannelHandlerContext ctx, NettyCommandPo msg) throws Exception {
+		logger.info("[received] [Server] [message] - ["+JSON.toJSONString(msg)+"]");
+		String commandType = msg.getHeader().getCommandType();
+		if("BACK".equals(commandType)){
+			msg.getHeader().setCommandType("BACK");
+			msg.getHeader().setRequestType("RESPONSE");
+			msg.getParameter().put("wade","client1");
+			msg.getHeader().setNeedsReturn(false);
+			ctx.writeAndFlush(msg);
+		}
 	}
+	
+	
+	
+	@Override
+	public boolean acceptInboundMessage(Object msg) throws Exception {
+		System.out.println(msg.toString()+"===222========");
+		return super.acceptInboundMessage(msg);
+	}
+
+	@Override
+	public void channelRead(ChannelHandlerContext arg0, Object arg1) throws Exception {
+		System.out.println(arg0.toString()+"======222====="+arg1.toString());
+		super.channelRead(arg0, arg1);
+	}
+	
+	
 	
 }

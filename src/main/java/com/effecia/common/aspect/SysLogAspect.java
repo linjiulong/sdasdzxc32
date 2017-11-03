@@ -1,6 +1,5 @@
 package com.effecia.common.aspect;
 
-import com.google.gson.Gson;
 
 
 import com.effecia.common.annotation.SysLog;
@@ -75,8 +74,9 @@ public class SysLogAspect {
 		//请求的参数
 		Object[] args = joinPoint.getArgs();
 		try{
-			String params = new Gson().toJson(args[0]);
-			sysLog.setParams(params);
+//			String params = new Gson().toJson(args[0]);
+//			sysLog.setParams(params);
+			sysLog.setParams("");
 		}catch (Exception e){
 
 		}

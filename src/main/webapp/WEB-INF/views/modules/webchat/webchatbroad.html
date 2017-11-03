@@ -11,10 +11,6 @@
 <div id="rrapp" v-cloak>
 	<div v-show="showList">
 		<div class="grid-btn">
-		
-			<div class="form-group col-sm-2" >
-			        <input type="text" class="form-control" style="cursor:pointer;" v-model="groupnames"   @click="groupsTrees"   readonly="readonly" placeholder="群组列表"/>
-			</div>
 			<div class="form-group col-sm-2">
 				<input type="text" class="form-control"   placeholder="搜索">
 			</div>
@@ -37,13 +33,7 @@
     <div v-show="!showList" class="panel panel-default">
 		<div class="panel-heading">{{title}}</div>
 		<form class="form-horizontal">
-											<div class="form-group">
-			   	<div class="col-sm-2 control-label">广播标题</div>
-			   	<div class="col-sm-10">
-			      <input type="text" class="form-control" v-model="webchatBroad.title" placeholder="广播标题"/>
-			    </div>
-			</div>
-									<div class="form-group">
+		<div class="form-group">
 			   	<div class="col-sm-2 control-label">广播内容</div>
 			   	<div class="col-sm-10">
 			        <textarea rows="6" maxlength="140" onchange="this.value=this.value.substring(0, 140)" onkeydown="this.value=this.value.substring(0, 140)" onkeyup="this.value=this.value.substring(0, 140)" class="form-control" v-model="webchatBroad.msg" placeholder="不超过140字."/>
@@ -51,10 +41,26 @@
 			    </div>
 			</div>
 			<div class="form-group">
+			   	<div class="col-sm-2 control-label">广播类型</div>
+			   	<div class="col-sm-10">
+			   		&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+			      	<label>  <input type="radio" checked="checked" name="cycle" value="0" @click="cycle"    /> 循环广播</label>
+			      	&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+			      	<label>  <input type="radio" name="cycle" value="1"  @click="cycle" /> 按次广播</label>
+			    </div>
+			</div>
+			<div class="form-group">
 			   	<div class="col-sm-2 control-label">广播时间</div>
 			   	<div class="col-sm-10">
-			        <input type="text" class="layui-input"   id="Range_time" placeholder="不能为空">
+			        <input type="text" class="layui-input"   id="Range_time" 	placeholder="不能为空">
+			        <input type="text" class="layui-input"   style="display:none"   id="R_time" placeholder="不能为空">
 			    </div>
+			</div>
+			<div class="form-group" style="display:none"  id="frequency">
+			   	<div class="col-sm-2 control-label">广播次数</div>
+			   	<div class="col-sm-10">
+			      	<input type="number" class="form-control" v-model="webchatBroad.frequency" placeholder="广播次数"/>
+			    </div>                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                  
 			</div>
 			<div class="form-group">
 			   	<div class="col-sm-2 control-label">广播群名</div>
@@ -62,8 +68,7 @@
 			        <input type="text" class="form-control" style="cursor:pointer;" v-model="groupname"   @click="groupsTree"   readonly="readonly" placeholder="群组列表"/>
 			    </div>
 			</div>
-			 
-							<div class="form-group">
+			<div class="form-group">
 				<div class="col-sm-2 control-label"></div> 
 				<input type="button" class="btn btn-primary" @click="saveOrUpdate" value="确定"/>
 				&nbsp;&nbsp;<input type="button" class="btn btn-warning" @click="reload" value="返回"/>
@@ -83,18 +88,22 @@
  
 
 <script type="text/javascript">
-		laydate.render(
-		 	{
-			  elem: '#Range_time'
-			 ,done: function(value, date, endDate){
-					    console.log(value); //得到日期生成的值，如：2017-08-18
- 			 }
-			  ,min: '-1'
-			  ,type: 'datetime'
-			  ,range: true
+	
+	
+	
+			laydate.render({
+			  elem: '#Range_time', 
+			  min: '-1',
+			  type: 'datetime' ,
+			  range: true
 			});
-		
-		
+
+			laydate.render({
+			  elem: '#R_time', 
+			  min: '-1',
+			  type: 'datetime'
+			});
+	
 	   	 $("#Group").multipleSelect({
 		        filter: true , 
 		        width:200

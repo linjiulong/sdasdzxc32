@@ -17,5 +17,6 @@ import com.effecia.modules.sys.dao.BaseDao;
 public interface WebchatUserDao extends BaseDao<WebchatUserEntity> {
 	List<WebchatUserEntity> querySelect(Map<String, Object> map);
 	List<WebchatGroupsEntity> groupname(String[] ids);
-
+	WebchatUserEntity finduser(Map<String, Object> map);
+	
 }

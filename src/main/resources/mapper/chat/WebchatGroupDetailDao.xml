@@ -12,6 +12,7 @@
         <result property="bannedTime" column="banned_time"/>
         <result property="speakTime" column="speak_time"/>
         <result property="level" column="level"/>
+        <result property="nickName" column="nick_name"/>
     </resultMap>
 
 	<select id="queryObject" resultType="com.effecia.modules.chat.entity.WebchatGroupDetailEntity">
@@ -32,7 +33,7 @@
 	</select>
 
 	<select id="queryList" resultType="com.effecia.modules.chat.entity.WebchatGroupDetailEntity">
-		select * from webchat_group_detail
+		select * FROM webchat_group_detail 
 		<where>
 			<if test="gid != null ">
 				and gid = #{gid}
@@ -69,7 +70,8 @@
 			`g_status`, 
 			`banned_time`, 
 			`speak_time`, 
-			`level`
+			`level`, 
+			`nick_name`
 		)
 		values
 		(
@@ -79,11 +81,12 @@
 			#{gStatus}, 
 			#{bannedTime}, 
 			#{speakTime}, 
-			#{level}
+			#{level}, 
+			#{nickName}
 		)
 	</insert>
 	 
-	<update id="update" parameterType="com.effecia.modules.chat.entity.WebchatGroupDetailEntity">
+	<update id="update"  parameterType="com.effecia.modules.chat.entity.WebchatGroupDetailEntity">
 		update webchat_group_detail 
 		<set>
 			<if test="addTime != null">`add_time` = #{addTime}, </if>
@@ -91,11 +94,14 @@
 			`banned_time` = #{bannedTime},
 			<if test="speakTime != null">`speak_time` = #{speakTime}, </if>
 			<if test="level != null">`level` = #{level}</if>
+			<if test="nickName != null">`nick_name` = #{nickName}</if>
 		</set>
 		where gid = #{gid} and uid = #{uid}
 	</update>
 
-	 
+	 <update id="updategroup"  parameterType="com.effecia.modules.chat.entity.WebchatGroupDetailEntity">
+	 		update webchat_group_detail set gid = #{gid} where uid = #{uid}
+	 </update>
 	
 	<delete id="delete">
 		delete from webchat_group_detail where gid = #{value}

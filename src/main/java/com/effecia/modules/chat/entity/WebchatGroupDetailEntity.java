@@ -10,7 +10,7 @@ import java.util.Date;
  * 
  * @author lin
  * @email lin.lin@support888.net
- * @date 2017-10-07 16:02:13
+ * @date 2017-11-01 11:29:24
  */
 public class WebchatGroupDetailEntity implements Serializable {
 	private static final long serialVersionUID = 1L;
@@ -27,16 +27,18 @@ public class WebchatGroupDetailEntity implements Serializable {
 	private Date bannedTime;
 	//最后发言时间
 	private Date speakTime;
-	//1 普通会员 2 管理员 0游客
+	//1 普通会员 2 管理员   0群主
 	private Integer level;
+	//群名片
+	private String nickName;
 	
 	//群成员管理功能
 	private String qfunction;
-	
 	//会员列表
 	private String users;
+	//对应包网
+	private Integer dept_id;
 	
-	private Integer dept_id;//对应包网
 
 	/**
 	 * 设置：
@@ -111,16 +113,34 @@ public class WebchatGroupDetailEntity implements Serializable {
 		return speakTime;
 	}
 	/**
-	 * 设置：1 普通会员 2 管理员 0游客
+	 * 设置：1 普通会员 2 管理员   0群主
 	 */
 	public void setLevel(Integer level) {
 		this.level = level;
 	}
 	/**
-	 * 获取：1 普通会员 2 管理员 0游客
+	 * 获取：1 普通会员 2 管理员   0群主
 	 */
 	public Integer getLevel() {
 		return level;
+	}
+	/**
+	 * 设置：群名片
+	 */
+	public void setNickName(String nickName) {
+		this.nickName = nickName;
+	}
+	/**
+	 * 获取：群名片
+	 */
+	public String getNickName() {
+		return nickName;
+	}
+	public Integer getgStatus() {
+		return gStatus;
+	}
+	public void setgStatus(Integer gStatus) {
+		this.gStatus = gStatus;
 	}
 	public String getQfunction() {
 		return qfunction;
@@ -134,12 +154,6 @@ public class WebchatGroupDetailEntity implements Serializable {
 	public void setUsers(String users) {
 		this.users = users;
 	}
-	public Integer getgStatus() {
-		return gStatus;
-	}
-	public void setgStatus(Integer gStatus) {
-		this.gStatus = gStatus;
-	}
 	public Integer getDept_id() {
 		return dept_id;
 	}
@@ -149,13 +163,8 @@ public class WebchatGroupDetailEntity implements Serializable {
 	@Override
 	public String toString() {
 		return "WebchatGroupDetailEntity [gid=" + gid + ", uid=" + uid + ", addTime=" + addTime + ", gStatus=" + gStatus
-				+ ", bannedTime=" + bannedTime + ", speakTime=" + speakTime + ", level=" + level + ", qfunction="
-				+ qfunction + ", users=" + users + ", dept_id=" + dept_id + "]";
+				+ ", bannedTime=" + bannedTime + ", speakTime=" + speakTime + ", level=" + level + ", nickName="
+				+ nickName + ", qfunction=" + qfunction + ", users=" + users + ", dept_id=" + dept_id + "]";
 	}
-	
-	
-	
-	
-	
 	
 }

@@ -4,25 +4,26 @@ $(function () {
         url:  "",
         datatype: "json",
         colModel: [			
-			{ label: '群号', name: 'gid', index: 'gid', width: 50},
-			{ label: '群员ID', name: 'uid', index: 'uid', width: 80 , key: true ,sortname:false}, 			
-			{ label: '入群时间', name: 'addTime', width: 80 }, 			
-			{ label: '状态', name: 'gStatus', width: 80, formatter: function(value, options, row){
+        	{ label: '群号', name: 'gid', index: 'gid', width: 50, hidden: true},
+        	{ label: 'ID', name: 'uid', index: 'uid', width: 80 , key: true ,sortname:false, hidden: true}, 			
+			{ label: '昵称', name: 'nickName' , width: 50 }, 			
+			{ label: '入群时间', name: 'addTime', width: 50 }, 			
+			{ label: '级别', name: 'level',  width: 30 , formatter: function(value, options, row){
+				if(value==0){
+					return '<span class="label label-warning">群主</span>' ;
+				}else if (value==1) {
+					return '<span class="label label-primary">会员</span>' ; 
+				}else if (value==2) {
+					vm.groupadmin="设为群主";
+					return '<span class="label label-success">管理员</span>' ; 
+				}
+			}},
+			{ label: '状态', name: 'gStatus', width: 30, formatter: function(value, options, row){
 				return value === 0 ? 
 						'<span class="label label-success">未禁言</span>' : 
 						'<span class="label label-danger">被禁言</span>';
 			}}, 			
-			{ label: '禁言', name: 'bannedTime',   width: 80 }, 			
-			{ label: '级别', name: 'level',  width: 80 , formatter: function(value, options, row){
-					if(value==0){
-						return '<span class="label label-warning">群主</span>' ;
-					}else if (value==1) {
-						return '<span class="label label-primary">会员</span>' ; 
-					}else if (value==2) {
-						vm.groupadmin="设为群主";
-						return '<span class="label label-success">管理员</span>' ; 
-					}
-			}}
+			{ label: '禁言', name: 'bannedTime',   width: 60 } 			
         ],
 		viewrecords: true,
         height: 385,
@@ -53,20 +54,7 @@ $(function () {
           var rowData = $("#jqGrid").jqGrid("getRowData",id); 
           var val= rowData.level; 
            
-          if(typeof(val)=="undefined"){ 
-//	   		  　$('#offline').attr("disabled","disabled");  
-	   		  $('#del').attr("disabled","disabled");  
-	   		  $('#admins').attr("disabled","disabled");  
-	   		  $('#banned').attr("disabled","disabled");  
-	   		  $('#groupadmin').attr("disabled","disabled");  
-	   	   }else {
-	   		   console.log("222222222")
-//	   		   $("#offline").attr("disabled", false);
-	   		   $("#del").attr("disabled", false);
-	   		   $("#admins").attr("disabled", false);
-	   		   $("#groupadmin").attr("disabled", false);
-	   		   $("#banned").attr("disabled", false);
-	   	   }
+          
           
           
           if(val.indexOf("会员")==-1){
@@ -188,7 +176,7 @@ var vm = new Vue({
 		},
 		del: function (event) {
 			var ids = getSelectedRows();
-			var gid=vm.svalue;
+			var gid=vm.gid[0];
 			ids.splice(0, 0, gid);  
 			if(ids == null){
 				return ;

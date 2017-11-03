@@ -1,9 +1,9 @@
 package com.effecia.modules.sys.service.impl;
 
-import com.google.gson.Gson;
 
 import com.effecia.modules.sys.dao.SysConfigDao;
 import com.effecia.modules.sys.entity.SysConfigEntity;
+import com.alibaba.fastjson.JSON;
 import com.effecia.common.exception.RRException;
 import com.effecia.modules.sys.redis.SysConfigRedis;
 import com.effecia.modules.sys.service.SysConfigService;
@@ -84,7 +84,7 @@ public class SysConfigServiceImpl implements SysConfigService {
 	public <T> T getConfigObject(String key, Class<T> clazz) {
 		String value = getValue(key);
 		if(StringUtils.isNotBlank(value)){
-			return new Gson().fromJson(value, clazz);
+			return JSON.parseObject(value, clazz);
 		}
 
 		try {

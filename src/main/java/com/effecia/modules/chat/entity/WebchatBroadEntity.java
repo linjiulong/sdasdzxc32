@@ -10,15 +10,13 @@ import java.util.Date;
  * 
  * @author lin
  * @email lin.lin@support888.net
- * @date 2017-10-30 15:39:59
+ * @date 2017-11-02 11:07:34
  */
 public class WebchatBroadEntity implements Serializable {
 	private static final long serialVersionUID = 1L;
 	
 	//
 	private Integer id;
-	//广播标题
-	private String title;
 	//广播内容
 	private String msg;
 	//时间段-开始时间
@@ -27,6 +25,8 @@ public class WebchatBroadEntity implements Serializable {
 	private Date endTime;
 	//-1 删除   0 过期 1 正常
 	private Integer bState;
+	//时间段内播放次数
+	private Integer frequency;
 
 	/**
 	 * 设置：
@@ -39,18 +39,6 @@ public class WebchatBroadEntity implements Serializable {
 	 */
 	public Integer getId() {
 		return id;
-	}
-	/**
-	 * 设置：广播标题
-	 */
-	public void setTitle(String title) {
-		this.title = title;
-	}
-	/**
-	 * 获取：广播标题
-	 */
-	public String getTitle() {
-		return title;
 	}
 	/**
 	 * 设置：广播内容
@@ -100,4 +88,17 @@ public class WebchatBroadEntity implements Serializable {
 	public Integer getBState() {
 		return bState;
 	}
+	/**
+	 * 设置：时间段内播放次数
+	 */
+	public void setFrequency(Integer frequency) {
+		this.frequency = frequency;
+	}
+	/**
+	 * 获取：时间段内播放次数
+	 */
+	public Integer getFrequency() {
+		return frequency;
+	}
+	 
 }

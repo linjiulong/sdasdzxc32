@@ -23,6 +23,7 @@ public interface WebchatGroupDetailDao extends BaseDao<WebchatGroupDetailEntity>
 	WebchatGroupDetailEntity queryFindObject(Map<String,Object> map);
 	
 	void group_detail(Integer uid);
-
+	//移动群
+	int updategroup (WebchatGroupDetailEntity webchatGroupDetail);
 
 }
