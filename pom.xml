@@ -62,75 +62,24 @@
 	</pluginRepositories>
 
 	<dependencies>
+	
 
-
-
-
-		<!-- https://mvnrepository.com/artifact/io.netty/netty-all -->
-		<dependency>
-			<groupId>io.netty</groupId>
-			<artifactId>netty-all</artifactId>
-			<version>4.1.14.Final</version>
-		</dependency>
-
-
-		<!-- https://mvnrepository.com/artifact/io.netty/netty-buffer -->
-		<dependency>
-			<groupId>io.netty</groupId>
-			<artifactId>netty-buffer</artifactId>
-			<version>4.1.13.Final</version>
-		</dependency>
-
-		<!-- https://mvnrepository.com/artifact/io.netty/netty-codec -->
-		<dependency>
-			<groupId>io.netty</groupId>
-			<artifactId>netty-codec</artifactId>
-			<version>4.1.13.Final</version>
-		</dependency>
-		<!-- https://mvnrepository.com/artifact/io.netty/netty-common -->
-		<dependency>
-			<groupId>io.netty</groupId>
-			<artifactId>netty-common</artifactId>
-			<version>4.1.13.Final</version>
-		</dependency>
-		<!-- https://mvnrepository.com/artifact/io.netty/netty-handler -->
-		<dependency>
-			<groupId>io.netty</groupId>
-			<artifactId>netty-handler</artifactId>
-			<version>4.1.13.Final</version>
-		</dependency>
-
-		<!-- https://mvnrepository.com/artifact/io.netty/netty-resolver -->
-		<dependency>
-			<groupId>io.netty</groupId>
-			<artifactId>netty-resolver</artifactId>
-			<version>4.1.13.Final</version>
-		</dependency>
-		<!-- https://mvnrepository.com/artifact/io.netty/netty-transport -->
-		<dependency>
-			<groupId>io.netty</groupId>
-			<artifactId>netty-transport</artifactId>
-			<version>4.1.13.Final</version>
-		</dependency>
-
-
-
-
-
-
-		<!-- https://mvnrepository.com/artifact/io.netty/netty-tcnative-boringssl-static -->
-		<dependency>
-			<groupId>io.netty</groupId>
-			<artifactId>netty-tcnative-boringssl-static</artifactId>
-			<version>2.0.5.Final</version>
-		</dependency>
+	
+ 	  <!-- Netty -->
+ 	
+ 		<!-- https://mvnrepository.com/artifact/io.netty/netty-all -->
+				<dependency>
+				    <groupId>io.netty</groupId>
+				    <artifactId>netty-all</artifactId>
+				    <version>4.1.16.Final</version>
+				</dependency>
+				 	
 		<!-- https://mvnrepository.com/artifact/org.objenesis/objenesis -->
 		<dependency>
 		    <groupId>org.objenesis</groupId>
 		    <artifactId>objenesis</artifactId>
 		    <version>2.6</version>
 		</dependency>
- 
 		<!-- https://mvnrepository.com/artifact/org.aeonbits.owner/owner -->
 		<dependency>
 			<groupId>org.aeonbits.owner</groupId>
@@ -141,25 +90,25 @@
 		<dependency>
 			<groupId>com.dyuproject.protostuff</groupId>
 			<artifactId>protostuff-api</artifactId>
-			<version>1.1.2</version>
+			<version>${protostuff-version}</version>
 		</dependency>
 		<!-- https://mvnrepository.com/artifact/com.dyuproject.protostuff/protostuff-collectionschema -->
 		<dependency>
 			<groupId>com.dyuproject.protostuff</groupId>
 			<artifactId>protostuff-collectionschema</artifactId>
-			<version>1.1.2</version>
+			<version>${protostuff-version}</version>
 		</dependency>
 		<!-- https://mvnrepository.com/artifact/com.dyuproject.protostuff/protostuff-core -->
 		<dependency>
 			<groupId>com.dyuproject.protostuff</groupId>
 			<artifactId>protostuff-core</artifactId>
-			<version>1.1.2</version>
+			<version>${protostuff-version}</version>
 		</dependency>
 		<!-- https://mvnrepository.com/artifact/com.dyuproject.protostuff/protostuff-runtime -->
 		<dependency>   
 		    <groupId>com.dyuproject.protostuff</groupId>
 		    <artifactId>protostuff-runtime</artifactId>
-		    <version>1.1.2</version>
+		    <version>${protostuff-version}</version>
 		</dependency>
     
  
@@ -227,6 +176,11 @@
 			<groupId>org.springframework.data</groupId>
 			<artifactId>spring-data-redis</artifactId>
 			<version>${spring-data-redis-version}</version>
+		</dependency>
+		<dependency>
+			<groupId>redis.clients</groupId>
+			<artifactId>jedis</artifactId>
+			<version>${jedis-version}</version>
 		</dependency>
 		<dependency>
 			<groupId>org.slf4j</groupId>
@@ -348,17 +302,6 @@
 				<artifactId>maven-surefire-plugin</artifactId>
 				<configuration>
 					<skipTests>true</skipTests>
-				</configuration>
-			</plugin>
-			<plugin>
-				<groupId>org.apache.tomcat.maven</groupId>
-				<artifactId>tomcat7-maven-plugin</artifactId>
-				<version>2.2</version>
-				<configuration>
-					<path>/chatroom</path>
-					<charset>UTF-8</charset>
-					<port>8080</port>
-					<uriEncoding>UTF-8</uriEncoding>
 				</configuration>
 			</plugin>
 		</plugins>

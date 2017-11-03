@@ -93,8 +93,8 @@ public class TcpServer implements Runnable{
 		try {
 			Thread t = new Thread(new TcpServer());
 			t.start();
-//			Thread c = new Thread(new SubReqClient());
-//			c.start();
+			Thread c = new Thread(new SubReqClient());
+			c.start();
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
